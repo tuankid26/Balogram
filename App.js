@@ -1,21 +1,65 @@
 import { StatusBar } from 'expo-status-bar';
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import React, { Component } from 'react';
 
-export default function App() {
-  return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
-  );
+import { View, Text } from 'react-native'
+
+// import * as firebase from 'firebase'
+
+// import { Provider } from 'react-redux'
+// import { createStore, applyMiddleware } from 'redux'
+// import rootReducer from './redux/reducers'
+// import thunk from 'redux-thunk'
+// const store = createStore(rootReducer, applyMiddleware(thunk))
+
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+
+import LandingScreen from './components/auth/Landing'
+// import RegisterScreen from './components/auth/Register'
+// import LoginScreen from './components/auth/Login'
+import MainScreen from './components/Main'
+// import AddScreen from './components/main/Add'
+// import SaveScreen from './components/main/Save'
+// import CommentScreen from './components/main/Comment'
+
+
+const Stack = createStackNavigator();
+
+
+export class App extends Component {
+  constructor(props) {
+    super()
+  }
+
+  render() {
+    return (
+        <NavigationContainer >
+          <Stack.Navigator initialRouteName="Main"
+          screenOptions={{
+            headerShown: false
+          }}
+          >
+            <Stack.Screen name="Main" component={MainScreen} 
+            // options={{
+            //   title: 'BaloGram',
+            //   headerStyle: {
+            //     backgroundColor: '#000',
+            //   },
+            //   headerTintColor: '#fff',
+            //   headerTitleStyle: {
+            //     fontWeight: 'bold',
+            //     fontSize: 25
+            //   }
+            // }}
+            />
+            {/* <Stack.Screen name="Add" component={AddScreen} navigation={this.props.navigation}/> */}
+            {/* <Stack.Screen name="Save" component={SaveScreen} navigation={this.props.navigation}/>
+            <Stack.Screen name="Comment" component={CommentScreen} navigation={this.props.navigation}/> */}
+          </Stack.Navigator>
+        </NavigationContainer>
+        
+    )
+  }
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+export default App
