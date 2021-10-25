@@ -8,8 +8,8 @@ import UserAvatar from 'react-native-user-avatar';
 import { Avatar } from 'react-native-elements';
 import { SearchBar } from 'react-native-elements';
 
-import FeedImage from '../../image_log/anhquan.jpg';
-function Feed(props) {
+import FeedImage from '../images/Store_local_image/anhquan.jpg';
+function NewFeed_Screen(props) {
     const DATA_demo_posts = [
         {
           id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
@@ -28,38 +28,12 @@ function Feed(props) {
         },
     ];
 
-    // const [posts, setPosts] = useState([]);
-
-    // useEffect(() => {
-    //     if (props.usersFollowingLoaded == props.following.length && props.following.length !== 0) {
-    //         props.feed.sort(function (x, y) {
-    //             return x.creation - y.creation;
-    //         })
-    //         setPosts(props.feed);
-    //     }
-    //     console.log(posts)
-
-    // }, [props.usersFollowingLoaded, props.feed])
 
     const onLikePress = (userId, postId) => {
-        // firebase.firestore()
-        //     .collection("posts")
-        //     .doc(userId)
-        //     .collection("userPosts")
-        //     .doc(postId)
-        //     .collection("likes")
-        //     .doc(firebase.auth().currentUser.uid)
-        //     .set({})
+
     }
     const onDislikePress = (userId, postId) => {
-        // firebase.firestore()
-        //     .collection("posts")
-        //     .doc(userId)
-        //     .collection("userPosts")
-        //     .doc(postId)
-        //     .collection("likes")
-        //     .doc(firebase.auth().currentUser.uid)
-        //     .delete()
+
     }
     return (
         <View style={styles.container}>
@@ -183,12 +157,5 @@ const styles = StyleSheet.create({
         marginLeft: 15
     }
 })
-// const mapStateToProps = (store) => ({
-//     currentUser: store.userState.currentUser,
-//     following: store.userState.following,
-//     feed: store.usersState.feed,
-//     usersFollowingLoaded: store.usersState.usersFollowingLoaded,
 
-
-// })
-export default Feed;
+export default NewFeed_Screen;

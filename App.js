@@ -17,7 +17,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import LandingScreen from './components/auth/Landing'
 // import RegisterScreen from './components/auth/Register'
 // import LoginScreen from './components/auth/Login'
-import MainScreen from './components/Main'
+import MainScreen from './screen/Main_Screen'
 // import AddScreen from './components/main/Add'
 // import SaveScreen from './components/main/Save'
 // import CommentScreen from './components/main/Comment'

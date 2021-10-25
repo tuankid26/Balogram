@@ -2,9 +2,8 @@ import React, { Component } from 'react'
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 
-import FeedScreen from './main/Feed'
-import ProfileScreen from './main/Profile'
-import SearchScreen from './main/Search_Screen'
+import FeedScreen from './NewFeed_Screen'
+import ProfileScreen from '../components/Profile'
 import { StyleSheet, View, Text, Image, FlatList, Button, StatusBar} from 'react-native'
 
 const Tab = createMaterialBottomTabNavigator();
@@ -13,7 +12,7 @@ const EmptyScreen = () => {
     return (null)
 }
 
-export class Main extends Component {
+export class Main_Screen extends Component {
     componentDidMount() {
     }
     render() {
@@ -29,12 +28,6 @@ export class Main extends Component {
                             <MaterialCommunityIcons name="home" color={color} size={26} />
                         ),
                     }} />
-                {/* <Tab.Screen name="Search" component={SearchScreen} navigation={this.props.navigation}
-                    options={{
-                        tabBarIcon: ({ color, size }) => (
-                            <MaterialCommunityIcons name="magnify" color={color} size={26} />
-                        ),
-                    }} /> */}
                 <Tab.Screen name="AddContainer" component={EmptyScreen}
                     listeners={({ navigation }) => ({
                         tabPress: event => {
@@ -88,9 +81,4 @@ export class Main extends Component {
     }
 }
 
-// const mapStateToProps = (store) => ({
-//     currentUser: store.userState.currentUser
-// })
-// const mapDispatchProps = (dispatch) => bindActionCreators({ fetchUser, fetchUserPosts, fetchUserFollowing, clearData }, dispatch);
-
-export default Main;
+export default Main_Screen;
