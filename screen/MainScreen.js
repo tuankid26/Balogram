@@ -1,9 +1,8 @@
+import React, {Component} from 'react';
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
-
-import FeedScreen from './NewFeed_Screen'
-import ProfileScreen from '../components/Profile'
 import { theme } from '../components/core/theme';
+import NewFeedScreen from './NewFeedScreen';
 
 const Tab = createMaterialBottomTabNavigator();
 
@@ -17,7 +16,7 @@ export default function MainScreen() {
             activeColor={theme.colors.button}
             barStyle={{ backgroundColor: theme.colors.white }}
         >
-            <Tab.Screen name="Feed" component={FeedScreen}
+            <Tab.Screen name="Feed" component={NewFeedScreen}
                 options={{
                     tabBarIcon: ({ color, size }) => (
                         <MaterialCommunityIcons name="home" color={color} size={26} />
@@ -35,11 +34,11 @@ export default function MainScreen() {
                         <MaterialCommunityIcons name="account-group-outline" color={color} size={26} />
                     ),
                 }} />
-            <Tab.Screen name="Messenger" component={ProfileScreen}
+            <Tab.Screen name="Messenger" component={EmptyScreen}
                 listeners={({ navigation }) => ({
                     tabPress: event => {
                         event.preventDefault();
-                        navigation.navigate("Messenger", { uid: firebase.auth().currentUser.uid })
+                        navigation.navigate("Messenger")
                     }
                 })}
                 options={{
@@ -47,11 +46,11 @@ export default function MainScreen() {
                         <MaterialCommunityIcons name="comment-multiple" color={color} size={26} />
                     ),
                 }} />
-            <Tab.Screen name="Notifications" component={ProfileScreen}
+            <Tab.Screen name="Notifications" component={EmptyScreen}
                 listeners={({ navigation }) => ({
                     tabPress: event => {
                         event.preventDefault();
-                        navigation.navigate("Notifications", { uid: firebase.auth().currentUser.uid })
+                        navigation.navigate("Notifications")
                     }
                 })}
                 options={{
@@ -59,12 +58,11 @@ export default function MainScreen() {
                         <MaterialCommunityIcons name="bell-outline" color={color} size={26} />
                     ),
                 }} />
-
-            <Tab.Screen name="Profile" component={ProfileScreen}
+            <Tab.Screen name="Profile" component={EmptyScreen}
                 listeners={({ navigation }) => ({
                     tabPress: event => {
                         event.preventDefault();
-                        navigation.navigate("Profile", { uid: firebase.auth().currentUser.uid })
+                        navigation.navigate("Profile")
                     }
                 })}
                 options={{
@@ -74,7 +72,5 @@ export default function MainScreen() {
                 }} />
 
         </Tab.Navigator>
-
     )
 }
-
