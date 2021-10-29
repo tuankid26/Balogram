@@ -1,10 +1,14 @@
 import React, { useState, useEffect } from 'react'
 import { StyleSheet, View, Text, Image, FlatList, Button, StatusBar} from 'react-native'
+// import { Avatar } from 'react-native-elements';
+// import firebase from 'firebase'
+// require('firebase/firestore')
+// import { connect } from 'react-redux'
+import UserAvatar from 'react-native-user-avatar';
 import { Avatar } from 'react-native-elements';
-import { SearchBar } from 'react-native-elements';
+import { SearchBar,Icon } from 'react-native-elements';
 import FeedImage from '../images/Store_local_image/anhquan.jpg';
-
-export default function NewFeedScreen(props) {
+function NewFeed_Screen(props) {
     const DATA_demo_posts = [
         {
           id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
@@ -31,18 +35,45 @@ export default function NewFeedScreen(props) {
 
     }
     return (
-        <View style={styles.container}>
+        <View style={styles.containerbackground}>
             <StatusBar
-                backgroundColor = "#000"
-                barStyle = "light-content"
+                animated
+                backgroundColor = "#fff"
+                barStyle = "dark-content"
             />
-            
+            <View style={styles.Header}>
+
+            {/* <View style={{ height: '10%', backgroundColor: "#3F569C", borderRadius: 100, }}>
+              
+                <SearchBar
+                    round
+                    lightTheme
+                    containerStyle={{width : 365, height:60}}
+                    placeholderTextColor={'#g5g5g5'}
+                    placeholder={'Tìm Hương Nhu'}
+                /> */}
+            {/* </View> */}
             <SearchBar
                 round
+                // lightTheme
                 searchIcon={{ size: 26 }}
+                color="#000"
                 inputStyle={{margin: 0}}
+                inputStyle={{backgroundColor: 'white'}}
+                containerStyle={{width : '90%', height: 30, marginTop: 5, marginBottom: 5, backgroundColor: '#1E90FF'}}
+                platform="ios"
+                placeholderTextColor={'#000'}
                 placeholder={'Tìm Hương Nhu'}
+                // leftIconContainerStyle={{backgroundColor: '#1E90FF'}}
+                
+                
+
             />
+
+            <Icon name="settings" size={30} color="#FFF" style={styles.Icon}/>
+            </View>
+          
+
             
             <View style={styles.containerGallery}>
                 <FlatList
@@ -50,8 +81,8 @@ export default function NewFeedScreen(props) {
                     horizontal={false}
                     data={DATA_demo_posts}
                     renderItem={({ item }) => (
-                        <View>
-                        <View style={styles.containerUser}>
+                        <View style={styles.Feed}>
+                        <View style={styles.Userinfo}>
                             
                         <Avatar
                             size={40}
@@ -59,7 +90,7 @@ export default function NewFeedScreen(props) {
                             source={FeedImage}
                             containerStyle={{marginLeft: 5, marginTop: 5}}
                         />
-                            <Text style={styles.containerUserName}>{item.user_name}</Text>
+                        <Text style={styles.containerUserName}>{item.user_name}</Text>
     
                         </View>
                         
@@ -70,19 +101,6 @@ export default function NewFeedScreen(props) {
                                 style={styles.image}
                                 source={FeedImage}
                             />
-                            {/* { item.currentUserLike ?
-                                (
-                                    <Button
-                                        title="Dislike"
-                                        onPress={() => onDislikePress(item.user.uid, item.id)} />
-                                )
-                                :
-                                (
-                                    <Button
-                                        title="Like"
-                                        onPress={() => onLikePress(item.user.uid, item.id)} />
-                                )
-                            } */}
                             <Text style={styles.comment}
                                 onPress={() => props.navigation.navigate('Comment', { postId: item.id, uid: item.user.uid })}>
                                 View Comments...
@@ -101,25 +119,38 @@ export default function NewFeedScreen(props) {
 }
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
+    containerbackground: {
+        flex: 1
     },
     containerInfo: {
         margin: 20
     },
     containerGallery: {
         flex: 1
+        
     },
-    containerUser: {
+    Header: {
+        backgroundColor: "#1E90FF",
+        flexDirection: 'row'
+    }
+    ,
+    Feed: {
+        justifyContent: 'space-between',
+        marginBottom: 10
+    },
+    Userinfo: {
         flex: 1,
-        backgroundColor: "#000",
-        flexDirection: 'row',
-
+        backgroundColor: "#fff",
+        flexDirection: 'row'
+    },
+    Icon: {
+        marginTop: 5
+        // backgroundColor: "#"
     },
     containerUserName: {
         fontStyle: 'normal',
         fontWeight: 'bold',
-        color: '#fff',
+        color: '#000',
         fontSize: 18,
         marginLeft: 5,
         marginTop: 12
@@ -128,7 +159,7 @@ const styles = StyleSheet.create({
     containerFeed: {
         justifyContent: 'flex-start',
         alignItems: 'flex-start',
-        backgroundColor: "#000"
+        backgroundColor: "#fff"
     },
     image: {
         flex: 1,
@@ -144,9 +175,10 @@ const styles = StyleSheet.create({
     },
     comment: {
         fontStyle: 'normal',
-        color: '#fff',
+        color: '#000',
         fontSize: 15,
         marginLeft: 15
     }
 })
 
+export default NewFeed_Screen;
