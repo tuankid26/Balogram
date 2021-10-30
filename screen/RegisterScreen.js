@@ -16,7 +16,7 @@ export default function RegisterScreen({ navigation }) {
   const onRegisterPressed = () => {
     navigation.reset({
       index: 0,
-      routes: [{ name: 'LoginScreen' }],
+      routes: [{ name: 'NewPostScreen' }],
     })
   }
   const {goBack} = navigation;
