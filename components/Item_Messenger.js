@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { View, Text, Image ,TouchableOpacity } from 'react-native'
-import Swipeout from 'react-native-swipeout'
-import Icon from 'react-native-vector-icons/FontAwesome5'
+// import Swipeout from 'react-native-swipeout'
+// import Icon from 'react-native-vector-icons/FontAwesome5'
 import { StyleSheet, Dimensions } from 'react-native'
 
 const { width } = Dimensions.get('window')
