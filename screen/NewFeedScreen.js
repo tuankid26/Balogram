@@ -1,14 +1,13 @@
 import React, { useState, useEffect } from 'react'
 import { StyleSheet, View, Text, Image, FlatList, Button, StatusBar} from 'react-native'
-// import { Avatar } from 'react-native-elements';
-// import firebase from 'firebase'
-// require('firebase/firestore')
-// import { connect } from 'react-redux'
 import UserAvatar from 'react-native-user-avatar';
 import { Avatar } from 'react-native-elements';
 import { SearchBar,Icon } from 'react-native-elements';
 import FeedImage from '../images/Store_local_image/anhquan.jpg';
-function NewFeed_Screen(props) {
+// import SearchBar from 'react-native-search-bar';
+import {Dimensions} from 'react-native';
+const { width } = Dimensions.get('window')
+export default function NewFeed_Screen(props) {
     const DATA_demo_posts = [
         {
           id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
@@ -42,17 +41,6 @@ function NewFeed_Screen(props) {
                 barStyle = "dark-content"
             />
             <View style={styles.Header}>
-
-            {/* <View style={{ height: '10%', backgroundColor: "#3F569C", borderRadius: 100, }}>
-              
-                <SearchBar
-                    round
-                    lightTheme
-                    containerStyle={{width : 365, height:60}}
-                    placeholderTextColor={'#g5g5g5'}
-                    placeholder={'Tìm Hương Nhu'}
-                /> */}
-            {/* </View> */}
             <SearchBar
                 round
                 // lightTheme
@@ -69,6 +57,7 @@ function NewFeed_Screen(props) {
                 
 
             />
+        
 
             <Icon name="settings" size={30} color="#FFF" style={styles.Icon}/>
             </View>
@@ -162,10 +151,10 @@ const styles = StyleSheet.create({
         backgroundColor: "#fff"
     },
     image: {
-        flex: 1,
-        width: 400,
-        height: 550,
-        resizeMode: 'contain'
+        // flex: 1,
+        width: width*150/100,
+        height:  width*150/100,
+        // resizeMode: 'contain'
     },
     avatarImage: {
         flex: 1,
@@ -179,6 +168,5 @@ const styles = StyleSheet.create({
         fontSize: 15,
         marginLeft: 15
     }
-})
-
-export default NewFeed_Screen;
+}
+)

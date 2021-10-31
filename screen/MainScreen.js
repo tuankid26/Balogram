@@ -3,7 +3,8 @@ import { createMaterialBottomTabNavigator } from '@react-navigation/material-bot
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 import { theme } from '../components/core/theme';
 import NewFeedScreen from './NewFeedScreen';
-
+// import ChannelScreen from './ChatMessengerScreen';
+import MainMessengerScreen from './MainMessengerScreen';
 const Tab = createMaterialBottomTabNavigator();
 
 const EmptyScreen = () => {
@@ -34,7 +35,7 @@ export default function MainScreen() {
                         <MaterialCommunityIcons name="account-group-outline" color={color} size={26} />
                     ),
                 }} />
-            <Tab.Screen name="Messenger" component={EmptyScreen}
+            <Tab.Screen name="Messenger" component={MainMessengerScreen}
                 listeners={({ navigation }) => ({
                     tabPress: event => {
                         event.preventDefault();
