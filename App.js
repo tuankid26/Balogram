@@ -10,7 +10,7 @@ import {
     MainScreen,
     ProfileScreen
 } from './screen'
-
+import NewPostScreen from './screen/NewPostScreen';
 
 const Stack = createStackNavigator()
 
@@ -28,8 +28,13 @@ export default function App() {
                     {/* <Stack.Screen name="LoginScreen" component={LoginScreen} />
                     <Stack.Screen name="ForgetPasswordScreen" component={ForgetPasswordScreen} />
                     <Stack.Screen name="RegisterScreen" component={RegisterScreen} />
+<<<<<<< HEAD
                     <Stack.Screen name="MainScreen" component={MainScreen} /> */}
                     <Stack.Screen name="ProfileScreen" component={ProfileScreen} />
+=======
+                    <Stack.Screen name="MainScreen" component={MainScreen} />
+                    <Stack.Screen name="NewPostScreen" component={NewPostScreen} />
+>>>>>>> vanh
                 </Stack.Navigator>
             </NavigationContainer>
         </Provider>
