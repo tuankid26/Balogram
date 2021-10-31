@@ -25,16 +25,13 @@ export default function App() {
                         headerShown: false,
                     }}
                 >
-                    {/* <Stack.Screen name="LoginScreen" component={LoginScreen} />
+                    <Stack.Screen name="LoginScreen" component={LoginScreen} />
                     <Stack.Screen name="ForgetPasswordScreen" component={ForgetPasswordScreen} />
                     <Stack.Screen name="RegisterScreen" component={RegisterScreen} />
-<<<<<<< HEAD
-                    <Stack.Screen name="MainScreen" component={MainScreen} /> */}
-                    <Stack.Screen name="ProfileScreen" component={ProfileScreen} />
-=======
                     <Stack.Screen name="MainScreen" component={MainScreen} />
+                    {/* <Stack.Screen name="ProfileScreen" component={ProfileScreen} /> */}
+                    {/* <Stack.Screen name="MainScreen" component={MainScreen} /> */}
                     <Stack.Screen name="NewPostScreen" component={NewPostScreen} />
->>>>>>> vanh
                 </Stack.Navigator>
             </NavigationContainer>
         </Provider>
