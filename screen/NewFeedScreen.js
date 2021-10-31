@@ -4,7 +4,8 @@ import { Avatar } from 'react-native-elements';
 import { MaterialCommunityIcons, Ionicons, Octicons } from 'react-native-vector-icons';
 import FeedImage from '../images/Store_local_image/anhquan.jpg';
 import { theme } from '../components/core/theme'
-
+import {Dimensions} from 'react-native';
+const { width } = Dimensions.get('window')
 import {
     LinePartition,
     Comment
