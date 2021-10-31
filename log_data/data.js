@@ -1,4 +1,4 @@
-export default data = [
+export const data = [
     {
         id: 1,
         avatar: require('../images/avatar/1.jpg'),

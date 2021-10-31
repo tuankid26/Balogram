@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { View, FlatList, Text } from 'react-native'
 import { StyleSheet, Dimensions } from 'react-native'
-import data from '../log_data/data.js'
+import {data} from '../log_data/data.js'
 import Item_Messenger from '../components/Item_Messenger'
 const { width } = Dimensions.get('window')
 
