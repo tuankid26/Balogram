@@ -94,7 +94,7 @@ const styles = StyleSheet.create({
   },
   containerInfo: {
     margin: 20,
-    marginTop: "20%",
+    marginTop : 20
   },
   background: {
     height: 150,
@@ -104,10 +104,10 @@ const styles = StyleSheet.create({
     position: "absolute",
     width: 110,
     height: 110,
-    top: "65%",
-    left: "36%",
-    border: 3,
-    borderRadius: "50%",
+    top: 65,
+    left: 36,
+    borderWidth: 3,
+    borderRadius: 10,
   },
   containerGallery: {
     flex: 1,
