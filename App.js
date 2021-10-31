@@ -7,7 +7,8 @@ import {
     LoginScreen,
     RegisterScreen,
     ForgetPasswordScreen,
-    MainScreen
+    MainScreen,
+    ProfileScreen
 } from './screen'
 
 
@@ -24,10 +25,11 @@ export default function App() {
                         headerShown: false,
                     }}
                 >
-                    <Stack.Screen name="LoginScreen" component={LoginScreen} />
+                    {/* <Stack.Screen name="LoginScreen" component={LoginScreen} />
                     <Stack.Screen name="ForgetPasswordScreen" component={ForgetPasswordScreen} />
                     <Stack.Screen name="RegisterScreen" component={RegisterScreen} />
-                    <Stack.Screen name="MainScreen" component={MainScreen} />
+                    <Stack.Screen name="MainScreen" component={MainScreen} /> */}
+                    <Stack.Screen name="ProfileScreen" component={ProfileScreen} />
                 </Stack.Navigator>
             </NavigationContainer>
         </Provider>
