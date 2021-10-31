@@ -2,11 +2,14 @@
 import React, { useState } from 'react'
 import { TouchableOpacity, StyleSheet, View } from 'react-native'
 import { Text } from 'react-native-paper'
-import Background from '../components/Background'
-import Header from '../components/Header'
-import Button from '../components/Button'
-import TextInput from '../components/TextInput'
 import { theme } from '../components/core/theme'
+import {
+  Background,
+  Title,
+  TextInput,
+  Button,
+}
+  from '../components'
 
 export default function LoginScreen({ navigation }) {
   const [email, setEmail] = useState({ value: '', error: '' })
@@ -21,8 +24,7 @@ export default function LoginScreen({ navigation }) {
 
   return (
     <Background>
-      {/* <Logo /> */}
-      <Header>BaloGram</Header>
+      <Title>BaloGram</Title>
       <TextInput
         label="Phone number"
         returnKeyType="next"
@@ -80,9 +82,9 @@ const styles = StyleSheet.create({
   },
   link: {
     fontWeight: 'bold',
-    color: theme.colors.link, 
+    color: theme.colors.link,
   },
   button: {
-      backgroundColor: theme.colors.button
+    backgroundColor: theme.colors.button
   }
 })

@@ -1,28 +1,32 @@
 import React, { useState, useEffect } from 'react'
-import { StyleSheet, View, Text, Image, FlatList, Button, StatusBar} from 'react-native'
-import UserAvatar from 'react-native-user-avatar';
+import { StyleSheet, View, Text, Image, FlatList, StatusBar } from 'react-native'
 import { Avatar } from 'react-native-elements';
-import { SearchBar,Icon } from 'react-native-elements';
+import { MaterialCommunityIcons, Ionicons, Octicons } from 'react-native-vector-icons';
 import FeedImage from '../images/Store_local_image/anhquan.jpg';
-// import SearchBar from 'react-native-search-bar';
-import {Dimensions} from 'react-native';
-const { width } = Dimensions.get('window')
-export default function NewFeed_Screen(props) {
+import { theme } from '../components/core/theme'
+
+import {
+    LinePartition,
+    Comment
+}
+    from '../components'
+
+export default function NewFeedScreen(props) {
     const DATA_demo_posts = [
         {
-          id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
-          title: 'Post 1',
-          user_name: "Hoang Huy Quan"
+            id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
+            title: 'Post 1',
+            user_name: "Hoang Huy Quan"
         },
         {
-          id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
-          title: 'Chao em anh dung day tuy chieu',
-          user_name: "Bui Manh Tuan"
+            id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
+            title: 'Chao em anh dung day tuy chieu',
+            user_name: "Bui Manh Tuan"
         },
         {
-          id: '58694a0f-3da1-471f-bd96-145571e29d72',
-          title: 'Anh la Quan cuto',
-          user_name: "Tung gay lo"
+            id: '58694a0f-3da1-471f-bd96-145571e29d72',
+            title: 'Anh la Quan cuto',
+            user_name: "Tung gay lo"
         },
     ];
 
@@ -36,66 +40,52 @@ export default function NewFeed_Screen(props) {
     return (
         <View style={styles.containerbackground}>
             <StatusBar
-                animated
-                backgroundColor = "#fff"
-                barStyle = "dark-content"
+                backgroundColor={theme.colors.onSurface}
+                barStyle="light-content"
             />
-            <View style={styles.Header}>
-            <SearchBar
-                round
-                // lightTheme
-                searchIcon={{ size: 26 }}
-                color="#000"
-                inputStyle={{margin: 0}}
-                inputStyle={{backgroundColor: 'white'}}
-                containerStyle={{width : '90%', height: 30, marginTop: 5, marginBottom: 5, backgroundColor: '#1E90FF'}}
-                platform="ios"
-                placeholderTextColor={'#000'}
-                placeholder={'Tìm Hương Nhu'}
-                // leftIconContainerStyle={{backgroundColor: '#1E90FF'}}
-                
-                
-
-            />
-        
-
-            <Icon name="settings" size={30} color="#FFF" style={styles.Icon}/>
+            <View style={styles.headerBar}>
+                <View style={styles.headerLeft}>
+                    <Text style={styles.title}>BaloGram</Text>
+                </View>
+                <View style={styles.headerRight}>
+                    <Ionicons name="md-search-outline" style={styles.icon} />
+                    <MaterialCommunityIcons name="plus-box-outline" style={styles.icon} />
+                </View>
             </View>
-          
-
-            
-            <View style={styles.containerGallery}>
+            <LinePartition color={theme.colors.background} />
+            <View>
                 <FlatList
                     numColumns={1}
                     horizontal={false}
                     data={DATA_demo_posts}
                     renderItem={({ item }) => (
-                        <View style={styles.Feed}>
-                        <View style={styles.Userinfo}>
-                            
-                        <Avatar
-                            size={40}
-                            rounded
-                            source={FeedImage}
-                            containerStyle={{marginLeft: 5, marginTop: 5}}
-                        />
-                        <Text style={styles.containerUserName}>{item.user_name}</Text>
-    
-                        </View>
-                        
-                        <View
-                            style={styles.containerFeed}>
-                            
-                            <Image
-                                style={styles.image}
-                                source={FeedImage}
-                            />
-                            <Text style={styles.comment}
-                                onPress={() => props.navigation.navigate('Comment', { postId: item.id, uid: item.user.uid })}>
-                                View Comments...
-                                
-                            </Text>
-                        </View>
+                        <View style={styles.containerPost}>
+                            <View style={styles.containerUser}>
+                                <Avatar
+                                    size={40}
+                                    rounded
+                                    source={FeedImage}
+                                    containerStyle={{ marginLeft: 5, marginTop: 5 }}
+                                />
+                                <Text style={styles.containerUserName}>{item.user_name}</Text>
+                            </View>
+                            <View
+                                style={styles.containerFeed}>
+                                <Image
+                                    style={styles.image}
+                                    source={FeedImage}
+                                />
+                                <View style={styles.reactIconBox}>
+                                    <MaterialCommunityIcons name="heart-outline" style={styles.reactIcon} />
+                                    <Octicons name="comment" style={styles.reactIcon} />
+                                </View>
+                                <Comment />
+                                <Text style={styles.comment}
+                                // onPress={() => props.navigation.navigate('Comment', { postId: item.id, uid: item.user.uid })}
+                                >
+                                    View Comments...
+                                </Text>
+                            </View>
                         </View>
 
                     )}
@@ -108,47 +98,48 @@ export default function NewFeed_Screen(props) {
 }
 
 const styles = StyleSheet.create({
-    containerbackground: {
-        flex: 1
+    headerBar: {
+        height: 40,
+        flexDirection: 'row',
+        alignItems: 'center',
+        backgroundColor: theme.colors.white,
+    },
+    containerPost: {
+        borderWidth: 1,
+        borderColor: theme.colors.background,
+        borderRadius: 7,
+    },
+    headerLeft: {
+        flex: 1,
+    },
+    headerRight: {
+        flex: 1,
+        justifyContent: 'flex-end',
+        flexDirection: 'row',
+    },
+    container: {
+        flex: 1,
     },
     containerInfo: {
         margin: 20
     },
-    containerGallery: {
-        flex: 1
-        
-    },
-    Header: {
-        backgroundColor: "#1E90FF",
-        flexDirection: 'row'
-    }
-    ,
-    Feed: {
-        justifyContent: 'space-between',
-        marginBottom: 10
-    },
-    Userinfo: {
+    containerUser: {
         flex: 1,
-        backgroundColor: "#fff",
-        flexDirection: 'row'
-    },
-    Icon: {
-        marginTop: 5
-        // backgroundColor: "#"
+        backgroundColor: theme.colors.white,
+        flexDirection: 'row',
     },
     containerUserName: {
         fontStyle: 'normal',
-        fontWeight: 'bold',
-        color: '#000',
+        color: theme.colors.black,
         fontSize: 18,
         marginLeft: 5,
-        marginTop: 12
+        marginTop: 12,
     },
 
     containerFeed: {
         justifyContent: 'flex-start',
         alignItems: 'flex-start',
-        backgroundColor: "#fff"
+        backgroundColor: theme.colors.white,
     },
     image: {
         // flex: 1,
@@ -160,13 +151,29 @@ const styles = StyleSheet.create({
         flex: 1,
         width: 40,
         height: 55,
-        resizeMode: 'contain'
+        resizeMode: 'contain',
     },
     comment: {
-        fontStyle: 'normal',
-        color: '#000',
+        color: theme.colors.secondary,
         fontSize: 15,
-        marginLeft: 15
+        marginLeft: 10
+    },
+    title: {
+        fontSize: 25,
+        marginLeft: 10,
+        color: theme.colors.logo
+    },
+    icon: {
+        fontSize: 25,
+        marginRight: 15
+    },
+    reactIconBox: {
+        flexDirection: 'row',
+        borderWidth: 1,
+        borderColor: 'red'
+    },
+    reactIcon: {
+        fontSize: 30,
+        margin: 10
     }
-}
-)
+})
