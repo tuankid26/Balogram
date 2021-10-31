@@ -13,8 +13,8 @@ import CamImage from '../images/came.png'
 
 
 export default function NewPostScreen({ navigation }) {
-  const [email, setEmail] = useState({ value: '', error: '' })
-  const [password, setPassword] = useState({ value: '', error: '' })
+  const [status, setEmail] = useState({ value: '', error: '' })
+ 
 
   const iconBack = () => {
     navigation.reset({
@@ -34,7 +34,7 @@ export default function NewPostScreen({ navigation }) {
       <TextInput    style={styles.status}
         placeholder="Trạng thái của bạn"
         returnKeyType="next"
-        value={email.value}
+        value={status.value}
         onChangeText={(text) => setEmail({ value: text, error: '' })}
         multiline={true}
         numberOfLines={3}
