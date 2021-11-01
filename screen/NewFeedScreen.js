@@ -4,7 +4,8 @@ import { Avatar } from 'react-native-elements';
 import { MaterialCommunityIcons, Ionicons, Octicons } from 'react-native-vector-icons';
 import FeedImage from '../images/Store_local_image/anhquan.jpg';
 import { theme } from '../components/core/theme'
-
+import {Dimensions} from 'react-native';
+const { width } = Dimensions.get('window')
 import {
     LinePartition,
     Comment
@@ -38,7 +39,7 @@ export default function NewFeedScreen(props) {
 
     }
     return (
-        <View style={styles.container}>
+        <View style={styles.containerbackground}>
             <StatusBar
                 backgroundColor={theme.colors.onSurface}
                 barStyle="light-content"
@@ -143,8 +144,8 @@ const styles = StyleSheet.create({
     },
     image: {
         flex: 1,
-        width: 400,
-        height: 550,
+        width: width*150/100,
+        height:  width*200/100,
         resizeMode: 'contain'
     },
     avatarImage: {
@@ -177,4 +178,3 @@ const styles = StyleSheet.create({
         margin: 10
     }
 })
-
