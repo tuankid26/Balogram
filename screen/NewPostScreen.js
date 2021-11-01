@@ -36,7 +36,7 @@ export default function NewPostScreen({ navigation }) {
         placeholder="Trạng thái của bạn"
         returnKeyType="next"
         value={status.value}
-        onChangeText={(text) => setEmail({ value: text, error: '' })}
+        // onChangeText={(text) => setEmail({ value: text, error: '' })}
         multiline={true}
         numberOfLines={3}
         underlineColorAndroid='transparent'
@@ -102,7 +102,7 @@ const styles = StyleSheet.create({
     borderWidth:2,
     borderStyle:"solid",
     borderColor:"#aaa",
-    TextAlign:"right",
+    // TextAlign:"right",
     
     
   },

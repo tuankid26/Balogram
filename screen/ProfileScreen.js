@@ -106,8 +106,8 @@ const styles = StyleSheet.create({
     height: 110,
     top: "65%",
     left: "36%",
-    border: 3,
-    borderRadius: "50%",
+    borderWidth: 3,
+    borderRadius: 10,
   },
   containerGallery: {
     flex: 1,
