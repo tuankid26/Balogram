@@ -4,7 +4,12 @@ import { TouchableOpacity, StyleSheet, View, Image, TextInput, TouchableHighligh
 import { Text } from 'react-native-paper'
 import { theme } from '../components/core/theme'
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
-import FeedImage from '../images/Store_local_image/anhquan.jpg'
+import anh1 from '../images/Store_local_image/anh1.jpg'
+import anh2 from '../images/Store_local_image/anh2.jpg'
+import anh3 from '../images/Store_local_image/anh3.jpg'
+import anh4 from '../images/Store_local_image/anh4.jpg'
+import anh5 from '../images/Store_local_image/anh5.jpg'
+import anh6 from '../images/Store_local_image/anh6.png'
 import CamImage from '../images/came.png'
 
 
@@ -39,18 +44,18 @@ export default function NewPostScreen({ navigation }) {
       />
       <View style={styles.image2}>
          <Image style={styles.image} source={CamImage} />
-         <Image style={styles.image} source={FeedImage} />
-         <Image style={styles.image} source={FeedImage} />
+         <Image style={styles.image} source={anh1} />
+         <Image style={styles.image} source={anh2} />
         </View>
         <View style={styles.image2}>
-         <Image style={styles.image} source={FeedImage} />
-         <Image style={styles.image} source={FeedImage} />
-         <Image style={styles.image} source={FeedImage} />
+         <Image style={styles.image} source={anh6} />
+         <Image style={styles.image} source={anh4} />
+         <Image style={styles.image} source={anh5} />
         </View>
         <View style={styles.image2}>
-         <Image style={styles.image} source={FeedImage} />
-         <Image style={styles.image} source={FeedImage} />
-         <Image style={styles.image} source={FeedImage} />
+         <Image style={styles.image} source={anh3} />
+         <Image style={styles.image} source={anh2} />
+         <Image style={styles.image} source={anh1} />
         </View>
 
     </View>
@@ -59,42 +64,44 @@ export default function NewPostScreen({ navigation }) {
 
 const styles = StyleSheet.create({
   arrowIcon: {
-    fontSize: "25px",
-     padding:"10px",
-     paddingLeft:"12px",
+    fontSize: 25,
+     padding: 10,
+     paddingLeft: 12,
      position:"absolute",
-     top:"0",width:"80%",
+     width:80,
       display:"flex",
   },
   dang: {
     color: "blue" ,
     fontFamily: "Balsamiq-Sans", 
-    fontSize: "25px", 
-    padding:"20px",
-    paddingTop:"10px",
-    position:"absolute",
-    top:"0",
-    width:"103%", 
+    fontSize: 25, 
+    padding:20,
+    paddingTop:10,
+    paddingBottom:10, 
+    position:"relative",
     display:"flex",
-    justifyContent:"flex-end"
+    justifyContent:"flex-end",
+     
   },
   tus: {
     color: "black" , 
     fontFamily: "Balsamiq-Sans", 
-    fontSize: "25px",
+    fontSize: 25,
     justifyContent:"space-between",
-    paddingTop:"17px",
+    paddingTop:17,
     textAlign:"center",
   },
   status: {
     position:"relative",
-    width:"97%",
-    marginTop:"14px",
-    marginLeft:"5px",
-    fontSize:"25px",
-    borderRadius:"6px",
-    height:"290px",
-    border:"2px solid #aaa",
+    width: 400,
+    marginTop:14,
+    marginLeft:7,
+    fontSize:25,
+    borderRadius:6,
+    height:290,
+    borderWidth:2,
+    borderStyle:"solid",
+    borderColor:"#aaa",
     TextAlign:"right",
     
     
@@ -107,8 +114,8 @@ const styles = StyleSheet.create({
     height: 125,
     flexDirection: "row",
     justifyContent:"center",
-    margin:"6px",
-    borderRadius:"7px",
+    margin:6,
+    borderRadius:7,
 },
 image2: {
     flexDirection: "row",
@@ -119,6 +126,6 @@ line: {
     borderBottomColor: 'rgb(102, 102, 102)',
     borderBottomWidth: 1,
     position:"relative",
-    paddingTop:"45px",
+   
 },
 })
