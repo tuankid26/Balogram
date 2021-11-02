@@ -143,10 +143,10 @@ const styles = StyleSheet.create({
         backgroundColor: theme.colors.white,
     },
     image: {
-        // flex: 1,
+        flex: 1,
         width: width*150/100,
-        height:  width*150/100,
-        // resizeMode: 'contain'
+        height:  width*200/100,
+        resizeMode: 'contain'
     },
     avatarImage: {
         flex: 1,
