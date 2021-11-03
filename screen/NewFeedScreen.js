@@ -44,7 +44,7 @@ export default function NewFeedScreen(props) {
 
     }
     return (
-        <View style={styles.containerbackground}>
+        <View>
             <StatusBar
                 backgroundColor={theme.colors.onSurface}
                 barStyle="light-content"
@@ -64,8 +64,8 @@ export default function NewFeedScreen(props) {
             {/* <LinePartition color={theme.colors.background} /> */}
             <View>
                 <FlatList
-                    numColumns={1}
-                    horizontal={false}
+                    // numColumns={1}
+                    // horizontal={false}
                     data={DATA_demo_posts}
                     renderItem={({ item }) => (
                         <View style={styles.containerPost}>
@@ -149,6 +149,7 @@ const styles = StyleSheet.create({
         justifyContent: 'flex-start',
         alignItems: 'flex-start',
         backgroundColor: theme.colors.white,
+        paddingTop: 4
     },
     image: {
         flex: 1,
