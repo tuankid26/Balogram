@@ -102,7 +102,7 @@ const styles = StyleSheet.create({
     borderWidth:2,
     borderStyle:"solid",
     borderColor:"#aaa",
-    TextAlign:"right",
+    textAlign:"right",
     
     
   },

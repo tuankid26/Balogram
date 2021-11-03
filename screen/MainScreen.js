@@ -13,6 +13,7 @@ const EmptyScreen = () => {
 }
 
 export default function MainScreen() {
+    
     return (
         <Tab.Navigator initialRouteName="Feed" labeled={false}
             activeColor={theme.colors.button}

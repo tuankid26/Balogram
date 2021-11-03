@@ -1,3 +1,4 @@
+import { NavigationContainer } from '@react-navigation/native'
 import React, { Component } from 'react'
 import { View, Text, Image ,TouchableOpacity } from 'react-native'
 // import Swipeout from 'react-native-swipeout'
@@ -6,11 +7,11 @@ import { StyleSheet, Dimensions } from 'react-native'
 
 const { width } = Dimensions.get('window')
 class Item_Messenger extends Component {
+
    render() {
        const {item} = this.props
 
        return (
-           <TouchableOpacity>
                <View style={styles.container}>
                    <View style={styles.bgAvatar}>
                        <Image 
@@ -29,7 +30,6 @@ class Item_Messenger extends Component {
                        />
                    </View>
                </View>
-           </TouchableOpacity>
        )
    }
 }

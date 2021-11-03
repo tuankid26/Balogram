@@ -1,71 +1,80 @@
-// import React, {useEffect, useState} from 'react';
-// import {StyleSheet, View} from 'react-native';
-// import {StreamChat} from 'stream-chat';
-// import {
-//   Channel,
-//   Chat,
-//   MessageInput,
-//   MessageList,
-//   OverlayProvider as ChatOverlayProvider,
-// } from 'stream-chat-react-native';
-// import {
-//   SafeAreaProvider,
-//   SafeAreaView,
-//   useSafeAreaInsets,
-// } from 'react-native-safe-area-context';
+import React, { useState, useCallback, useEffect, useLayoutEffect } from 'react'
+import { GiftedChat } from 'react-native-gifted-chat'
+import BackButton from '../components/BackButton'
+import { View,StyleSheet,Button,  TouchableOpacity } from 'react-native';
+import { Avatar } from 'react-native-elements';
+import { StylePropType } from 'react-native-gifted-chat/lib/utils';
+import {Icon} from 'react-native-elements'
+export default function ChatMessengerScreen({route, navigation}) {
+  const [messages, setMessages] = useState([]);
+  const {item} = route.params;
+  const onback = () => {
+    navigation.navigate("MainScreen");
+  }
+  
 
-// const userToken =
-//   'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoicm9uIn0.eRVjxLvd4aqCEHY_JRa97g6k7WpHEhxL7Z4K4yTot1c';
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerLeft: () => (
+      <View style={styles.headerLeft}>
+      <Icon name={'chevron-left'}
+      size={40}
+      onPress={onback}/>
+      <Avatar
+      rounded
+      source={item.avatar}
+      />
+      </View>
+      ),
+      headerTitle: item.name
+      ,
+    //   headerRight: () => (
+    //   <View style={{
+    //     marginTop: 0,
+    //     marginRight: 20
+    //     }}
+    //   >
+    //   <BackButton goBack={onback} />
+    //   </View>
+    // )
+    })
+    }, [navigation])
 
-// const user = {
-//   id: 'ron',
-// };
+  useEffect(() => {
+    setMessages([
+      {
+        _id: 1,
+        text: 'Hello developer',
+        createdAt: new Date(),
+        user: {
+          _id: 2,
+          name: 'React Native',
+          avatar: item.avatar,
+        },
+      },
+    ])
+  }, [])
 
-// const chatClient = StreamChat.getInstance('q95x9hkbyd6p');
-// const connectUserPromise = chatClient.connectUser(user, userToken);
+  const onSend = useCallback((messages = []) => {
+    setMessages(previousMessages => GiftedChat.append(previousMessages, messages))
+  }, [])
 
-// const channel = chatClient.channel('messaging', 'channel_id');
+  return (
+    <GiftedChat
+      showAvatarForEveryMessage={true}
+      messages={messages}
+      onSend={messages => onSend(messages)}
+      user={{
+        _id: 1,
+      }}
+    />
+  )
 
-// export default function ChannelScreen(){
-//   const {bottom} = useSafeAreaInsets();
+}
 
-//   return (
-//     <ChatOverlayProvider bottomInset={bottom} topInset={0}>
-//       <SafeAreaView>
-//         <Chat client={chatClient}>
-//           {/* Setting keyboardVerticalOffset as 0, since we don't have any header yet */}
-//           <Channel channel={channel} keyboardVerticalOffset={0}>
-//             <View style={StyleSheet.absoluteFill}>
-//               <MessageList />
-//               <MessageInput />
-//             </View>
-//           </Channel>
-//         </Chat>
-//       </SafeAreaView>
-//     </ChatOverlayProvider>
-//   );
-// };
-
-// // export default function App() {
-// //   const [ready, setReady] = useState();
-
-// //   useEffect(() => {
-// //     const initChat = async () => {
-// //       await connectUserPromise;
-// //       await channel.watch();
-// //       setReady(true);
-// //     };
-
-// //     initChat();
-// //   }, []);
-
-// //   if (!ready) {
-// //     return null;
-// //   }
-
-// //   return (
-// //     <SafeAreaProvider>
-// //       <ChannelScreen channel={channel} />
-// //     </SafeAreaProvider>
-// //   );
-// // }
+const styles = StyleSheet.create({
+  headerLeft: {
+    flexDirection: 'row'
+  }
+}
+)

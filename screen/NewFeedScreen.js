@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { StyleSheet, View, Text, Image, FlatList, StatusBar } from 'react-native'
 import { Avatar } from 'react-native-elements';
 import { MaterialCommunityIcons, Ionicons, Octicons } from 'react-native-vector-icons';
-import FeedImage from '../images/Store_local_image/anhquan.jpg';
+import FeedImage from '../images/Store_local_image/anhduong.jpg';
 import { theme } from '../components/core/theme'
 import {Dimensions} from 'react-native';
 const { width } = Dimensions.get('window')
@@ -11,6 +11,7 @@ import {
     Comment
 }
     from '../components'
+import { NavigationContainer } from '@react-navigation/native';
 
 export default function NewFeedScreen(props) {
     const DATA_demo_posts = [
@@ -31,6 +32,10 @@ export default function NewFeedScreen(props) {
         },
     ];
 
+    const onSearchPress = () => {
+        props.navigation.navigate("SearchScreen")
+    }
+
 
     const onLikePress = (userId, postId) => {
 
@@ -49,11 +54,14 @@ export default function NewFeedScreen(props) {
                     <Text style={styles.title}>BaloGram</Text>
                 </View>
                 <View style={styles.headerRight}>
-                    <Ionicons name="md-search-outline" style={styles.icon} />
-                    <MaterialCommunityIcons name="plus-box-outline" style={styles.icon} />
+                    <Ionicons name="md-search-outline" style={styles.icon} 
+                    onPress = {onSearchPress}
+                    />
+                    <MaterialCommunityIcons name="plus-box-outline" style={styles.icon}
+                    />
                 </View>
             </View>
-            <LinePartition color={theme.colors.background} />
+            {/* <LinePartition color={theme.colors.background} /> */}
             <View>
                 <FlatList
                     numColumns={1}
@@ -146,7 +154,7 @@ const styles = StyleSheet.create({
         flex: 1,
         width: width*150/100,
         height:  width*200/100,
-        resizeMode: 'contain'
+        // resizeMode: 'contain'
     },
     avatarImage: {
         flex: 1,
