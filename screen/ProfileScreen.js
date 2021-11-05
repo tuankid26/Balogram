@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { StyleSheet, View, Text, Image, FlatList, Button } from "react-native";
+import { StyleSheet, View, Text, Image, FlatList, Button, Dimensions } from "react-native";
 import { Avatar, TextInput } from "react-native-paper";
-// import { connect } from 'react-redux'
+
+const { width, height } = Dimensions.get('screen');
+const thumbMeasure = (width - 48 - 32) / 3;
 
 function Profile(props) {
   const [userPosts, setUserPosts] = useState([]);
@@ -45,13 +47,15 @@ function Profile(props) {
             uri: "https://img.nhandan.com.vn/Files/Images/2020/07/26/nhat_cay-1595747664059.jpg",
           }}
         />
-        <View style={styles.avatar}>
+        <View style={{position: 'absolute', width: width, zIndex: 5, paddingHorizontal: 20 ,top: height * 0.15}}>
+          <View style = {styles.avatar}>
           <Avatar.Image
             size={115}
             source={{
               uri: "https://cdn.nguyenkimmall.com/images/detailed/555/may-anh-cho-nguoi-moi.jpg",
             }}
           />
+          </View>
         </View>
       </View>
 
@@ -94,20 +98,17 @@ const styles = StyleSheet.create({
   },
   containerInfo: {
     margin: 20,
-    marginTop : 20
+    top: height * 0.08
   },
   background: {
     height: 150,
     position: "relative",
   },
   avatar: {
-    position: "absolute",
-    width: 110,
-    height: 110,
-    top: 65,
-    left: 36,
-    borderWidth: 3,
-    borderRadius: 10,
+    width: thumbMeasure,
+    height: thumbMeasure,
+    borderRadius: 50,
+    borderWidth: 0
   },
   containerGallery: {
     flex: 1,
