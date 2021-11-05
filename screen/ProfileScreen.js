@@ -51,13 +51,14 @@ function Profile(props) {
             source={{
               uri: "https://cdn.nguyenkimmall.com/images/detailed/555/may-anh-cho-nguoi-moi.jpg",
             }}
+            style = {{position:'absolute' }}
           />
         </View>
       </View>
 
       <View style={styles.containerInfo}>
-        <Text style={{ fontSize: 26, textAlign: "center" }}> Minh Tuấn </Text>
-        <Text style={{ color: "#2F80ED", textAlign: "center" }}>
+        <Text style={{ fontSize: 26, textAlign: "center" ,fontFamily:'montserrat-bold',fontWeight:680}}> Minh Tuấn </Text>
+        <Text style={{ color: "#2F80ED", textAlign: "center" , fontFamily:'montserrat-bold',fontWeight:160,fontSize : 15,opacity: .8,marginTop:5}}>
           {" "}
           Giới thiệu về bản thân{" "}
         </Text>
@@ -101,13 +102,8 @@ const styles = StyleSheet.create({
     position: "relative",
   },
   avatar: {
-    position: "absolute",
-    width: 110,
-    height: 110,
-    top: "65%",
-    left: "36%",
-    border: 3,
-    borderRadius: "50%",
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   containerGallery: {
     flex: 1,
