@@ -12,6 +12,8 @@ export const theme = {
     link :'#0B6DF1',
     button: '#6DA0E4',
     logo:'#125ABB',
-    white:'#fff'
+    white:'#fff',
+    black: '#000000',
+    header : '#88E0EF',
   },
 }

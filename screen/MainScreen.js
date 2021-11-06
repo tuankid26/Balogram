@@ -1,9 +1,13 @@
-import React, {Component} from 'react';
+import React from 'react';
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 import { theme } from '../components/core/theme';
 import NewFeedScreen from './NewFeedScreen';
-
+// import ChannelScreen from './ChatMessengerScreen';
+import MainMessengerScreen from './MainMessengerScreen';
+import ProfileScreen from './ProfileScreen';
+import FriendScreen from './FriendScreen';
+import AddFriendScreen from './AddFriendScreen';
 const Tab = createMaterialBottomTabNavigator();
 
 const EmptyScreen = () => {
@@ -12,7 +16,7 @@ const EmptyScreen = () => {
 
 export default function MainScreen() {
     return (
-        <Tab.Navigator initialRouteName="Feed" labeled={false}
+        <Tab.Navigator initialRouteName="Friend" labeled={false}
             activeColor={theme.colors.button}
             barStyle={{ backgroundColor: theme.colors.white }}
         >
@@ -22,11 +26,11 @@ export default function MainScreen() {
                         <MaterialCommunityIcons name="home" color={color} size={26} />
                     ),
                 }} />
-            <Tab.Screen name="AddContainer" component={EmptyScreen}
+            <Tab.Screen name="Friend" component={FriendScreen}
                 listeners={({ navigation }) => ({
                     tabPress: event => {
                         event.preventDefault();
-                        navigation.navigate("Add")
+                        navigation.navigate("Friend")
                     }
                 })}
                 options={{
@@ -34,7 +38,7 @@ export default function MainScreen() {
                         <MaterialCommunityIcons name="account-group-outline" color={color} size={26} />
                     ),
                 }} />
-            <Tab.Screen name="Messenger" component={EmptyScreen}
+            <Tab.Screen name="Messenger" component={MainMessengerScreen}
                 listeners={({ navigation }) => ({
                     tabPress: event => {
                         event.preventDefault();
@@ -58,7 +62,7 @@ export default function MainScreen() {
                         <MaterialCommunityIcons name="bell-outline" color={color} size={26} />
                     ),
                 }} />
-            <Tab.Screen name="Profile" component={EmptyScreen}
+            <Tab.Screen name="Profile" component={ProfileScreen}
                 listeners={({ navigation }) => ({
                     tabPress: event => {
                         event.preventDefault();

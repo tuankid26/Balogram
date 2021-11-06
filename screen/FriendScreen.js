@@ -1,26 +1,26 @@
 import React, { Component } from "react";
 import { View, FlatList, Text, StyleSheet, Dimensions } from "react-native";
 import { data } from "../log_data/data.js";
+import FriendActive from "../components/FriendActive.js";
 import { theme } from "../components/core/theme";
 import { MaterialCommunityIcons } from "react-native-vector-icons";
-import AcceptFriend from "../components/AcceptFriend.js";
 const { width } = Dimensions.get("window");
 
-export default function AddFriendScreen({ navigation }) {
+export default function FriendScreen({ navigation }) {
   return (
     <View style={styles.wrapper}>
       <View style={styles.header}>
-        <View style={styles.backScreen}>
+        <Text style={styles.title}>List Friend</Text>
+        <View style={styles.addFriend}>
           <MaterialCommunityIcons
-            name="arrow-left"
+            name="account-plus-outline"
             style={styles.icon}
           />
         </View>
-        <Text style={styles.title}>Yêu cầu kết bạn</Text>
       </View>
       <FlatList
         data={data}
-        renderItem={({ item }) => <AcceptFriend item={item} />}
+        renderItem={({ item }) => <FriendActive item={item} />}
         keyExtractor={(item) => item.id.toString()}
       />
     </View>
@@ -37,6 +37,11 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     backgroundColor: theme.colors.header,
   },
+  addFriend: {
+    flex: 1,
+    justifyContent: "flex-end",
+    flexDirection: "row",
+  },
   icon: {
     fontSize: 25,
     marginRight: 15,
@@ -46,6 +51,5 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     color: "black",
     padding: 20,
-    // alignSelf: "center",
   },
 });

@@ -2,12 +2,16 @@
 import React, { useState } from 'react'
 import { TouchableOpacity, StyleSheet, View } from 'react-native'
 import { Text } from 'react-native-paper'
-import Background from '../components/Background'
-import Header from '../components/Header'
-import Button from '../components/Button'
-import TextInput from '../components/TextInput'
 import { theme } from '../components/core/theme'
-import BackButton from '../components/BackButton'
+
+import {
+  Background,
+  Title,
+  TextInput,
+  Button,
+  BackButton
+}
+  from '../components'
 
 export default function RegisterScreen({ navigation }) {
   const [email, setEmail] = useState({ value: '', error: '' })
@@ -16,15 +20,15 @@ export default function RegisterScreen({ navigation }) {
   const onRegisterPressed = () => {
     navigation.reset({
       index: 0,
-      routes: [{ name: 'LoginScreen' }],
+      routes: [{ name: 'NewPostScreen' }],
     })
   }
-  const {goBack} = navigation;
-  console.log('re-render')
+
   return (
     <Background>
-      <BackButton goBack={goBack} />
-      <Header>BaloGram</Header>
+
+      <BackButton goBack={navigation.goBack} />
+      <Title>BaloGram</Title>
       <TextInput
         label="Name"
         returnKeyType="next"
@@ -36,12 +40,12 @@ export default function RegisterScreen({ navigation }) {
         returnKeyType="next"
         value={email.value}
         onChangeText={(text) => setEmail({ value: text, error: '' })}
-        // error={!!email.error}
-        // errorText={email.error}
-        // autoCapitalize="none"
-        // autoCompleteType="email"
-        // textContentType="emailAddress"
-        // keyboardType="email-address"
+      // error={!!email.error}
+      // errorText={email.error}
+      // autoCapitalize="none"
+      // autoCompleteType="email"
+      // textContentType="emailAddress"
+      // keyboardType="email-address"
       />
       <TextInput
         label="Password"
@@ -75,9 +79,9 @@ const styles = StyleSheet.create({
   },
   link: {
     fontWeight: 'bold',
-    color: theme.colors.link, 
+    color: theme.colors.link,
   },
   button: {
-      backgroundColor: theme.colors.button
+    backgroundColor: theme.colors.button
   }
 })

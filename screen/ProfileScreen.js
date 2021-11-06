@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { StyleSheet, View, Text, Image, FlatList, Button } from "react-native";
+import { StyleSheet, View, Text, Image, FlatList, Button, Dimensions } from "react-native";
 import { Avatar, TextInput } from "react-native-paper";
-// import { connect } from 'react-redux'
+
+const { width, height } = Dimensions.get('screen');
+const thumbMeasure = (width - 48 - 32) / 3;
 
 function Profile(props) {
   const [userPosts, setUserPosts] = useState([]);
@@ -45,7 +47,8 @@ function Profile(props) {
             uri: "https://img.nhandan.com.vn/Files/Images/2020/07/26/nhat_cay-1595747664059.jpg",
           }}
         />
-        <View style={styles.avatar}>
+        
+          <View style = {styles.avatar}>
           <Avatar.Image
             size={115}
             source={{
@@ -53,7 +56,8 @@ function Profile(props) {
             }}
             style = {{position:'absolute' }}
           />
-        </View>
+          </View>
+        
       </View>
 
       <View style={styles.containerInfo}>
@@ -62,14 +66,14 @@ function Profile(props) {
           {" "}
           Giới thiệu về bản thân{" "}
         </Text>
-        <View>
+        <View  style = {{flexDirection:'row'}}>
           <Avatar.Image
             size={40}
             source={{
               uri: "https://cdn.nguyenkimmall.com/images/detailed/555/may-anh-cho-nguoi-moi.jpg",
             }}
           />
-          <TextInput label="Bạn đang nghĩ gì ?" />
+          <TextInput label="Bạn đang nghĩ gì ?"  />
         </View>
       </View>
 
@@ -95,7 +99,7 @@ const styles = StyleSheet.create({
   },
   containerInfo: {
     margin: 20,
-    marginTop: "20%",
+    top: height * 0.08
   },
   background: {
     height: 150,
@@ -107,6 +111,7 @@ const styles = StyleSheet.create({
   },
   containerGallery: {
     flex: 1,
+    marginTop : 50
   },
   containerImage: {
     flex: 1 / 3,
