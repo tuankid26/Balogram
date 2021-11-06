@@ -1,11 +1,9 @@
 import React, { PureComponent, useState } from 'react';
-import {Text, View, Dimensions } from 'react-native';
+import {Text, View } from 'react-native';
 import { SearchBar, Button,ListItem, Avatar, Icon } from 'react-native-elements';
 import { StyleSheet, Image, FlatList, StatusBar } from 'react-native';
 import { theme } from '../components/core/theme';
 
-const windowWidth = Dimensions.get('window').width;
-const windowHeight = Dimensions.get('window').height;
 
 
 
@@ -16,21 +14,21 @@ export default function NotificationScreen({navigation}){
         id: 1,
         name: 'Nguyễn Hồng Hạnh',
         avatar: require('../images/avatar/Hanh.jpg'),
-        action: " đã bình luận về bài viết của bạn",
+        action: "đã bình luận về bài viết của bạn",
         datetime: "12:35, 01/11/2021"
     },
     {
         id: 2,
         name: 'Nguyễn Hương Nhu',
         avatar: require('../images/avatar/HuongNhu.jpg'),
-        action: " đã like ảnh của bạn",
+        action: "đã like ảnh của bạn",
         datetime: "01:05, 24/10/2021"
     },
     {
         id: 3,
         name: 'Nguyễn Hương Nhu',
         avatar: require('../images/avatar/HuongNhu.jpg'),
-        action: " đã bình luận về bài viết của bạn",
+        action: "đã bình luận về bài viết của bạn",
         datetime: "06:32, 02/11/2021"
     }
   ];
@@ -70,7 +68,7 @@ export default function NotificationScreen({navigation}){
 
 const styles = StyleSheet.create({
   content_comment: {
-      flexDirection: 'row'
+      // flexDirection: 'row'
   },
   content_comment_name: {
     fontWeight: 'bold'
@@ -90,13 +88,9 @@ const styles = StyleSheet.create({
   }
   ,
   container: {
-    flex: 1,
+    // flex: 1,
+    width: '100%',
     backgroundColor: '#ecf0f1',
-  },
-    avatar:{
-        width: windowWidth*15/100,
-        height: windowWidth*15/100,
-        borderRadius: windowWidth*10/100,
-    }
+  }
   
 });

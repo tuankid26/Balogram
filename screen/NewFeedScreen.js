@@ -47,7 +47,7 @@ export default function NewFeedScreen(props) {
         <View>
             <StatusBar
                 backgroundColor={theme.colors.onSurface}
-                barStyle="light-content"
+                barStyle="dark-content"
             />
             <View style={styles.headerBar}>
                 <View style={styles.headerLeft}>

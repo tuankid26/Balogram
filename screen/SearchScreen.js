@@ -1,13 +1,9 @@
 import React, { PureComponent, useState } from 'react';
-import {Text, View, Dimensions } from 'react-native';
+import {Text, View } from 'react-native';
 import { SearchBar, Button,ListItem, Avatar, Icon } from 'react-native-elements';
 import { StyleSheet, Image, FlatList, StatusBar } from 'react-native';
 import { theme } from '../components/core/theme';
 
-const windowWidth = Dimensions.get('window').width;
-const windowHeight = Dimensions.get('window').height;
-
-const profileImg ="https://reactnativemaster.com/wp-content/uploads/2019/11/React-native-master-logo-only.png"
 
 export default function SearchScreen({navigation}){
 
@@ -23,6 +19,7 @@ export default function SearchScreen({navigation}){
         avatar: require('../images/avatar/HuongNhu.jpg')
     }
   ];
+
   const updateSearch = (search) =>{
     setSearch(search);
 
@@ -39,28 +36,29 @@ export default function SearchScreen({navigation}){
 
   
     return (
-      <View>
+      <View style = {styles.outline}>
       
       <View style={styles.header}>
       <Icon name={'chevron-left'}
-      size={40}
+      size={60}
       onPress={onback} style={styles.Icon}/>
-
+      <View style={styles.SearchBar}>
       <SearchBar
       lightTheme
       round
       placeholder="Type Here..."
       onChangeText={updateSearch}
       value={search}
-      style={styles.SearchBar}
       />
       </View>
-      {/* Bạn bè view */}
+      </View>
+
+      <View>
       <View style={styles.container}>
       <Text style={styles.text}>Bạn bè</Text>
       
        <View style={styles.card}>
-        {/* <View style={styles.card}> */}
+
         {
           data.map((l, i) => (
             <ListItem key={i} bottomDivider >
@@ -72,17 +70,17 @@ export default function SearchScreen({navigation}){
             </ListItem>
           ))
         }
-      {/* </View> */}
         <Button onPress={onpress} title="Xem tất cả" />
         </View>
       </View>
+      </View>
+      <View>
 
-      {/* Add Friend View */}
-      <View style={styles.container}>
+      <View style={styles.container_2}>
       <Text style={styles.text}>Kết bạn</Text>
       
        <View style={styles.card}>
-        {/* <View style={styles.card}> */}
+
         {
           data.map((l, i) => (
             <ListItem key={i} bottomDivider >
@@ -94,9 +92,10 @@ export default function SearchScreen({navigation}){
             </ListItem>
           ))
         }
-      {/* </View> */}
+
         <Button onPress={onpress} title="Xem tất cả" />
         </View>
+      </View>
       </View>
 
 
@@ -106,60 +105,50 @@ export default function SearchScreen({navigation}){
 }
 
 const styles = StyleSheet.create({
+  outline: {
+  },
   text: {
-    paddingLeft: windowWidth*0.03,
+    paddingLeft: 10,
     fontSize: 20,
     fontWeight: 'bold'
   },
   container: {
-    flex: 1,
+    // flex: 3,
     backgroundColor: '#ecf0f1',
     padding: 4,
   },
-  card:{
-    marginTop: 10,
-    height:250,
-    width:"100%",
-    backgroundColor:"white",
-    borderRadius:15,
-    elevation:10,
-    padding:10
+  container_2: {
+    // flex: 3,
+    backgroundColor: '#ecf0f1',
+    padding: 4,
   },
-  profileImg:{
-    width:30,
-    height:30,
-    borderRadius:50,
-    marginRight:10,
-  },
-  User: {
-      flex: 1,
-      flexDirection: 'row',
-      paddingHorizontal: 10,
-      paddingVertical: 5,
-  },
-    bgAvatar: {
-        flex: 2
-    },
-    avatar:{
-        width: windowWidth*15/100,
-        height: windowWidth*15/100,
-        borderRadius: windowWidth*10/100,
-    },
-    name: {
+  name: {
         fontWeight: 'bold',
         color: 'black',
         fontSize: 16,
         paddingBottom: 3
     },
     header: {
-     
-      flexDirection: 'row'
+      flexDirection: 'row',
     },
     Icon: {
-      marginTop: 15
+      // flex: 1,
+      // width: '50%'
+      // paddingTop: 15
     },
     SearchBar: {
-      width: windowWidth*77/100
+      width: '83%'
+      // flex: 1
+    },
+    card:{
+      marginTop: 10,
+      height:250,
+      marginLeft: 6,
+      width:"97%",
+      backgroundColor:"white",
+      borderRadius:15,
+      elevation:10,
+      padding:10
     }
 
   
