@@ -14,14 +14,17 @@ export default function MainMessengerScreen({ navigation }) {
 
     const renderItem = (item) => {
         return (
-            <TouchableOpacity
-                onPress={() => {
-                    navigation.navigate("ChatMessengerScreen", { item })
-                    console.log('test')
-                }}
-            >
-                <Item_Messenger item={item} />
-            </TouchableOpacity>
+            <View>
+                <TouchableOpacity
+                    onPress={() => {
+                        navigation.navigate("ChatMessengerScreen", { item })
+                        console.log('test')
+
+                    }}
+                >
+                    <Item_Messenger item={item} />
+                </TouchableOpacity>
+            </View>
         );
     }
     return (

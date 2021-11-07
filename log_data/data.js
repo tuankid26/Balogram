@@ -58,5 +58,11 @@ export const data = [
         avatar: require('../images/avatar/10.jpg'),
         name: 'Crush số 10',
         description: 'Anh thức dậy vào mỗi buổi sáng với sự phấn khích của một đứa trẻ vào ngày Giáng sinh, chỉ để biết rằng anh vẫn ở cạnh em.'
+    },
+    {
+        id: 11,
+        avatar: require('../images/avatar/10.jpg'),
+        name: 'Crush số 11',
+        description: 'Anh thức dậy vào mỗi buổi sáng với sự phấn khích của một đứa trẻ vào ngày Giáng sinh, chỉ để biết rằng anh vẫn ở cạnh em.'
     }
  ];
