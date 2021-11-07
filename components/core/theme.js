@@ -13,7 +13,8 @@ export const theme = {
     button: '#6DA0E4',
     logo:'#125ABB',
     white:'#fff',
-    black: '#000000'
+    black: '#000000',
+    onSurface: '#fff'
 
   },
 }

@@ -102,7 +102,11 @@ const styles = StyleSheet.create({
     borderWidth:2,
     borderStyle:"solid",
     borderColor:"#aaa",
+<<<<<<< HEAD
     // TextAlign:"right",
+=======
+    textAlign:"right",
+>>>>>>> 06d5a125f9865c422a2cebfdd03535ef1cdea180
     
     
   },
