@@ -8,7 +8,9 @@ import {
     RegisterScreen,
     ForgetPasswordScreen,
     MainScreen,
-    ProfileScreen
+    ProfileScreen,
+    MainMessengerScreen,
+    ChatMessengerScreen
 } from './screen'
 import NewPostScreen from './screen/NewPostScreen';
 
@@ -30,6 +32,7 @@ export default function App() {
                     <Stack.Screen name="RegisterScreen" component={RegisterScreen} />
                     <Stack.Screen name="MainScreen" component={MainScreen} />
                     <Stack.Screen name="NewPostScreen" component={NewPostScreen} />
+                    <Stack.Screen name="ChatMessengerScreen" options={{ headerShown: true }} component={ChatMessengerScreen} />
                 </Stack.Navigator>
             </NavigationContainer>
         </Provider>

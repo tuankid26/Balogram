@@ -29,7 +29,7 @@ export default function ForgetPasswordScreen({ navigation }) {
       <BackButton goBack={navigation.goBack} />
       <Title>BaloGram</Title>
       <TextInput
-        label="Phone number"
+        label="Số điện thoại"
         returnKeyType="next"
         // value={email.value}
         onChangeText={(text) => setEmail({ value: text, error: '' })}
@@ -50,7 +50,7 @@ export default function ForgetPasswordScreen({ navigation }) {
         secureTextEntry
       /> */}
       <Button mode="contained" onPress={onRegisterPressed} style={styles.button}>
-        Submit
+      Xác nhận
       </Button>
     </Background>
   )
