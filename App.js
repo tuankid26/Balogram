@@ -24,7 +24,6 @@ export default function App() {
         <Provider theme={theme}>
             <NavigationContainer>
                 <Stack.Navigator
-<<<<<<< HEAD
                     initialRouteName="LoginScreen"
                     // screenOptions={{
                     //     headerShown: false,
@@ -36,21 +35,10 @@ export default function App() {
                     <Stack.Screen name="RegisterScreen" options={{headerShown: false}} component={RegisterScreen} />
                     <Stack.Screen name="MainScreen" options={{headerShown: false}} component={MainScreen} />
                     {/* <Stack.Screen name="ProfileScreen" component={ProfileScreen} /> */}
-=======
-                    initialRouteName="ProfileScreen"
-                    screenOptions={{
-                        headerShown: false,
-                    }}
-                >
-                    <Stack.Screen name="LoginScreen" component={LoginScreen} />
-                    <Stack.Screen name="ForgetPasswordScreen" component={ForgetPasswordScreen} />
-                    <Stack.Screen name="RegisterScreen" component={RegisterScreen} />
-                    <Stack.Screen name="MainScreen" component={MainScreen} />
-                    <Stack.Screen name="ProfileScreen" component={ProfileScreen} />
->>>>>>> 8888279cd0236993b95d62ce522bd03f3bf70809
                     {/* <Stack.Screen name="MainScreen" component={MainScreen} /> */}
                     <Stack.Screen name="NewPostScreen" options={{headerShown: false}} component={NewPostScreen} />
                     <Stack.Screen name="SearchScreen" options={{headerShown: false}} component={SearchScreen} />
+                    
                 </Stack.Navigator>
             </NavigationContainer>
         </Provider>

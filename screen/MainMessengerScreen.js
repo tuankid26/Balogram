@@ -9,6 +9,7 @@ export default function MainMessengerScreen({ navigation }) {
 
     const renderItem = (item) => {
         return (
+        <View>
           <TouchableOpacity
             onPress={() => {
             navigation.navigate("ChatMessengerScreen", {item})
@@ -18,6 +19,8 @@ export default function MainMessengerScreen({ navigation }) {
            >
                <Item_Messenger item={ item } />
                </TouchableOpacity>
+            <Text> Hello bro </Text>
+        </View>
              );
     }
     return(

@@ -13,27 +13,30 @@ import {
     from '../components'
 import { NavigationContainer } from '@react-navigation/native';
 
-export default function NewFeedScreen(props) {
+export default function NewFeedScreen({navigation}) {
+    
+
     const DATA_demo_posts = [
         {
-            id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
+            id: 1,
             title: 'Post 1',
             user_name: "Hoang Huy Quan"
         },
         {
-            id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
+            id: 2,
             title: 'Chao em anh dung day tuy chieu',
             user_name: "Bui Manh Tuan"
         },
         {
-            id: '58694a0f-3da1-471f-bd96-145571e29d72',
+            id: 3,
             title: 'Anh la Quan cuto',
             user_name: "Tung gay lo"
-        },
+        }
+
     ];
 
     const onSearchPress = () => {
-        props.navigation.navigate("SearchScreen")
+        navigation.navigate("SearchScreen")
     }
 
 
@@ -43,32 +46,10 @@ export default function NewFeedScreen(props) {
     const onDislikePress = (userId, postId) => {
 
     }
-    return (
-        <View>
-            <StatusBar
-                backgroundColor={theme.colors.onSurface}
-                barStyle="dark-content"
-            />
-            <View style={styles.headerBar}>
-                <View style={styles.headerLeft}>
-                    <Text style={styles.title}>BaloGram</Text>
-                </View>
-                <View style={styles.headerRight}>
-                    <Ionicons name="md-search-outline" style={styles.icon} 
-                    onPress = {onSearchPress}
-                    />
-                    <MaterialCommunityIcons name="plus-box-outline" style={styles.icon}
-                    />
-                </View>
-            </View>
-            {/* <LinePartition color={theme.colors.background} /> */}
-            <View>
-                <FlatList
-                    // numColumns={1}
-                    // horizontal={false}
-                    data={DATA_demo_posts}
-                    renderItem={({ item }) => (
-                        <View style={styles.containerPost}>
+
+    const renderItem = (item) => {
+        return (
+            <View style={styles.containerPost}>
                             <View style={styles.containerUser}>
                                 <Avatar
                                     size={40}
@@ -90,23 +71,50 @@ export default function NewFeedScreen(props) {
                                 </View>
                                 <Comment />
                                 <Text style={styles.comment}
-                                // onPress={() => props.navigation.navigate('Comment', { postId: item.id, uid: item.user.uid })}
                                 >
                                     View Comments...
                                 </Text>
                             </View>
-                        </View>
+            </View>
+             );
+    }
 
-                    )}
+    return (
+        <View style={styles.wrapper}>
+            <StatusBar
+                backgroundColor={theme.colors.onSurface}
+                barStyle="dark-content"
+            />
+       
+            <View style={styles.headerBar}>
+                <View style={styles.headerLeft}>
+                    <Text style={styles.title}>BaloGram</Text>
+                </View>
+                <View style={styles.headerRight}>
+                    <Ionicons name="md-search-outline" style={styles.icon} 
+                    onPress = {onSearchPress}
+                    />
+                    <MaterialCommunityIcons name="plus-box-outline" style={styles.icon}
+                    />
+                </View>
+            </View>
+                <FlatList
+                    data={DATA_demo_posts}
+                    renderItem={({ item }) => renderItem(item)}
+                keyExtractor={(item) => item.id.toString()
+                }
 
                 />
-            </View>
         </View>
 
     )
 }
 
 const styles = StyleSheet.create({
+    wrapper: {
+        flex: 1,
+        backgroundColor: 'white'
+    },
     headerBar: {
         height: 40,
         flexDirection: 'row',
