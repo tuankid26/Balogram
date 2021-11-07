@@ -10,16 +10,28 @@ import {
   Button,
 }
   from '../components'
+import axios from 'axios'
 
 export default function LoginScreen({ navigation }) {
-  const [email, setEmail] = useState({ value: '', error: '' })
+  const [phonenumber, setPhonenumber] = useState({ value: '', error: '' })
   const [password, setPassword] = useState({ value: '', error: '' })
 
   const onLoginPressed = () => {
-    navigation.reset({
-      index: 0,
-      routes: [{ name: 'MainScreen' }],
-    })
+    const data = {
+      phonenumber : phonenumber.value,
+      password : password.value
+    }
+
+    axios.post ('http://localhost:8000/api/v1/users/login',data , {headers:{"Content-Type" : "application/json"}})
+      .then (res => {
+        console.log(res);
+        if (res.statusText == 'OK' ) {
+          navigation.reset({
+            index: 0,
+            routes: [{ name: 'MainScreen' }],
+          })
+        }
+      })
   }
 
   return (
@@ -28,14 +40,14 @@ export default function LoginScreen({ navigation }) {
       <TextInput
         label="Phone number"
         returnKeyType="next"
-        value={email.value}
-        onChangeText={(text) => setEmail({ value: text, error: '' })}
-        error={!!email.error}
-        errorText={email.error}
+        value={phonenumber.value}
+        onChangeText={(text) => setPhonenumber({ value: text, error: '' })}
+        error={!!phonenumber.error}
+        errorText={phonenumber.error}
         autoCapitalize="none"
-        autoCompleteType="email"
-        textContentType="emailAddress"
-        keyboardType="email-address"
+        autoCompleteType="phonenumber"
+        textContentType="phonenumber"
+        keyboardType="phonenumber-address"
       />
       <TextInput
         label="Password"
