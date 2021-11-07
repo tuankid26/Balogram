@@ -26,7 +26,7 @@ export default function LoginScreen({ navigation }) {
     <Background>
       <Title>BaloGram</Title>
       <TextInput
-        label="Phone number"
+        label="Số điện thoại"
         returnKeyType="next"
         value={email.value}
         onChangeText={(text) => setEmail({ value: text, error: '' })}
@@ -38,7 +38,7 @@ export default function LoginScreen({ navigation }) {
         keyboardType="email-address"
       />
       <TextInput
-        label="Password"
+        label="Mật khẩu"
         returnKeyType="done"
         value={password.value}
         onChangeText={(text) => setPassword({ value: text, error: '' })}
@@ -50,16 +50,16 @@ export default function LoginScreen({ navigation }) {
         <TouchableOpacity
           onPress={() => navigation.navigate('ForgetPasswordScreen')}
         >
-          <Text style={styles.forgot}>Forgot your password?</Text>
+          <Text style={styles.forgot}>Quên mật khẩu?</Text>
         </TouchableOpacity>
       </View>
       <Button mode="contained" onPress={onLoginPressed} style={styles.button}>
-        Login
+        Đăng nhập
       </Button>
       <View style={styles.row}>
-        <Text>Don’t have an account?  </Text>
-        <TouchableOpacity onPress={() => navigation.navigate('NewPostScreen')}>
-          <Text style={styles.link}>Sign up</Text>
+        <Text>Người dùng mới? </Text>
+        <TouchableOpacity onPress={() => navigation.navigate('RegisterScreen')}>
+          <Text style={styles.link}>Đăng kí ngay</Text>
         </TouchableOpacity>
       </View>
     </Background>
