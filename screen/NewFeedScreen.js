@@ -5,8 +5,8 @@ import { MaterialCommunityIcons, Ionicons, Octicons } from 'react-native-vector-
 import FeedImage from '../images/Store_local_image/anhquan.jpg';
 import FeedImage1 from '../images/Store_local_image/anh2.jpg';
 import FeedImage2 from '../images/Store_local_image/anh3.jpg';
-import video from '../images/1.mp4'
-import Video from 'react-native-video';
+// import video from '../images/1.mp4'
+// import Video from 'react-native-video';
 import { theme } from '../components/core/theme'
 import Modal from "react-native-modal";
 const { width } = Dimensions.get('window')
