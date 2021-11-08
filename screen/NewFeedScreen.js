@@ -3,12 +3,17 @@ import { StyleSheet, View, Text, Image, FlatList, StatusBar } from 'react-native
 import { Avatar } from 'react-native-elements';
 import { MaterialCommunityIcons, Ionicons, Octicons } from 'react-native-vector-icons';
 import FeedImage from '../images/Store_local_image/anhduong.jpg';
+import FeedImage1 from '../images/Store_local_image/anh2.jpg';
+import FeedImage2 from '../images/Store_local_image/anh3.jpg';
+
 import { theme } from '../components/core/theme'
 import {Dimensions} from 'react-native';
 const { width } = Dimensions.get('window')
+
 import {
     LinePartition,
-    Comment
+    Comment,
+    Slider
 }
     from '../components'
 import { NavigationContainer } from '@react-navigation/native';
@@ -34,6 +39,11 @@ export default function NewFeedScreen({navigation}) {
         }
 
     ];
+    const images = [
+        FeedImage,
+        FeedImage1,
+        FeedImage2
+    ]
 
     const onSearchPress = () => {
         navigation.navigate("SearchScreen")
@@ -46,35 +56,45 @@ export default function NewFeedScreen({navigation}) {
     const onDislikePress = (userId, postId) => {
 
     }
+    const [isModalVisible, setModalVisible] = useState(false);
+    const [isModalReportVisible, setModalReportVisible] = useState(false);
+    const toggleModal = () => {
+        setModalVisible(!isModalVisible);
+    };
+    const toggleReportModal = () => {
+        setModalReportVisible(!isModalReportVisible);
+        setModalVisible(false)
+    }
+
 
     const renderItem = (item) => {
         return (
             <View style={styles.containerPost}>
-                            <View style={styles.containerUser}>
-                                <Avatar
-                                    size={40}
-                                    rounded
-                                    source={FeedImage}
-                                    containerStyle={{ marginLeft: 5, marginTop: 5 }}
-                                />
-                                <Text style={styles.containerUserName}>{item.user_name}</Text>
-                            </View>
-                            <View
-                                style={styles.containerFeed}>
-                                <Image
-                                    style={styles.image}
-                                    source={FeedImage}
-                                />
-                                <View style={styles.reactIconBox}>
-                                    <MaterialCommunityIcons name="heart-outline" style={styles.reactIcon} />
-                                    <Octicons name="comment" style={styles.reactIcon} />
-                                </View>
-                                <Comment />
-                                <Text style={styles.comment}
-                                >
-                                    View Comments...
-                                </Text>
-                            </View>
+                <View style={styles.containerUser}>
+                    <Avatar
+                        size={40}
+                        rounded
+                        source={FeedImage}
+                        containerStyle={{ marginLeft: 5, marginTop: 5 }}
+                    />
+                    <Text style={styles.containerUserName}>{item.user_name}</Text>
+                </View>
+                <View
+                    style={styles.containerFeed}>
+                    <Image
+                        style={styles.image}
+                        source={FeedImage}
+                    />
+                    <View style={styles.reactIconBox}>
+                        <MaterialCommunityIcons name="heart-outline" style={styles.reactIcon} />
+                        <Octicons name="comment" style={styles.reactIcon} />
+                    </View>
+                    <Comment />
+                    <Text style={styles.comment}
+                    >
+                        View Comments...
+                    </Text>
+                </View>
             </View>
              );
     }
@@ -98,6 +118,9 @@ export default function NewFeedScreen({navigation}) {
                     />
                 </View>
             </View>
+            
+            <LinePartition color={theme.colors.background} />
+
                 <FlatList
                     data={DATA_demo_posts}
                     renderItem={({ item }) => renderItem(item)}
