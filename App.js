@@ -8,8 +8,8 @@ import {
     RegisterScreen,
     ForgetPasswordScreen,
     MainScreen,
-    ProfileScreen,
     ChatMessengerScreen,
+    AddFriendScreen
     // SearchScreen
 
 } from './screen'
@@ -34,6 +34,7 @@ export default function App() {
                     <Stack.Screen name="RegisterScreen" options={{ headerShown: false }} component={RegisterScreen} />
                     <Stack.Screen name="MainScreen" options={{ headerShown: false }} component={MainScreen} />
                     <Stack.Screen name="NewPostScreen" options={{ headerShown: false }} component={NewPostScreen} />
+                    <Stack.Screen name="AddFriendScreen" options={{ headerShown: false }} component={AddFriendScreen} />
                     {/* <Stack.Screen name="SearchScreen" options={{ headerShown: false }} component={SearchScreen} /> */}
                 </Stack.Navigator>
             </NavigationContainer>
