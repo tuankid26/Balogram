@@ -17,9 +17,9 @@ export default class MyCarousel extends Component {
             entries: props.item,
             activeSlide: props.index,
             images: [
-                'https://huyhoanhotel.com/wp-content/uploads/2016/05/765-default-avatar.png',
-                'https://scontent.fhan4-1.fna.fbcdn.net/v/t1.6435-9/244520515_3096913173887080_9068290061693727736_n.jpg?_nc_cat=105&ccb=1-5&_nc_sid=730e14&_nc_ohc=pli3EOhcKDMAX-Iu9M3&tn=Zogvr7y4JkPiykhT&_nc_ht=scontent.fhan4-1.fna&oh=25716daf385d1e8753b89a118a5b3525&oe=61ABEF92',
-                'https://scontent.fhan4-1.fna.fbcdn.net/v/t1.6435-9/244520515_3096913173887080_9068290061693727736_n.jpg?_nc_cat=105&ccb=1-5&_nc_sid=730e14&_nc_ohc=pli3EOhcKDMAX-Iu9M3&tn=Zogvr7y4JkPiykhT&_nc_ht=scontent.fhan4-1.fna&oh=25716daf385d1e8753b89a118a5b3525&oe=61ABEF92'
+                img,
+                img, 
+                img
             ]
         }
     }
@@ -73,7 +73,7 @@ export default class MyCarousel extends Component {
                     renderItem={this._renderItem}
                     onSnapToItem={index => this.setState({ activeSlide: index })}
                     hasParallaxImages={true}
-                    lockScrollWhileSnapping={true}
+                    // lockScrollWhileSnapping={true}
                 />
                 {this.pagination}
             </View>

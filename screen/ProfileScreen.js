@@ -30,10 +30,10 @@ function Profile(props) {
         "https://icdn.dantri.com.vn/thumb_w/640/2019/03/06/nhiepanhgia-2-1551849137024.jpg",
     },
   ];
-  const onFollow = () => {};
-  const onUnfollow = () => {};
+  const onFollow = () => { };
+  const onUnfollow = () => { };
 
-  const onLogout = () => {};
+  const onLogout = () => { };
 
   // if (user === null) {
   //     return <View />
@@ -47,14 +47,14 @@ function Profile(props) {
             uri: "https://img.nhandan.com.vn/Files/Images/2020/07/26/nhat_cay-1595747664059.jpg",
           }}
         />
-        <View style={{position: 'absolute', width: width, zIndex: 5, paddingHorizontal: 20 ,top: height * 0.15}}>
-          <View style = {styles.avatar}>
-          <Avatar.Image
-            size={115}
-            source={{
-              uri: "https://cdn.nguyenkimmall.com/images/detailed/555/may-anh-cho-nguoi-moi.jpg",
-            }}
-          />
+        <View style={{ position: 'absolute', width: width, zIndex: 5, paddingHorizontal: 20, top: height * 0.15 }}>
+          <View style={styles.avatar}>
+            <Avatar.Image
+              size={115}
+              source={{
+                uri: "https://cdn.nguyenkimmall.com/images/detailed/555/may-anh-cho-nguoi-moi.jpg",
+              }}
+            />
           </View>
         </View>
       </View>
