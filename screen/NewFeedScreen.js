@@ -166,7 +166,7 @@ export default function NewFeedScreen({ navigation }) {
                                     <Text style={styles.numberReact}>10 lượt thích</Text>
                                     <View style={styles.reactIconBox}>
                                         <MaterialCommunityIcons name="heart-outline" style={styles.reactIcon} />
-                                        <Octicons name="comment" style={styles.reactIcon} />
+                                        <Octicons name="comment" style={styles.reactIcon} onPress={() => navigation.navigate('CommentScreen')} />
                                     </View>
                                     <Text style={styles.comment}
                                     // onPress={() => props.navigation.navigate('Comment', { postId: item.id, uid: item.user.uid })}
