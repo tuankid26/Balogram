@@ -21,7 +21,6 @@ export default function LoginScreen({ navigation }) {
       phonenumber : phonenumber.value,
       password : password.value
     }
-
     axios.post ('http://localhost:8000/api/v1/users/login',data , {headers:{"Content-Type" : "application/json"}})
       .then (res => {
         console.log(res);
@@ -30,6 +29,10 @@ export default function LoginScreen({ navigation }) {
             index: 0,
             routes: [{ name: 'MainScreen' }],
           })
+          Toast.show({
+            type: 'sucess',
+            text1: 'Đăng Nhập thành công'
+          });
         }
       })
   }
