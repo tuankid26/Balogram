@@ -74,7 +74,7 @@ export default function NewFeedScreen({ navigation }) {
                 </View>
             </View>
             {/* <LinePartition color={theme.colors.background} /> */}
-            <View>
+            <View style={{ flex: 1 }}>
                 <Modal
                     isVisible={isModalVisible}
                     animationIn='slideInUp'
@@ -183,7 +183,6 @@ export default function NewFeedScreen({ navigation }) {
 
                 />
             </View>
-            <View style={styles.footView}></View>
         </View>
 
     )
@@ -196,11 +195,6 @@ const styles = StyleSheet.create({
         left: 0,
         bottom: 0,
         right: 0,
-    },
-    footView: {
-        // height: 250,
-        borderColor: 'red',
-        borderWidth: 1
     },
     numberReact: {
         fontSize: 18

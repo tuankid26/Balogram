@@ -21,7 +21,7 @@ export default function NewPostScreen({ navigation }) {
     CamImage, anh1, anh2, anh3, anh4, anh5, anh6, anh6, anh6, anh6, anh6, anh6, anh6, anh6, anh6
   ]
   return (
-    <View>
+    <View style={{ flex: 1 }}>
       <View style={styles.headerBar}>
         <View style={styles.headerLeft}>
           <BackButton goBack={navigation.goBack} />
@@ -39,14 +39,20 @@ export default function NewPostScreen({ navigation }) {
         multiline={true}
         numberOfLines={5}
       />
-      <FlatList
-        numColumns={3}
-        // horizontal={true}
-        data={data}
-        renderItem={({ item }) => (
-          <Image style={styles.image} source={item} />)}
-      />
-    </View>
+      <View style={{ flex: 1 }}>
+        <FlatList
+          numColumns={3}
+          data={data}
+          renderItem={({ item }) => (
+            <View>
+              <Image style={styles.image} source={item} />
+            </View>
+          )
+          }
+
+        />
+      </View>
+    </View >
   )
 }
 
@@ -72,6 +78,7 @@ const styles = StyleSheet.create({
   image: {
     width: 115,
     height: 115,
+    // resizeMode: 'center',
     margin: 2,
     borderRadius: 7,
   },
@@ -86,7 +93,6 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   headerRight: {
-    flex: 1,
     justifyContent: 'flex-end',
     flexDirection: 'row',
   },
