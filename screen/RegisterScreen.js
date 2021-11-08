@@ -25,7 +25,7 @@ export default function RegisterScreen({ navigation }) {
     if (data.password.length < 6 ) {
       Toast.show({
         type: 'info',
-        text1: 'This is an info message'
+        text1: 'Mật khẩu phải lớn hơn 6 kí tự'
       });
     }
     else {
@@ -37,12 +37,20 @@ export default function RegisterScreen({ navigation }) {
             index: 0,
             routes: [{ name: 'LoginScreen' }],
           })
+          Toast.show({
+            type: 'sucess',
+            text1: 'Đăng ký thành công'
+          });
         }
       })
-    .catch (error => Toast.show({
+    .catch (error => 
+      Toast.show({
       type: 'info',
-      text1: 'This is an info message'
+      text1: 'Số điện thoại đã được đăng ký'
     }))
+    setUsername ({value:'',error : ''})
+    setPhonenumber ({value:'',error : ''})
+    setPassword ({value:'',error : ''})
   };}
 
   return (

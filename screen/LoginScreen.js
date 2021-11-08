@@ -3,6 +3,7 @@ import React, { useState } from 'react'
 import { TouchableOpacity, StyleSheet, View } from 'react-native'
 import { Text } from 'react-native-paper'
 import { theme } from '../components/core/theme'
+import Toast from 'react-native-toast-message';
 import {
   Background,
   Title,
@@ -34,6 +35,14 @@ export default function LoginScreen({ navigation }) {
             text1: 'Đăng Nhập thành công'
           });
         }
+      })
+      .catch (error => {
+        Toast.show({
+          type: 'error',
+          text1: 'Tài khoản hoặc mật khẩu không chính xác'
+        });
+        console.log(error)
+        setPassword({value: '',error : ''})
       })
   }
 
