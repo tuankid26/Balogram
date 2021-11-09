@@ -14,6 +14,7 @@ export default function RegisterScreen({ navigation }) {
   const [phonenumber, setPhonenumber] = useState("");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  
 
   const onRegisterPressed = () => {
     const data = {
@@ -42,7 +43,7 @@ export default function RegisterScreen({ navigation }) {
           })
         })
         .catch(error => {
-          console.log(error)
+          console.log(error.response.data)
           Toast.show({
             type: 'error',
             text1: 'Số điện thoại đã được đăng ký'
