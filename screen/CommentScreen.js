@@ -27,7 +27,6 @@ export default function CommentScreen({ navigation }) {
     return (
         <View style={styles.wrapper}>
             <View style={styles.header}>
-
                 <BackButton goBack={navigation.goBack} />
                 <Text style={styles.title}>Bình luận</Text>
 
@@ -50,7 +49,7 @@ export default function CommentScreen({ navigation }) {
                 </TouchableOpacity>
 
                 <TextInput style={styles.input}
-                    placeholder='comment...'
+                    placeholder='Bình luận'
                     onChangeText={(text) => setText(text)}
                     multiline={true}
                     numberOfLines={1}
@@ -76,10 +75,9 @@ const styles = StyleSheet.create({
     },
     title: {
         fontSize: 26,
-        fontWeight: 'bold',
         color: 'blue',
         padding: 20,
-        paddingLeft: 135,
+        paddingLeft: 100,
         marginBottom: 5
     },
     header: {
@@ -120,7 +118,7 @@ const styles = StyleSheet.create({
         paddingLeft: 10,
         color: '#424242',
         borderStyle: null,
-        fontSize: 26
+        fontSize: 20
     },
 }
 )

@@ -12,22 +12,22 @@ export default function NotificationScreen({ navigation }) {
     const data = [
         {
             id: 1,
-            name: 'Nguyễn Hồng Hạnh',
-            avatar: require('../images/avatar/Hanh.jpg'),
+            name: 'Crush 1',
+            avatar: require('../images/avatar/4.jpg'),
             action: "đã bình luận về bài viết của bạn",
             datetime: "12:35, 01/11/2021"
         },
         {
             id: 2,
-            name: 'Nguyễn Hương Nhu',
-            avatar: require('../images/avatar/HuongNhu.jpg'),
+            name: 'Crush 2',
+            avatar: require('../images/avatar/5.jpg'),
             action: "đã like ảnh của bạn",
             datetime: "01:05, 24/10/2021"
         },
         {
             id: 3,
-            name: 'Nguyễn Hương Nhu',
-            avatar: require('../images/avatar/HuongNhu.jpg'),
+            name: 'Crush 3',
+            avatar: require('../images/avatar/6.jpg'),
             action: "đã bình luận về bài viết của bạn",
             datetime: "06:32, 02/11/2021"
         }
@@ -40,7 +40,7 @@ export default function NotificationScreen({ navigation }) {
     return (
         <View style={styles.container}>
             <View style={styles.headerview}>
-                <Text style={styles.header}> Notifications </Text>
+                <Text style={styles.header}> Thông báo </Text>
             </View>
             {
                 data.map((l, i) => (
@@ -75,9 +75,9 @@ const styles = StyleSheet.create({
     },
     header: {
         textAlign: 'center',
-        fontWeight: 'bold',
+        // fontWeight: 'bold',
         fontSize: 30,
-        color: theme.colors.button
+        color: theme.colors.logo
     },
     headerview: {
         backgroundColor: "#fff",

@@ -18,7 +18,44 @@ export default function NewPostScreen({ navigation }) {
   const [status, setStatus] = useState("")
 
   const data = [
-    CamImage, anh1, anh2, anh3, anh4, anh5, anh6, anh6, anh6, anh6, anh6, anh6, anh6, anh6, anh6
+    {
+      image: require('../images/came.png'),
+      id : 1
+    },
+    {
+      image: require('../images/Store_local_image/anh2.jpg'),
+      id : 2
+    },
+    {
+      image: require('../images/Store_local_image/anh3.jpg'),
+      id : 3
+    },
+    {
+      image: require('../images/Store_local_image/anh4.jpg'),
+      id : 4
+    },
+    {
+      image: require('../images/Store_local_image/anh5.jpg'),
+      id : 5
+    },
+    {
+      image: require('../images/Store_local_image/anh6.png'),
+      id : 6
+    },
+    {
+      image: require('../images/Store_local_image/anh2.jpg'),
+      id : 7
+    },
+    {
+      image: require('../images/Store_local_image/anh2.jpg'),
+      id : 8
+    },
+    {
+      image: require('../images/Store_local_image/anh2.jpg'),
+      id : 9
+    }
+    
+    
   ]
   return (
     <View style={{ flex: 1 }}>
@@ -45,10 +82,12 @@ export default function NewPostScreen({ navigation }) {
           data={data}
           renderItem={({ item }) => (
             <View>
-              <Image style={styles.image} source={item} />
+              <Image style={styles.image} source={item.image} />
             </View>
           )
+         
           }
+          keyExtractor={(item) => item.id.toString()}
 
         />
       </View>

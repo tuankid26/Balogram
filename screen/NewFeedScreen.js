@@ -10,6 +10,7 @@ import FeedImage2 from '../images/Store_local_image/anh3.jpg';
 import { theme } from '../components/core/theme'
 import Modal from "react-native-modal";
 const { width } = Dimensions.get('window')
+
 import {
     LinePartition,
     Comment,
@@ -48,7 +49,6 @@ export default function NewFeedScreen({ navigation }) {
     }
     const onDislikePress = (userId, postId) => {
     }
-
     const [isModalVisible, setModalVisible] = useState(false);
     const [isModalReportVisible, setModalReportVisible] = useState(false);
     const toggleModal = () => {
@@ -58,6 +58,61 @@ export default function NewFeedScreen({ navigation }) {
         setModalReportVisible(!isModalReportVisible);
         setModalVisible(false)
     }
+    const onSearchPress = () => {
+        navigation.navigate("SearchScreen")
+    }
+
+
+    const renderItem = (item) => {
+        return (
+            <View style={styles.containerPost}>
+                <View style={styles.containerPostHeader}>
+                    <View style={styles.containerUser}>
+                        <Avatar
+                            size={40}
+                            rounded
+                            source={FeedImage}
+                            containerStyle={{ marginLeft: 5, marginTop: 5 }}
+                        />
+                        <View style={{
+                            flexDirection: 'column'
+                        }}>
+                            <Text style={styles.containerUserName}>{item.user_name}</Text>
+                            <Text style={styles.containerHour}>10 giờ trước</Text>
+                        </View>
+                    </View>
+                    <View style={styles.optionDot}>
+                        <MaterialCommunityIcons name="dots-vertical" style={styles.dotStyle} onPress={toggleModal} />
+                    </View>
+                </View>
+                <View style={styles.containerFeed}>
+                    <Text>
+                        {item.content}
+                    </Text>
+                    <View style={styles.containerImage}>
+                        <Slider item={images} index={0} />
+                        <Text></Text>
+                    </View>
+
+                    <View style={styles.containerReact}>
+                        <Text style={styles.numberReact}>10 lượt thích</Text>
+                        <View style={styles.reactIconBox}>
+                            <MaterialCommunityIcons name="heart-outline" style={styles.reactIcon} />
+                            <Octicons name="comment" style={styles.reactIcon} onPress={() => navigation.navigate('CommentScreen')} />
+                        </View>
+                        <Text style={styles.comment}
+                        // onPress={() => props.navigation.navigate('Comment', { postId: item.id, uid: item.user.uid })}
+                        >
+                            View Comments...
+                        </Text>
+                        <Comment />
+                    </View>
+                </View>
+
+            </View>
+        );
+    }
+
     return (
         <View style={{ flex: 1 }}>
             <StatusBar
@@ -69,8 +124,8 @@ export default function NewFeedScreen({ navigation }) {
                     <Text style={styles.title}>BaloGram</Text>
                 </View>
                 <View style={styles.headerRight}>
-                    <Ionicons name="md-search-outline" style={styles.icon} />
-                    <MaterialCommunityIcons name="plus-box-outline" style={styles.icon} onPress={() => navigation.navigate('NewPostScreen')} />
+                    <Ionicons name="md-search-outline" style={styles.icon} onPress={onSearchPress} />
+                    <MaterialCommunityIcons name="plus-box-outline" style={styles.icon} color='#59B7EC' onPress={() => navigation.navigate('NewPostScreen')} />
                 </View>
             </View>
             {/* <LinePartition color={theme.colors.background} /> */}
@@ -132,55 +187,8 @@ export default function NewFeedScreen({ navigation }) {
                     // numColumns={1}
                     // horizontal={false}
                     data={DATA_demo_posts}
-                    renderItem={({ item }) => (
-                        <View style={styles.containerPost}>
-                            <View style={styles.containerPostHeader}>
-                                <View style={styles.containerUser}>
-                                    <Avatar
-                                        size={40}
-                                        rounded
-                                        source={FeedImage}
-                                        containerStyle={{ marginLeft: 5, marginTop: 5 }}
-                                    />
-                                    <View style={{
-                                        flexDirection: 'column'
-                                    }}>
-                                        <Text style={styles.containerUserName}>{item.user_name}</Text>
-                                        <Text style={styles.containerHour}>10 giờ trước</Text>
-                                    </View>
-                                </View>
-                                <View style={styles.optionDot}>
-                                    <MaterialCommunityIcons name="dots-vertical" style={styles.dotStyle} onPress={toggleModal} />
-                                </View>
-                            </View>
-                            <View style={styles.containerFeed}>
-                                <Text>
-                                    {item.content}
-                                </Text>
-                                <View style={styles.containerImage}>
-                                    <Slider item={images} index={0} />
-                                    <Text></Text>
-                                </View>
-
-                                <View style={styles.containerReact}>
-                                    <Text style={styles.numberReact}>10 lượt thích</Text>
-                                    <View style={styles.reactIconBox}>
-                                        <MaterialCommunityIcons name="heart-outline" style={styles.reactIcon} />
-                                        <Octicons name="comment" style={styles.reactIcon} onPress={() => navigation.navigate('CommentScreen')} />
-                                    </View>
-                                    <Text style={styles.comment}
-                                    // onPress={() => props.navigation.navigate('Comment', { postId: item.id, uid: item.user.uid })}
-                                    >
-                                        View Comments...
-                                    </Text>
-                                    <Comment />
-                                </View>
-                            </View>
-
-                        </View>
-
-                    )}
-
+                    renderItem={({ item }) => renderItem(item)}
+                    keyExtractor={(item) => item.id.toString()}
                 />
             </View>
         </View>

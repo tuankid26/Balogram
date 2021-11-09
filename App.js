@@ -10,7 +10,9 @@ import {
     MainScreen,
     ChatMessengerScreen,
     AddFriendScreen,
-    CommentScreen
+    CommentScreen,
+    SearchScreen,
+    SettingScreen
 } from './screen'
 import NewPostScreen from './screen/NewPostScreen';
 
@@ -35,7 +37,8 @@ export default function App() {
                     <Stack.Screen name="NewPostScreen" options={{ headerShown: false }} component={NewPostScreen} />
                     <Stack.Screen name="AddFriendScreen" options={{ headerShown: false }} component={AddFriendScreen} />
                     <Stack.Screen name="CommentScreen" options={{ headerShown: false }} component={CommentScreen} />
-                    {/* <Stack.Screen name="SearchScreen" options={{ headerShown: false }} component={SearchScreen} /> */}
+                    <Stack.Screen name="SearchScreen" options={{ headerShown: false }} component={SearchScreen} />
+                    <Stack.Screen name="SettingScreen" options={{ headerShown: false }} component={SettingScreen} />
                 </Stack.Navigator>
             </NavigationContainer>
         </Provider>

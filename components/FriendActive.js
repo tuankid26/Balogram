@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { View, Text, Image, TouchableOpacity } from 'react-native'
 import { StyleSheet, Dimensions } from 'react-native'
 import { Avatar, Divider } from 'react-native-paper'
+import { MaterialCommunityIcons } from 'react-native-vector-icons';
 const { width } = Dimensions.get('window')
 class FriendActive extends Component {
     render() {
@@ -20,7 +21,9 @@ class FriendActive extends Component {
                         <Text style={styles.name}>{item.name}</Text>
                         {/* <Divider style = {{marginTop : 12}}/> */}
                     </View>
-
+                    <View>
+                        <MaterialCommunityIcons name='message-processing-outline' style={styles.icon} />
+                    </View>
                 </View>
                 <Divider style={{ margintop: 10, marginLeft: 65 }} />
             </TouchableOpacity>
@@ -28,12 +31,16 @@ class FriendActive extends Component {
     }
 }
 const styles = StyleSheet.create({
+    icon: {
+        fontSize: 30,
+        marginRight: 10
+    },
     container: {
         flex: 1,
         flexDirection: 'row',
         paddingHorizontal: 10,
         paddingVertical: 5,
-        marginTop: 8
+        marginTop: 8,
     },
     bgAvatar: {
         flex: 2

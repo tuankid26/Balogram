@@ -26,7 +26,9 @@ export default function ForgetPasswordScreen({ navigation }) {
 
   return (
     <Background>
-      <BackButton goBack={navigation.goBack} />
+      <View style={styles.buttonContainer}>
+        <BackButton goBack={navigation.goBack} />
+      </View>
       <Title>BaloGram</Title>
       <TextInput
         label="Số điện thoại"
@@ -50,7 +52,7 @@ export default function ForgetPasswordScreen({ navigation }) {
         secureTextEntry
       /> */}
       <Button mode="contained" onPress={onRegisterPressed} style={styles.button}>
-      Xác nhận
+        Xác nhận
       </Button>
     </Background>
   )
@@ -76,5 +78,11 @@ const styles = StyleSheet.create({
   },
   button: {
     backgroundColor: theme.colors.button
-  }
+  },
+  buttonContainer: {
+    alignItems: 'flex-start',
+    width: '100%',
+    marginBottom: 150,
+    marginTop: -140
+  },
 })

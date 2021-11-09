@@ -24,7 +24,7 @@ export default function MainScreen() {
             <Tab.Screen name="Feed" component={NewFeedScreen}
                 options={{
                     tabBarIcon: ({ color, size }) => (
-                        <MaterialCommunityIcons name="home" color={color} size={26} />
+                        <MaterialCommunityIcons name="home" color='#B0D8AF' size={26} />
                     ),
                 }} />
             <Tab.Screen name="Friend" component={FriendScreen}
