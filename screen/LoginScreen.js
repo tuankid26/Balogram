@@ -22,18 +22,18 @@ export default function LoginScreen({ navigation }) {
       phonenumber : phonenumber.value,
       password : password.value
     }
-    axios.post ('http://localhost:8000/api/v1/users/login',data , {headers:{"Content-Type" : "application/json"}})
+    axios.post ('http://192.168.0.102:8000/api/v1/users/login',data , {headers:{"Content-Type" : "application/json"}})
       .then (res => {
         console.log(res);
-        if (res.statusText == 'OK' ) {
+        if (res.status == '200' ) {
           navigation.reset({
             index: 0,
             routes: [{ name: 'MainScreen' }],
           })
-          Toast.show({
-            type: 'sucess',
-            text1: 'Đăng Nhập thành công'
-          });
+          // Toast.show({
+          //   type: 'sucess',
+          //   text1: 'Đăng Nhập thành công'
+          // });
         }
       })
       .catch (error => {
@@ -42,15 +42,16 @@ export default function LoginScreen({ navigation }) {
           text1: 'Tài khoản hoặc mật khẩu không chính xác'
         });
         console.log(error)
-        setPassword({value: '',error : ''})
+        // setPassword({value: '',error : ''})
       })
   }
 
   return (
     <Background>
+      
       <Title>BaloGram</Title>
       <TextInput
-        label="Phone number"
+        label="Số điện thoại"
         returnKeyType="next"
         value={phonenumber.value}
         onChangeText={(text) => setPhonenumber({ value: text, error: '' })}
@@ -59,10 +60,10 @@ export default function LoginScreen({ navigation }) {
         autoCapitalize="none"
         autoCompleteType="phonenumber"
         textContentType="phonenumber"
-        keyboardType="phonenumber-address"
+        keyboardType="phonenumber"
       />
       <TextInput
-        label="Password"
+        label="Mật khẩu"
         returnKeyType="done"
         value={password.value}
         onChangeText={(text) => setPassword({ value: text, error: '' })}
@@ -74,18 +75,19 @@ export default function LoginScreen({ navigation }) {
         <TouchableOpacity
           onPress={() => navigation.navigate('ForgetPasswordScreen')}
         >
-          <Text style={styles.forgot}>Forgot your password?</Text>
+          <Text style={styles.forgot}>Quên mật khẩu?</Text>
         </TouchableOpacity>
       </View>
       <Button mode="contained" onPress={onLoginPressed} style={styles.button}>
-        Login
+        Đăng nhập
       </Button>
       <View style={styles.row}>
-        <Text>Don’t have an account?  </Text>
+        <Text>Người dùng mới? </Text>
         <TouchableOpacity onPress={() => navigation.navigate('RegisterScreen')}>
-          <Text style={styles.link}>Sign up</Text>
+          <Text style={styles.link}>Đăng kí ngay</Text>
         </TouchableOpacity>
       </View>
+      <Toast />
     </Background>
   )
 }

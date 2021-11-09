@@ -30,10 +30,10 @@ function Profile(props) {
         "https://icdn.dantri.com.vn/thumb_w/640/2019/03/06/nhiepanhgia-2-1551849137024.jpg",
     },
   ];
-  const onFollow = () => {};
-  const onUnfollow = () => {};
+  const onFollow = () => { };
+  const onUnfollow = () => { };
 
-  const onLogout = () => {};
+  const onLogout = () => { };
 
   // if (user === null) {
   //     return <View />

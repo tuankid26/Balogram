@@ -6,8 +6,8 @@ import NewFeedScreen from './NewFeedScreen';
 // import ChannelScreen from './ChatMessengerScreen';
 import MainMessengerScreen from './MainMessengerScreen';
 import ProfileScreen from './ProfileScreen';
+import NotificationScreen from './NotificationScreen'
 import FriendScreen from './FriendScreen';
-import AddFriendScreen from './AddFriendScreen';
 const Tab = createMaterialBottomTabNavigator();
 
 const EmptyScreen = () => {
@@ -15,6 +15,7 @@ const EmptyScreen = () => {
 }
 
 export default function MainScreen() {
+
     return (
         <Tab.Navigator initialRouteName="Friend" labeled={false}
             activeColor={theme.colors.button}
@@ -50,7 +51,7 @@ export default function MainScreen() {
                         <MaterialCommunityIcons name="comment-multiple" color={color} size={26} />
                     ),
                 }} />
-            <Tab.Screen name="Notifications" component={EmptyScreen}
+            <Tab.Screen name="Notifications" component={NotificationScreen}
                 listeners={({ navigation }) => ({
                     tabPress: event => {
                         event.preventDefault();

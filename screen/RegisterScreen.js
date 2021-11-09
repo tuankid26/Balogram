@@ -58,13 +58,13 @@ export default function RegisterScreen({ navigation }) {
       <BackButton goBack={navigation.goBack} />
       <Title>BaloGram</Title>
       <TextInput
-        label="UserName"
+        label="Họ và tên"
         returnKeyType="next"
         value={username.value}
         onChangeText={(text) => setUsername({ value: text, error: "" })}
       />
       <TextInput
-        label="Phone number"
+        label="Số điện thoại"
         returnKeyType="next"
         value={phonenumber.value}
         onChangeText={(text) => setPhonenumber({ value: text, error: "" })}
@@ -76,7 +76,7 @@ export default function RegisterScreen({ navigation }) {
         // keyboardType="email-address"
       />
       <TextInput
-        label="Password"
+        label="Mật khẩu"
         returnKeyType="done"
         value={password.value}
         onChangeText={(text) => setPassword({ value: text, error: "" })}
@@ -84,12 +84,8 @@ export default function RegisterScreen({ navigation }) {
         errorText={password.error}
         secureTextEntry
       />
-      <Button
-        mode="contained"
-        onPress={onRegisterPressed}
-        style={styles.button}
-      >
-        Register
+      <Button mode="contained" onPress={onRegisterPressed} style={styles.button}>
+        Đăng kí
       </Button>
     </Background>
   );
