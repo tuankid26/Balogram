@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react'
 import { TouchableOpacity, StyleSheet, View } from 'react-native'
 import { Text } from 'react-native-paper'
@@ -11,14 +10,20 @@ import {
   Button,
 }
   from '../components'
+<<<<<<< HEAD
 import axios from 'axios'
 
+=======
+import Toast from 'react-native-toast-message';
+import { auth } from '../handle_api';
+>>>>>>> develop
 export default function LoginScreen({ navigation }) {
   const [phonenumber, setPhonenumber] = useState({ value: '', error: '' })
   const [password, setPassword] = useState({ value: '', error: '' })
 
   const onLoginPressed = () => {
     const data = {
+<<<<<<< HEAD
       phonenumber : phonenumber.value,
       password : password.value
     }
@@ -37,18 +42,45 @@ export default function LoginScreen({ navigation }) {
         }
       })
       .catch (error => {
+=======
+      phonenumber: '000123',
+      password: '123123123'
+    }
+    console.log(data.phonenumber)
+    auth.login(data.phonenumber, data.password)
+      .then(res => {
+        console.log(res);
+        Toast.show({
+          type: 'success',
+          text1: 'Đăng nhập thành công'
+        });
+        navigation.reset({
+          index: 0,
+          routes: [{ name: 'MainScreen' }],
+        })
+      })
+      .catch(error => {
+>>>>>>> develop
         Toast.show({
           type: 'error',
           text1: 'Tài khoản hoặc mật khẩu không chính xác'
         });
         console.log(error)
+<<<<<<< HEAD
         // setPassword({value: '',error : ''})
+=======
+        setPassword({ value: '', error: '' })
+>>>>>>> develop
       })
   }
 
   return (
     <Background>
+<<<<<<< HEAD
       
+=======
+      <Toast />
+>>>>>>> develop
       <Title>BaloGram</Title>
       <TextInput
         label="Số điện thoại"

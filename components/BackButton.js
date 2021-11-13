@@ -14,6 +14,7 @@ export default function BackButton({ goBack }) {
 const styles = StyleSheet.create({
   container: {
     left: 8,
+
   },
   icon: {
     fontSize: 25

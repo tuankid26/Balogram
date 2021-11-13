@@ -3,20 +3,20 @@ import { Text, View } from 'react-native';
 import { SearchBar, Button, ListItem, Avatar, Icon } from 'react-native-elements';
 import { StyleSheet, Image, FlatList, StatusBar } from 'react-native';
 import { theme } from '../components/core/theme';
-
+import { Ionicons } from 'react-native-vector-icons'
 
 export default function SearchScreen({ navigation }) {
 
     const data = [
         {
             id: 1,
-            name: 'Nguyễn Hồng Hạnh',
-            avatar: require('../images/avatar/Hanh.jpg')
+            name: 'Hà Thúy An',
+            avatar: require('../images/avatar/1.jpg')
         },
         {
             id: 2,
-            name: 'Nguyễn Hương Nhu',
-            avatar: require('../images/avatar/HuongNhu.jpg')
+            name: 'Nguyễn Anh Thi',
+            avatar: require('../images/avatar/2.jpg')
         }
     ];
 
@@ -66,7 +66,7 @@ export default function SearchScreen({ navigation }) {
                                     <ListItem.Content>
                                         <ListItem.Title>{l.name}</ListItem.Title>
                                     </ListItem.Content>
-                                    <Icon name='people' type='material' size={40} color={theme.colors.button} />
+                                    <Ionicons name='people-outline' style={styles.icon} />
                                 </ListItem>
                             ))
                         }
@@ -88,7 +88,7 @@ export default function SearchScreen({ navigation }) {
                                     <ListItem.Content>
                                         <ListItem.Title>{l.name}</ListItem.Title>
                                     </ListItem.Content>
-                                    <Icon name='person-add' type='material' size={40} color={theme.colors.button} />
+                                    <Ionicons name='md-person-add-outline' style={styles.icon} />
                                 </ListItem>
                             ))
                         }
@@ -106,6 +106,9 @@ export default function SearchScreen({ navigation }) {
 
 const styles = StyleSheet.create({
     outline: {
+    },
+    icon: {
+        fontSize: 25
     },
     text: {
         paddingLeft: 10,

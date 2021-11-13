@@ -62,7 +62,7 @@ const styles = StyleSheet.create({
     },
     title: {
         fontSize: 24,
-        fontWeight: 'bold',
+        // fontWeight: 'bold',
         color: theme.colors.logo,
         padding: 20
     },
