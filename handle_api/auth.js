@@ -1,10 +1,11 @@
 import api from './api';
 
-const login = async (phonenumber, password) => {
+const login = async (data) => {
     const loginInfo = await api({
         method: 'POST',
         url: '/users/login',
-        data: { phonenumber, password },
+        data: { "phonenumber": data.phonenumber,
+                "password": data.password },
     });
     return loginInfo;
 };
@@ -22,6 +23,10 @@ const register = async (data) => {
     });
     return registerInfo
 }
+
+const
+
+
 
 export { login, register };
 

@@ -12,18 +12,19 @@ import {
 import Toast from 'react-native-toast-message';
 import { auth } from '../handle_api';
 export default function LoginScreen({ navigation }) {
-  const [phonenumber, setPhonenumber] = useState({ value: '', error: '' })
-  const [password, setPassword] = useState({ value: '', error: '' })
+  const [phonenumber, setPhonenumber] = useState("")
+  const [password, setPassword] = useState("")
 
   const onLoginPressed = () => {
     const data = {
-      phonenumber: '000123',
-      password: '123123123'
+      phonenumber: phonenumber,
+      password: password
     }
-    console.log(data.phonenumber)
-    auth.login(data.phonenumber, data.password)
+    console.log("Test")
+    console.log(phonenumber)
+    auth.login(data)
       .then(res => {
-        console.log(res);
+        console.log(res.data);
         Toast.show({
           type: 'success',
           text1: 'Đăng nhập thành công'
@@ -38,8 +39,8 @@ export default function LoginScreen({ navigation }) {
           type: 'error',
           text1: 'Tài khoản hoặc mật khẩu không chính xác'
         });
-        console.log(error)
-        setPassword({ value: '', error: '' })
+        console.log(error.response.data)
+        // setPassword({ value: '', error: '' })
       })
   }
 
@@ -51,7 +52,7 @@ export default function LoginScreen({ navigation }) {
         label="Số điện thoại"
         returnKeyType="next"
         value={phonenumber.value}
-        onChangeText={(text) => setPhonenumber({ value: text, error: '' })}
+        onChangeText={(text) => setPhonenumber(text)}
         error={!!phonenumber.error}
         errorText={phonenumber.error}
         autoCapitalize="none"
@@ -63,7 +64,7 @@ export default function LoginScreen({ navigation }) {
         label="Mật khẩu"
         returnKeyType="done"
         value={password.value}
-        onChangeText={(text) => setPassword({ value: text, error: '' })}
+        onChangeText={(text) => setPassword(text)}
         error={!!password.error}
         errorText={password.error}
         secureTextEntry

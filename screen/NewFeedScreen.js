@@ -9,6 +9,8 @@ import FeedImage2 from '../images/Store_local_image/anh3.jpg';
 // import Video from 'react-native-video';
 import { theme } from '../components/core/theme'
 import Modal from "react-native-modal";
+import {post} from "../handle_api";
+import {token} from "../handle_api/token"
 const { width } = Dimensions.get('window')
 
 import {
@@ -19,7 +21,14 @@ import {
     from '../components'
 import { NavigationContainer } from '@react-navigation/native';
 
+
+
 export default function NewFeedScreen({ navigation }) {
+    const [datapost, setDatapost] = useState("");
+
+
+    
+
     const DATA_demo_posts = [
         {
             id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
@@ -62,6 +71,20 @@ export default function NewFeedScreen({ navigation }) {
         navigation.navigate("SearchScreen")
     }
 
+    useEffect(() => {
+    post.getListPost_newfeed(token)
+      .then(res => {
+        console.log(res.data.data.images);
+        
+        setDatapost(res.data.data);
+    })
+      .catch(error => {
+        console.log("Failed")
+        console.log(error.response.data)
+    })
+
+    });
+
 
     const renderItem = (item) => {
         return (
@@ -77,8 +100,8 @@ export default function NewFeedScreen({ navigation }) {
                         <View style={{
                             flexDirection: 'column'
                         }}>
-                            <Text style={styles.containerUserName}>{item.user_name}</Text>
-                            <Text style={styles.containerHour}>10 giờ trước</Text>
+                            <Text style={styles.containerUserName}>{item.author.username}</Text>
+                            <Text style={styles.containerHour}>{item.updatedAt}</Text>
                         </View>
                     </View>
                     <View style={styles.optionDot}>
@@ -87,7 +110,7 @@ export default function NewFeedScreen({ navigation }) {
                 </View>
                 <View style={styles.containerFeed}>
                     <Text>
-                        {item.content}
+                        {item.described}
                     </Text>
                     <View style={styles.containerImage}>
                         <Slider item={images} index={0} />
@@ -186,9 +209,9 @@ export default function NewFeedScreen({ navigation }) {
                 <FlatList
                     // numColumns={1}
                     // horizontal={false}
-                    data={DATA_demo_posts}
+                    data={datapost}
                     renderItem={({ item }) => renderItem(item)}
-                    keyExtractor={(item) => item.id.toString()}
+                    keyExtractor={(item) => item._id.toString()}
                 />
             </View>
         </View>

@@ -3,6 +3,7 @@ import { View, FlatList, Text, TouchableOpacity } from 'react-native'
 import { StyleSheet, Dimensions } from 'react-native'
 import { data } from '../log_data/data.js'
 import Item_Messenger from '../components/Item_Messenger'
+
 import {
     LinePartition,
 }
