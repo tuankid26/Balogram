@@ -24,9 +24,5 @@ const register = async (data) => {
     return registerInfo
 }
 
-const
-
-
-
 export { login, register };
 

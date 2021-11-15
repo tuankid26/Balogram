@@ -13,6 +13,12 @@ import {post} from "../handle_api";
 import {token} from "../handle_api/token"
 const { width } = Dimensions.get('window')
 
+ 
+
+
+
+
+
 import {
     LinePartition,
     Comment,
@@ -25,7 +31,10 @@ import { NavigationContainer } from '@react-navigation/native';
 
 export default function NewFeedScreen({ navigation }) {
     const [datapost, setDatapost] = useState("");
+    const [imagePath, setImagePath] = useState("");
+    
 
+    
 
     
 
@@ -68,15 +77,20 @@ export default function NewFeedScreen({ navigation }) {
         setModalVisible(false)
     }
     const onSearchPress = () => {
+        // ImgToBase64.getBase64String('../images/Store_local_image/anh3.jpg')
+        // .then(base64String => console.log(base64String))
+        // .catch(err => console.log("Errorrrr")
+        
+        // );
         navigation.navigate("SearchScreen")
     }
 
     useEffect(() => {
     post.getListPost_newfeed(token)
       .then(res => {
-        console.log(res.data.data.images);
+        // console.log(res.data.data);
         
-        setDatapost(res.data.data);
+        setDatapost(res.data.data.reverse());
     })
       .catch(error => {
         console.log("Failed")
@@ -84,9 +98,19 @@ export default function NewFeedScreen({ navigation }) {
     })
 
     });
+    const splitDateTime = (raw_date) => {
+        // 2021-11-14T17:16:51.653Z
+        const list_text = raw_date.split(":");
+        const l_date_hour = list_text[0].split("T")
+        const date = l_date_hour[0];
+        const hour_minute = l_date_hour[1] + ":" + list_text[1];
+        const new_text = date + " lúc " + hour_minute;
+        return new_text;
+    }
 
 
     const renderItem = (item) => {
+        const date_time = splitDateTime(item.updatedAt);
         return (
             <View style={styles.containerPost}>
                 <View style={styles.containerPostHeader}>
@@ -101,7 +125,9 @@ export default function NewFeedScreen({ navigation }) {
                             flexDirection: 'column'
                         }}>
                             <Text style={styles.containerUserName}>{item.author.username}</Text>
-                            <Text style={styles.containerHour}>{item.updatedAt}</Text>
+                            {/* Cái updatedAt là biến cần xử lí split
+                            nhưng giờ gọi ntn nhỉ  trong hàm return  */}
+                            <Text style={styles.containerHour}>{date_time}</Text>
                         </View>
                     </View>
                     <View style={styles.optionDot}>
@@ -209,6 +235,7 @@ export default function NewFeedScreen({ navigation }) {
                 <FlatList
                     // numColumns={1}
                     // horizontal={false}
+                    initialNumToRender={7}
                     data={datapost}
                     renderItem={({ item }) => renderItem(item)}
                     keyExtractor={(item) => item._id.toString()}
