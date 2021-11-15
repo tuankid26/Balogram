@@ -15,7 +15,7 @@ import {
     SettingScreen
 } from './screen'
 import NewPostScreen from './screen/NewPostScreen';
-import SettingScreen from './screen/SettingScreen';
+
 
 const Stack = createStackNavigator()
 

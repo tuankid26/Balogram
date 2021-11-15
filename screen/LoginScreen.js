@@ -2,7 +2,6 @@ import React, { useState } from 'react'
 import { TouchableOpacity, StyleSheet, View } from 'react-native'
 import { Text } from 'react-native-paper'
 import { theme } from '../components/core/theme'
-import Toast from 'react-native-toast-message';
 import {
   Background,
   Title,
@@ -10,39 +9,14 @@ import {
   Button,
 }
   from '../components'
-<<<<<<< HEAD
-import axios from 'axios'
-
-=======
 import Toast from 'react-native-toast-message';
 import { auth } from '../handle_api';
->>>>>>> develop
 export default function LoginScreen({ navigation }) {
   const [phonenumber, setPhonenumber] = useState({ value: '', error: '' })
   const [password, setPassword] = useState({ value: '', error: '' })
 
   const onLoginPressed = () => {
     const data = {
-<<<<<<< HEAD
-      phonenumber : phonenumber.value,
-      password : password.value
-    }
-    axios.post ('http://192.168.0.102:8000/api/v1/users/login',data , {headers:{"Content-Type" : "application/json"}})
-      .then (res => {
-        console.log(res);
-        if (res.status == '200' ) {
-          navigation.reset({
-            index: 0,
-            routes: [{ name: 'MainScreen' }],
-          })
-          // Toast.show({
-          //   type: 'sucess',
-          //   text1: 'Đăng Nhập thành công'
-          // });
-        }
-      })
-      .catch (error => {
-=======
       phonenumber: '000123',
       password: '123123123'
     }
@@ -60,27 +34,18 @@ export default function LoginScreen({ navigation }) {
         })
       })
       .catch(error => {
->>>>>>> develop
         Toast.show({
           type: 'error',
           text1: 'Tài khoản hoặc mật khẩu không chính xác'
         });
         console.log(error)
-<<<<<<< HEAD
-        // setPassword({value: '',error : ''})
-=======
         setPassword({ value: '', error: '' })
->>>>>>> develop
       })
   }
 
   return (
     <Background>
-<<<<<<< HEAD
-      
-=======
       <Toast />
->>>>>>> develop
       <Title>BaloGram</Title>
       <TextInput
         label="Số điện thoại"

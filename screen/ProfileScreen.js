@@ -57,7 +57,6 @@ function Profile({ navigation }) {
             uri: "https://img.nhandan.com.vn/Files/Images/2020/07/26/nhat_cay-1595747664059.jpg",
           }}
         />
-<<<<<<< HEAD
         
           <View style = {styles.avatar}>
           <Avatar.Image
@@ -67,23 +66,13 @@ function Profile({ navigation }) {
             }}
             style = {{position:'absolute' }}
           />
-=======
-        <View style={styles.avatarContainer}>
-          <View style={styles.avatar}>
-            <Avatar.Image
-              size={115}
-              source={{
-                uri: "https://cdn.nguyenkimmall.com/images/detailed/555/may-anh-cho-nguoi-moi.jpg",
-              }}
-            />
->>>>>>> develop
           </View>
         
       </View>
 
       <View style={styles.containerInfo}>
-        <Text style={{ fontSize: 26, textAlign: "center" ,fontFamily:'montserrat-bold',fontWeight:680}}> Minh Tuấn </Text>
-        <Text style={{ color: "#2F80ED", textAlign: "center" , fontFamily:'montserrat-bold',fontWeight:160,fontSize : 15,opacity: .8,marginTop:5}}>
+        <Text style={{ fontSize: 26, textAlign: "center" }}> Minh Tuấn </Text>
+        <Text style={{ color: "#2F80ED", textAlign: "center" ,fontSize : 15,opacity: .8,marginTop:5}}>
           {" "}
           Giới thiệu về bản thân{" "}
         </Text>
@@ -94,25 +83,7 @@ function Profile({ navigation }) {
               uri: "https://cdn.nguyenkimmall.com/images/detailed/555/may-anh-cho-nguoi-moi.jpg",
             }}
           />
-<<<<<<< HEAD
           <TextInput label="Bạn đang nghĩ gì ?"  />
-=======
-          <View>
-            <TextInput label="Bạn đang nghĩ gì ?" />
-          </View>
-        </View>
-        <View style={styles.containerGallery}>
-          <FlatList
-            numColumns={3}
-            horizontal={false}
-            data={DATA}
-            renderItem={({ item }) => (
-              <View style={styles.containerImage}>
-                <Image style={styles.image} source={{ uri: item.image }} />
-              </View>
-            )}
-          />
->>>>>>> develop
         </View>
       </View>
 
@@ -154,23 +125,12 @@ const styles = StyleSheet.create({
     marginRight: 15
   },
   avatar: {
-<<<<<<< HEAD
-=======
-    width: thumbMeasure,
-    height: thumbMeasure,
-    borderRadius: 50,
->>>>>>> develop
     justifyContent: 'center',
     alignItems: 'center',
   },
   containerGallery: {
-<<<<<<< HEAD
     flex: 1,
     marginTop : 50
-=======
-    // borderColor: 'red',
-    // borderWidth: 1
->>>>>>> develop
   },
   containerImage: {
     flex: 1 / 3,

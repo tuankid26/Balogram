@@ -3,24 +3,25 @@ import { View, Text, Image } from 'react-native'
 import { StyleSheet, Dimensions } from 'react-native'
 
 const { width } = Dimensions.get('window')
-class Item_Comment extends Component {
+const avatar = require('../images/avatar/4.jpg')
+class ItemComment extends Component {
     render() {
         const { item } = this.props
-
+        
         return (
             <View>
                 <View style={styles.container}>
 
                     <View style={styles.bgAvatar}>
                         <Image
-                            source={item.avatar}
+                            source={avatar}
                             style={styles.avatar}
                         />
                     </View>
                     <View style={styles.info}>
                         <View style={styles.inner}>
-                            <Text style={styles.name}>{item.name}</Text>
-                            <Text style={styles.commen}>{item.description}</Text>
+                            <Text style={styles.name}>{item.user.username}</Text>
+                            <Text style={styles.comment}>{item.content}</Text>
                         </View>
                     </View>
                 </View>
@@ -67,7 +68,7 @@ const styles = StyleSheet.create({
         fontSize: 22,
         paddingBottom: 3
     },
-    commen: {
+    comment: {
         color: 'black',
         fontSize: 18,
         paddingBottom: 3
@@ -84,4 +85,4 @@ const styles = StyleSheet.create({
     },
 }
 )
-export default Item_Comment;
+export default ItemComment;

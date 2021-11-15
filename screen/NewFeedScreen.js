@@ -25,19 +25,19 @@ export default function NewFeedScreen({ navigation }) {
             id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
             title: 'Post 1',
             user_name: "Hoang Huy Quan",
-            content: "alo 1234 alo 1234"
+            content: "Post 1"
         },
         {
             id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
             title: 'Chao em anh dung day tuy chieu',
             user_name: "Bui Manh Tuan",
-            content: "alo 1234 alo 1234"
+            content: "Post 2"
         },
         {
             id: '58694a0f-3da1-471f-bd96-145571e29d72',
-            title: 'Anh la Quan cuto',
+            title: 'Anh la Quan cuto', 
             user_name: "Tung gay lo",
-            content: "alo 1234 alo 1234"
+            content: "Post 3"
         },
     ];
     const images = [
