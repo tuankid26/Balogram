@@ -6,7 +6,7 @@ export default function BackButton({ goBack }) {
 
   return (
     <TouchableOpacity onPress={goBack} style={styles.container}>
-      <FontAwesome name='arrow-left' style={styles.icon}></FontAwesome>
+      <FontAwesome name='chevron-left' style={styles.icon}></FontAwesome>
     </TouchableOpacity>
   )
 }

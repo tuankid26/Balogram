@@ -50,7 +50,6 @@ export default function MainMessengerScreen({ navigation }) {
                 keyExtractor={(item) => item.id.toString()} // tránh trùng các item với nhau
             // parentFlatList={this} //để lát làm swipe left và swipe right
             />
-            {/* <Toast /> */}
         </View>
     )
 }

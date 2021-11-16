@@ -7,17 +7,22 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { StyleSheet, Dimensions } from "react-native";
-import { data2 } from "../log_data/data2.js";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
+
 import { BackButton, ItemComment } from "../components";
+import { theme } from "../components/core/theme";
 import axios from "axios";
+
 const postId = "60c452e4ae8c0f00220f462e";
 const auth =
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InR1YW5raWQyNiIsImlkIjoiNjE4N2FlNDY3YjJiYzUzMDMwNWQ4MGNlIiwiaWF0IjoxNjM2ODU1MDQ0fQ.jL4Ss_ONfRgOXmR4MrePGJ0S1cumjOewMxIlSHt9opI";
+const url = "http://192.168.0.101:8000/api/v1";
+
 export default function CommentScreen({ navigation }) {
   const [data, setData] = useState([]);
   const [getData, setGetData] = useState(false);
-  const [text,setText] = useState('')
+  const [noData, setNoData] = useState(false);
+  const [text, setText] = useState("");
 
   const onBack = () => {
     navigation.navigate("MainScreen");
@@ -25,25 +30,28 @@ export default function CommentScreen({ navigation }) {
 
   useEffect(() => {
     axios
-      .get(`http://192.168.0.101:8000/api/v1/postcomment/list/${postId}`, {
+      .get(`${url}/postcomment/list/${postId}`, {
         headers: { Authorization: `Bearer ${auth}` },
       })
       .then((res) => {
-        // console.log(res.data.data)
-        // const dataRes = res.data
         setData(res.data.data);
         if (data != null) setGetData(true);
+        data.length == 0 ? setNoData(true) : setNoData(false);
       })
       .catch((error) => console.log(error));
   });
-    // console.log(getData);
+
   const onSend = () => {
     axios
-      .post(`http://192.168.0.101:8000/api/v1/postcomment/create/${postId}`,{content: text}, {
-        headers: { Authorization: `Bearer ${auth}` },
-      })
+      .post(
+        `${url}/postcomment/create/${postId}`,
+        { content: text },
+        {
+          headers: { Authorization: `Bearer ${auth}` },
+        }
+      )
       .then((res) => {
-        if (res.status = '200') setText('')
+        if ((res.status = "200")) setText("");
       })
       .catch((error) => console.log(error));
   };
@@ -55,16 +63,18 @@ export default function CommentScreen({ navigation }) {
         <Text style={styles.title}>Bình luận</Text>
       </View>
       <View style={styles.body}>
-        {getData ? (
+        {getData && !noData ? (
           <FlatList
             // ref={"flatList"}
             data={data}
             renderItem={({ item }) => <ItemComment item={item} />}
-            keyExtractor={(item) => item.id} // tránh trùng các item với nhau
+            keyExtractor={(item) => item.id}
           />
-       
         ) : (
-          <View/>
+          <View style={styles.comment_blank}>
+            <Text style={styles.noComment}> No comments Yet </Text>
+            <Text style={styles.noCommentAdd}> Start the conversation </Text>
+          </View>
         )}
       </View>
       <View style={styles.inputForm}>
@@ -74,12 +84,12 @@ export default function CommentScreen({ navigation }) {
 
         <TextInput
           style={styles.input}
-          placeholder="Bình luận"
+          placeholder="Write a comment..."
           onChangeText={(text) => setText(text)}
           multiline={true}
           numberOfLines={1}
         />
-        <TouchableOpacity onPress = {onSend}>
+        <TouchableOpacity onPress={onSend}>
           <MaterialCommunityIcons name="send" style={styles.icon} size={30} />
         </TouchableOpacity>
       </View>
@@ -98,31 +108,49 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 26,
-    color: "blue",
+    color: theme.colors.logo,
     padding: 20,
     paddingLeft: 100,
     marginBottom: 5,
   },
   header: {
-    height: 50,
+    height: 40,
     flexDirection: "row",
     alignItems: "center",
-    borderBottomWidth: 1,
+    borderBottomWidth: 0.5,
     padding: 10,
-    marginBottom: 20,
+    marginBottom: 15,
     flex: 1,
   },
   icon: {
-    color: "blue",
-    fontSize: 40,
+    color: theme.colors.logo,
+    fontSize: 32,
     padding: 10,
   },
   icon2: {
-    color: "black",
-    fontSize: 40,
+    // color: "black",
+    fontSize: 32,
     padding: 5,
     paddingLeft: 0,
   },
+  comment_blank: {
+    alignContent: "center",
+    marginTop: 20,
+  },
+  noComment: {
+    fontFamily: "",
+    textAlign: "center",
+    fontWeight: "600",
+    fontSize: 28,
+  },
+  noCommentAdd: {
+    marginTop: 5,
+    fontFamily: "",
+    textAlign: "center",
+    fontWeight: "400",
+    color: "#787A91",
+  },
+
   inputForm: {
     flex: 1,
     flexDirection: "row",

@@ -5,8 +5,6 @@ import { MaterialCommunityIcons, Ionicons, Octicons } from 'react-native-vector-
 import FeedImage from '../images/Store_local_image/anhquan.jpg';
 import FeedImage1 from '../images/Store_local_image/anh2.jpg';
 import FeedImage2 from '../images/Store_local_image/anh3.jpg';
-// import video from '../images/1.mp4'
-// import Video from 'react-native-video';
 import { theme } from '../components/core/theme'
 import Modal from "react-native-modal";
 const { width } = Dimensions.get('window')
@@ -324,9 +322,9 @@ const styles = StyleSheet.create({
         fontWeight: 'bold'
     },
     title: {
-        fontSize: 25,
-        marginLeft: 10,
-        color: theme.colors.logo
+        fontSize: 24,
+        color: theme.colors.logo,
+        padding: 20,
     },
     icon: {
         fontSize: 25,
