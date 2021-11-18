@@ -16,7 +16,7 @@ const { width, height } = Dimensions.get("screen");
 const thumbMeasure = (width - 48 - 32) / 3;
 import { theme } from "../components/core/theme";
 
-function Profile({ navigation }) {
+export default function Profile({ navigation }) {
   const [userPosts, setUserPosts] = useState([]);
   const [user, setUser] = useState(null);
 
@@ -67,9 +67,9 @@ function Profile({ navigation }) {
         <Text style={styles.intro}> Giới thiệu về bản thân </Text>
       </View>
       <View style={styles.containerGallery}>
-        <View style={styles.containerStatus}>
-          <Text style = {styles.status}>Bạn đang nghĩ gì ? </Text>
-          <Ionicons name="images" style={styles.iconImage} />
+        <View style={styles.containerStatus} >
+          <Text style = {styles.status} onPress={() => navigation.navigate('NewPostScreen')}>Bạn đang nghĩ gì ? </Text>
+          <Ionicons name="images" style={styles.iconImage} onPress={() => navigation.navigate('NewPostScreen')}/>
         </View>
       </View>
     </View>
@@ -157,4 +157,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Profile;
+
