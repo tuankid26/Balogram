@@ -1,43 +1,29 @@
 import React, { useState, useEffect } from "react";
-import { StyleSheet, View, Text, Image, FlatList, Button, Dimensions } from "react-native";
-import { Avatar, TextInput } from "react-native-paper";
-import { MaterialCommunityIcons, Ionicons } from 'react-native-vector-icons';
-import { LinePartition } from "../components";
-const { width, height } = Dimensions.get('screen');
-const thumbMeasure = (width - 48 - 32) / 3;
 import {
-  theme
-} from "../components/core/theme";
+  StyleSheet,
+  View,
+  Text,
+  Image,
+  FlatList,
+  Button,
+  Dimensions,
+  TextInput,
+} from "react-native";
+import { Avatar } from "react-native-paper";
+import { MaterialCommunityIcons, Ionicons } from "react-native-vector-icons";
+import { LinePartition } from "../components";
+const { width, height } = Dimensions.get("screen");
+const thumbMeasure = (width - 48 - 32) / 3;
+import { theme } from "../components/core/theme";
 
-function Profile({ navigation }) {
+export default function Profile({ navigation }) {
   const [userPosts, setUserPosts] = useState([]);
   const [user, setUser] = useState(null);
-  const [following, setFollowing] = useState(false);
 
-  const DATA = [
-    {
-      id: "bd7acbea-c1b1-46c2-aed5-3ad53abb28ba",
-      title: "First Item",
-      image:
-        "https://cdn.nguyenkimmall.com/images/detailed/555/may-anh-cho-nguoi-moi.jpg",
-    },
-    {
-      id: "3ac68afc-c605-48d3-a4f8-fbd91aa97f63",
-      title: "Second Item",
-      image:
-        "https://img.nhandan.com.vn/Files/Images/2020/07/26/nhat_cay-1595747664059.jpg",
-    },
-    {
-      id: "58694a0f-3da1-471f-bd96-145571e29d72",
-      title: "Third Item",
-      image:
-        "https://icdn.dantri.com.vn/thumb_w/640/2019/03/06/nhiepanhgia-2-1551849137024.jpg",
-    },
-  ];
-  const onFollow = () => { };
-  const onUnfollow = () => { };
+  const onFollow = () => {};
+  const onUnfollow = () => {};
 
-  const onLogout = () => { };
+  const onLogout = () => {};
   return (
     <View style={styles.container}>
       <View style={styles.headerBar}>
@@ -46,7 +32,11 @@ function Profile({ navigation }) {
         </View>
         <View style={styles.headerRight}>
           <Ionicons name="md-search-outline" style={styles.icon} />
-          <Ionicons name="settings-outline" style={styles.icon} onPress={() => navigation.navigate('SettingScreen')} />
+          <Ionicons
+            name="settings-outline"
+            style={styles.icon}
+            onPress={() => navigation.navigate("SettingScreen")}
+          />
         </View>
       </View>
       <LinePartition color={theme.colors.silver} />
@@ -57,72 +47,42 @@ function Profile({ navigation }) {
             uri: "https://img.nhandan.com.vn/Files/Images/2020/07/26/nhat_cay-1595747664059.jpg",
           }}
         />
-        <View style={styles.avatarContainer}>
-          <View style={styles.avatar}>
-            <Avatar.Image
-              size={115}
-              source={{
-                uri: "https://cdn.nguyenkimmall.com/images/detailed/555/may-anh-cho-nguoi-moi.jpg",
-              }}
-            />
-          </View>
+
+        <View style={styles.avatar}>
+          <Avatar.Image
+            size={120}
+            source={{
+              uri: "https://cdn.nguyenkimmall.com/images/detailed/555/may-anh-cho-nguoi-moi.jpg",
+            }}
+            style={{ position: "absolute" }}
+          />
         </View>
       </View>
 
       <View style={styles.containerInfo}>
-        <Text style={{ fontSize: 26, textAlign: "center" }}> Minh Tuấn </Text>
-        <Text style={{ color: "#2F80ED", textAlign: "center" }}>
+        <Text style={{ fontSize: 28, textAlign: "center", fontWeight: "500" }}>
           {" "}
-          Giới thiệu về bản thân{" "}
+          Minh Tuấn{" "}
         </Text>
-        <View>
-          <Avatar.Image
-            size={40}
-            source={{
-              uri: "https://cdn.nguyenkimmall.com/images/detailed/555/may-anh-cho-nguoi-moi.jpg",
-            }}
-          />
-          <View>
-            <TextInput label="Bạn đang nghĩ gì ?" />
-          </View>
-        </View>
-        <View style={styles.containerGallery}>
-          <FlatList
-            numColumns={3}
-            horizontal={false}
-            data={DATA}
-            renderItem={({ item }) => (
-              <View style={styles.containerImage}>
-                <Image style={styles.image} source={{ uri: item.image }} />
-              </View>
-            )}
-          />
+        <Text style={styles.intro}> Giới thiệu về bản thân </Text>
+      </View>
+      <View style={styles.containerGallery}>
+        <View style={styles.containerStatus} >
+          <Text style = {styles.status} onPress={() => navigation.navigate('NewPostScreen')}>Bạn đang nghĩ gì ? </Text>
+          <Ionicons name="images" style={styles.iconImage} onPress={() => navigation.navigate('NewPostScreen')}/>
         </View>
       </View>
-
-
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  avatarContainer:
-  {
-    position: 'absolute',
-    width: width,
-    zIndex: 5,
-    paddingHorizontal: 20,
-    top: height * 0.15,
-    alignContent: 'center',
-    justifyContent: 'center',
-    alignItems: 'center'
-  },
   container: {
     flex: 1,
   },
   containerInfo: {
     margin: 20,
-    top: height * 0.08
+    top: height * 0.08,
   },
   background: {
     height: 150,
@@ -131,28 +91,34 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 25,
     marginLeft: 10,
-    color: theme.colors.logo
+    color: theme.colors.logo,
   },
   icon: {
     fontSize: 25,
-    marginRight: 15
+    marginRight: 15,
+  },
+  iconImage: {
+    fontSize: 30,
+    padding : 6,
+    color : '#2FDD92',
+    marginLeft : 15
   },
   avatar: {
-    width: thumbMeasure,
-    height: thumbMeasure,
-    borderRadius: 50,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
   },
   containerGallery: {
-    // borderColor: 'red',
-    // borderWidth: 1
+    flex: 1,
+    marginTop: 50,
+    
   },
-  containerImage: {
-    flex: 1 / 3,
-    margin: 2,
-    borderRadius: 5,
-    borderWidth: 1
+  containerStatus: {
+    flexDirection: "row",
+    backgroundColor: "white",
+    marginLeft: 20 , 
+    marginRight : 8 ,
+    height : 43 ,
+    justifyContent :'space-evenly'
   },
   image: {
     flex: 1,
@@ -160,8 +126,8 @@ const styles = StyleSheet.create({
   },
   headerBar: {
     height: 40,
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     backgroundColor: theme.colors.white,
   },
 
@@ -170,9 +136,25 @@ const styles = StyleSheet.create({
   },
   headerRight: {
     flex: 1,
-    justifyContent: 'flex-end',
-    flexDirection: 'row',
+    justifyContent: "flex-end",
+    flexDirection: "row",
+  },
+  status: {
+    marginTop: 5,
+    fontSize : 22,
+    fontWeight : '400',
+    color : '#787A91',
+    flex : 4/5,
+    borderRightWidth : 0.5 ,
+    borderRightColor : '#787A91'
+  },
+  intro: {
+    color: "#2F80ED",
+    textAlign: "center",
+    fontSize: 15,
+    opacity: 0.8,
+    marginTop: 5,
   },
 });
 
-export default Profile;
+

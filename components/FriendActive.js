@@ -55,7 +55,6 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
         paddingLeft: 5,
         justifyContent: 'center'
-
     },
     name: {
         fontWeight: 'bold',

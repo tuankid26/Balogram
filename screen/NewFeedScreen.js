@@ -5,8 +5,6 @@ import { MaterialCommunityIcons, Ionicons, Octicons } from 'react-native-vector-
 import FeedImage from '../images/Store_local_image/anhquan.jpg';
 import FeedImage1 from '../images/Store_local_image/anh2.jpg';
 import FeedImage2 from '../images/Store_local_image/anh3.jpg';
-// import video from '../images/1.mp4'
-// import Video from 'react-native-video';
 import { theme } from '../components/core/theme'
 import Modal from "react-native-modal";
 import {post} from "../handle_api";
@@ -43,19 +41,19 @@ export default function NewFeedScreen({ navigation }) {
             id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
             title: 'Post 1',
             user_name: "Hoang Huy Quan",
-            content: "alo 1234 alo 1234"
+            content: "Post 1"
         },
         {
             id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
             title: 'Chao em anh dung day tuy chieu',
             user_name: "Bui Manh Tuan",
-            content: "alo 1234 alo 1234"
+            content: "Post 2"
         },
         {
             id: '58694a0f-3da1-471f-bd96-145571e29d72',
-            title: 'Anh la Quan cuto',
+            title: 'Anh la Quan cuto', 
             user_name: "Tung gay lo",
-            content: "alo 1234 alo 1234"
+            content: "Post 3"
         },
     ];
     const images = [
@@ -374,9 +372,9 @@ const styles = StyleSheet.create({
         fontWeight: 'bold'
     },
     title: {
-        fontSize: 25,
-        marginLeft: 10,
-        color: theme.colors.logo
+        fontSize: 24,
+        color: theme.colors.logo,
+        padding: 20,
     },
     icon: {
         fontSize: 25,

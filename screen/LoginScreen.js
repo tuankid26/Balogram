@@ -56,9 +56,9 @@ export default function LoginScreen({ navigation }) {
         error={!!phonenumber.error}
         errorText={phonenumber.error}
         autoCapitalize="none"
-        autoCompleteType="email"
-        textContentType="emailAddress"
-        keyboardType="email-address"
+        autoCompleteType="phonenumber"
+        textContentType="phonenumber"
+        keyboardType="phonenumber"
       />
       <TextInput
         label="Mật khẩu"
@@ -85,6 +85,7 @@ export default function LoginScreen({ navigation }) {
           <Text style={styles.link}>Đăng kí ngay</Text>
         </TouchableOpacity>
       </View>
+      <Toast />
     </Background>
   )
 }
