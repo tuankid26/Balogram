@@ -82,7 +82,7 @@ export default function NewFeedScreen({ navigation }) {
         // .catch(err => console.log("Errorrrr")
         
         // );
-        navigation.navigate("SearchScreen")
+        navigation.navigate("MediaPicker")
     }
 
     useEffect(() => {

@@ -1,8 +1,11 @@
 import React, { Component } from 'react';
-import { Provider } from 'react-native-paper'
+import { useDispatch, useSelector, Provider } from 'react-redux';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { theme } from './components/core/theme';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
+import store from './redux/store';
+
 import {
     LoginScreen,
     RegisterScreen,
@@ -12,16 +15,25 @@ import {
     AddFriendScreen,
     CommentScreen,
     SearchScreen,
-    SettingScreen
+    SettingScreen,
+    MediaPicker
 } from './screen'
 import NewPostScreen from './screen/NewPostScreen';
 
 const Stack = createStackNavigator()
 
-
-export default function App() {
+const AppWrapper = () => {
     return (
-        <Provider theme={theme}>
+      <Provider store={store}>
+        <App/>
+      </Provider>
+    );
+}
+
+
+const App = () => {
+    return (
+    <SafeAreaProvider>
             <NavigationContainer>
                 <Stack.Navigator
                     initialRouteName="MainScreen"
@@ -39,8 +51,11 @@ export default function App() {
                     <Stack.Screen name="CommentScreen" options={{ headerShown: false }} component={CommentScreen} />
                     <Stack.Screen name="SearchScreen" options={{ headerShown: false }} component={SearchScreen} />
                     <Stack.Screen name="SettingScreen" options={{ headerShown: false }} component={SettingScreen} />
+                    <Stack.Screen name="MediaPicker" options={{ headerShown: false }} component={MediaPicker} />
                 </Stack.Navigator>
             </NavigationContainer>
-        </Provider>
+    </SafeAreaProvider>
     )
 }
+
+export default AppWrapper;
