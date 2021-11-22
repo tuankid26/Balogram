@@ -80,7 +80,7 @@ export default function NewFeedScreen({ navigation }) {
         // .catch(err => console.log("Errorrrr")
         
         // );
-        navigation.navigate("MediaPicker")
+        navigation.navigate("SearchScreen")
     }
 
     useEffect(() => {
@@ -105,6 +105,12 @@ export default function NewFeedScreen({ navigation }) {
         const new_text = date + " lúc " + hour_minute;
         return new_text;
     }
+    const onAddPost = () => {
+        navigation.navigate('NewPostScreen');
+    }
+    const onComment = () => {
+        navigation.navigate('CommentScreen');
+    }
 
 
     const renderItem = (item) => {
@@ -123,8 +129,6 @@ export default function NewFeedScreen({ navigation }) {
                             flexDirection: 'column'
                         }}>
                             <Text style={styles.containerUserName}>{item.author.username}</Text>
-                            {/* Cái updatedAt là biến cần xử lí split
-                            nhưng giờ gọi ntn nhỉ  trong hàm return  */}
                             <Text style={styles.containerHour}>{date_time}</Text>
                         </View>
                     </View>
@@ -145,7 +149,7 @@ export default function NewFeedScreen({ navigation }) {
                         <Text style={styles.numberReact}>10 lượt thích</Text>
                         <View style={styles.reactIconBox}>
                             <MaterialCommunityIcons name="heart-outline" style={styles.reactIcon} />
-                            <Octicons name="comment" style={styles.reactIcon} onPress={() => navigation.navigate('CommentScreen')} />
+                            <Octicons name="comment" style={styles.reactIcon} onPress={onComment} />
                         </View>
                         <Text style={styles.comment}
                         // onPress={() => props.navigation.navigate('Comment', { postId: item.id, uid: item.user.uid })}
@@ -172,7 +176,7 @@ export default function NewFeedScreen({ navigation }) {
                 </View>
                 <View style={styles.headerRight}>
                     <Ionicons name="md-search-outline" style={styles.icon} onPress={onSearchPress} />
-                    <MaterialCommunityIcons name="plus-box-outline" style={styles.icon} color='#59B7EC' onPress={() => navigation.navigate('NewPostScreen')} />
+                    <MaterialCommunityIcons name="plus-box-outline" style={styles.icon} color='#59B7EC' onPress={onAddPost} />
                 </View>
             </View>
             {/* <LinePartition color={theme.colors.background} /> */}

@@ -48,7 +48,7 @@ const Header = props => {
                 title='Next'
                 containerStyle={{marginRight: 20}} 
                 style={{marginRight: 20}} 
-                onPress={props.handleBack}
+                onPress={props.handleSend}
               />
             :
               <Icon 
@@ -177,7 +177,12 @@ const MediaPicker = ({ navigation }) => {
     }
 
 
-    const handleBack = () => navigation.goBack();
+    const handleBack = () =>{
+      // const listItem = useSelector();
+      // console.log(listItem);
+      dispatch(mediaActions.resetState());
+      navigation.goBack();
+    } 
 
     const handleAlbumSelected = (album) => setSelectedAlbum(album);
     
@@ -189,11 +194,18 @@ const MediaPicker = ({ navigation }) => {
       } 
     };
 
+    const handleSend = () => {
+      navigation.goBack();
+    }
+    
+
     const handleLaunchCamera = async () => {
       const result = await ImageHelper.launchCamera();
-      if (!result.cancelled) {
-        console.log(result.uri);
-      }
+      // console.log(result)
+      
+      // if (!result.cancelled) {
+      //   console.log(result.uri);
+      // }
     }
 
 
@@ -204,6 +216,7 @@ const MediaPicker = ({ navigation }) => {
           selectedAssets={selectedAssets}
           selectedAlbum={selectedAlbum} 
           handleBack={handleBack} 
+          handleSend={handleSend}
           handleAlbumSelected={handleAlbumSelected}
           handleLaunchCamera={handleLaunchCamera} 
         />

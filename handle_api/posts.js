@@ -25,11 +25,16 @@ const getListPost_newfeed = async(token) => {
 const addPost = async(data) => {
     const token = data.token;
     const described = data.described;
+    const images = data.images;
+    const videos = data.videos;
     const postInfo = await api({
         method: 'POST',
         url: '/posts/create',
         data: {
-            "described": described
+            "described": described,
+            "images": images,
+            "videos": videos
+
         },
         headers: { Authorization: `Bearer ${token}` }
     });

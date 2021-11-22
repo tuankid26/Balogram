@@ -1,15 +1,12 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { StyleSheet, View, FlatList, Image, Button, TouchableOpacity  } from 'react-native'
 import { Text } from 'react-native-paper'
 import { theme } from '../components/core/theme'
-import anh1 from '../images/Store_local_image/anh1.jpg'
-import anh2 from '../images/Store_local_image/anh2.jpg'
-import anh3 from '../images/Store_local_image/anh3.jpg'
-import anh4 from '../images/Store_local_image/anh4.jpg'
-import anh5 from '../images/Store_local_image/anh5.jpg'
-import anh6 from '../images/Store_local_image/anh6.png'
-import CamImage from '../images/came.png'
 import { Icon } from 'react-native-elements'
+import { useSelector, useDispatch } from 'react-redux';
+import { mediaActions } from '../redux/actions';
+import * as FileSystem from 'expo-file-system';
+
 
 import {
   BackButton,
@@ -22,26 +19,72 @@ import {token} from "../handle_api/token"
 export default function NewPostScreen({ navigation }) {
   const [status, setStatus] = useState("")
 
-  const upLoad = () => {
+  const selectedAssets = useSelector(state => state.media.selectedAssets);
+  const dispatch = useDispatch();
+
+  const upLoad = async () => {
+
+    const imageAssets = selectedAssets.filter(asset => asset.mediaType === 'photo');
+    const videoAssets = selectedAssets.filter(asset => asset.mediaType === 'video');
+    
+    const convertedImageAssets = await convertToBase64(imageAssets);
+    const convertedVideoAssets = await convertToBase64(videoAssets);
+    
     const data = {
       token: token,
       described: status,
-      imagePath: imagePath_url
+      images: convertedImageAssets,
+      videos: convertedVideoAssets
     }
+
     post.addPost(data)
     .then(res => {
       console.log(res.data);
-  })
-    .catch(error => {
-      console.log("Failed");
-      console.log(error.response.data);
-  })
-
-  
-  
+    })
+      .catch(error => {
+        console.log("Failed");
+        console.log(error.response.data);
+    })
+  dispatch(mediaActions.resetState());
 
   navigation.navigate("MainScreen");
+
   }
+
+
+  const convertToBase64 = async (assets) => {
+    const mimeTypes = assets.map(asset => {
+        const fileName = asset.filename;
+        const mediaType = asset.mediaType === 'photo' ? 'image' : 'video';
+        let extension = fileName.split('.')[1];
+        if (extension === 'jpg') {
+            extension = 'jpeg';
+        }
+
+        return `${mediaType}/${extension}`;
+    });
+
+    const assetPromises = assets.map(asset => FileSystem.readAsStringAsync(asset.uri, { encoding: FileSystem.EncodingType.Base64 }));
+    const convertedAssets = await Promise.all(assetPromises);
+
+    const base64Assets = convertedAssets.map((asset, idx) => formatIntoBase64String(asset, mimeTypes[idx]));
+    return base64Assets;
+}
+
+const formatIntoBase64String = (data, mediaType) => {
+    return `data:${mediaType};base64,${data}`;
+}
+
+  useEffect(() => {
+    // console.log(selectedAssets.length);
+    // console.log("Dataaaa");
+    // // for (let item of selectedAssets) {
+    // //   console.log(item.uri);
+    // // }
+    // console.log(selectedAssets[0].uri);
+
+  });
+
   const addImage = () => {
     navigation.navigate("MediaPicker");
   }
@@ -69,6 +112,22 @@ export default function NewPostScreen({ navigation }) {
         numberOfLines={5}
       />
       <Icon name="image" type="MaterialIcons" size={40} color={theme.colors.button} onPress={addImage} />
+      {/* Render Image from Gallery */}
+
+      <View style={{ flex: 1 }}>
+        <FlatList
+          numColumns={3}
+          data={selectedAssets}
+          renderItem={({ item }) => (
+              <View>
+              <TouchableOpacity>
+              <Image style={styles.image} source={{uri: item.uri}} />
+              </TouchableOpacity>
+              </View>
+          )
+        }/>
+      </View>
+        
     </View >
   )
 }
