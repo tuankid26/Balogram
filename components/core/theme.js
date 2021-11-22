@@ -14,6 +14,7 @@ export const theme = {
     logo:'#125ABB',
     white:'#fff',
     black: '#000000',
+    header : '#88E0EF',
     silver:'#CDCDCD'
   },
 }

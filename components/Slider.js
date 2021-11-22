@@ -1,4 +1,4 @@
-import Carousel, { Pagination } from 'react-native-snap-carousel';
+// import Carousel, { Pagination } from 'react-native-snap-carousel';
 import React, { Component } from 'react';
 import { Dimensions, Text, Image, StyleSheet } from 'react-native';
 import {
@@ -37,24 +37,24 @@ export default class MyCarousel extends Component {
         )
     }
 
-    get pagination() {
-        const { entries, activeSlide } = this.state;
-        return (
-            <Pagination
-                dotsLength={entries.length}
-                activeDotIndex={activeSlide}
-                dotStyle={{
-                    backgroundColor: theme.colors.black
-                }}
-                containerStyle={{
-                    paddingTop: 10,
-                    paddingBottom: 0,
-                }}
-                inactiveDotOpacity={0.4}
-                inactiveDotScale={0.6}
-            />
-        );
-    }
+    // get pagination() {
+    //     const { entries, activeSlide } = this.state;
+    //     return (
+    //         <Pagination
+    //             dotsLength={entries.length}
+    //             activeDotIndex={activeSlide}
+    //             dotStyle={{
+    //                 backgroundColor: theme.colors.black
+    //             }}
+    //             containerStyle={{
+    //                 paddingTop: 10,
+    //                 paddingBottom: 0,
+    //             }}
+    //             inactiveDotOpacity={0.4}
+    //             inactiveDotScale={0.6}
+    //         />
+    //     );
+    // }
 
     render() {
         const sliderWidth = Dimensions.get('window').width;
@@ -62,7 +62,7 @@ export default class MyCarousel extends Component {
 
         return (
             <View>
-                <Carousel
+                {/* <Carousel
                     layout='tinder'
                     sliderWidth={screenWidth}
                     sliderHeight={screenWidth}
@@ -70,9 +70,10 @@ export default class MyCarousel extends Component {
                     data={this.state.images}
                     renderItem={this._renderItem}
                     onSnapToItem={index => this.setState({ activeSlide: index })}
-                    lockScrollWhileSnapping={true}
-                />
-                {this.pagination}
+                    hasParallaxImages={true}
+                    // lockScrollWhileSnapping={true}
+                /> */}
+                {/* {this.pagination} */}
             </View>
         );
 

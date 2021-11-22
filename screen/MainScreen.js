@@ -17,7 +17,7 @@ const EmptyScreen = () => {
 export default function MainScreen() {
 
     return (
-        <Tab.Navigator initialRouteName="Feed" labeled={false}
+        <Tab.Navigator initialRouteName="Profile" labeled={false}
             activeColor={theme.colors.button}
             barStyle={{ backgroundColor: theme.colors.white }}
         >

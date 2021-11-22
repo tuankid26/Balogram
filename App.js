@@ -20,6 +20,7 @@ import {
 } from './screen'
 import NewPostScreen from './screen/NewPostScreen';
 
+
 const Stack = createStackNavigator()
 
 const AppWrapper = () => {
