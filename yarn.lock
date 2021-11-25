@@ -3130,6 +3130,19 @@
     "expo-modules-core" "~0.2.0"
     "fontfaceobserver" "^2.1.0"
 
+"expo-image-loader@~3.0.0":
+  "integrity" "sha512-r4D+uLCf5vm5A2JIbF1Bc9FjYKrYGSLShbFB1MUvZ4BpSXJPRsprYZ9veUBVzzhh8hr23ahTFjMzp3nC57iREw=="
+  "resolved" "https://registry.npmjs.org/expo-image-loader/-/expo-image-loader-3.0.0.tgz"
+  "version" "3.0.0"
+
+"expo-image-manipulator@^10.1.2":
+  "integrity" "sha512-biMGVL7kzCVFIUpNVVf8FHcPzKPHK8RPooe8R9mjBIPV+FimVF6mIBdtTGe9Fw7iFm+jyRJONG2lZOrdBEUk+A=="
+  "resolved" "https://registry.npmjs.org/expo-image-manipulator/-/expo-image-manipulator-10.1.2.tgz"
+  "version" "10.1.2"
+  dependencies:
+    "expo-image-loader" "~3.0.0"
+    "expo-modules-core" "~0.4.4"
+
 "expo-image-picker@^11.0.3":
   "integrity" "sha512-s7nXB+hop5htcETlSvtPhEGE6RM4BX0G2e6mhr2SjJdJPAFn+hY7R3vCGBFMtxV11Gjzr0D1w2y9gDqhOj0GKg=="
   "resolved" "https://registry.npmjs.org/expo-image-picker/-/expo-image-picker-11.0.3.tgz"
@@ -5612,6 +5625,11 @@
   "resolved" "https://registry.npmjs.org/react-native-image-base64/-/react-native-image-base64-0.1.4.tgz"
   "version" "0.1.4"
 
+"react-native-image-resizer@^1.4.5", "react-native-image-resizer@>=1.4.2":
+  "integrity" "sha512-33EgL3C9pyvjKpullAB6fWyD5QhoYEpNNB9rxNvUsrpAnL2mHBW7PTrUCCZudJeB6Weg7nbweKrSw1nnto5aqg=="
+  "resolved" "https://registry.npmjs.org/react-native-image-resizer/-/react-native-image-resizer-1.4.5.tgz"
+  "version" "1.4.5"
+
 "react-native-image-slider-box@^1.1.9":
   "integrity" "sha512-suxW9oxq1V3Otpf1d0cTw1Xf5SMpVTVEqTC152QurgB94341KMm4RsOUJkaxckEtYk/M9kONZUYby7UqVY40rg=="
   "resolved" "https://registry.npmjs.org/react-native-image-slider-box/-/react-native-image-slider-box-1.1.9.tgz"
@@ -5807,7 +5825,7 @@
     "normalize-css-color" "^1.0.2"
     "prop-types" "^15.6.0"
 
-"react-native@*", "react-native@>=0.40", "react-native@>=0.42.0", "react-native@>=0.57", "react-native@>=0.60.0", "react-native@>=0.62.0-rc.0 <0.64.0", "react-native@>=0.64.2", "react-native@>=0.65.0", "react-native@https://github.com/expo/react-native/archive/sdk-42.0.0.tar.gz":
+"react-native@*", "react-native@>=0.40", "react-native@>=0.42.0", "react-native@>=0.57", "react-native@>=0.60.0", "react-native@>=0.62.0-rc.0 <0.64.0", "react-native@>=0.64.2", "react-native@>=0.65.0", "react-native@>=v0.40.0", "react-native@https://github.com/expo/react-native/archive/sdk-42.0.0.tar.gz":
   "integrity" "sha512-qWR6pcG4yDu/Rthm+DvAS017rL38LbZFnJv/k4HL4ZUH/WhKuqC+stD7TlpaOBb3N2bkydm9s+GCa14T41MLEg=="
   "resolved" "https://github.com/expo/react-native/archive/sdk-42.0.0.tar.gz"
   "version" "0.63.2"

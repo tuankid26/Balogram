@@ -1,6 +1,8 @@
 import * as MediaLibrary from 'expo-media-library';
 import * as Permissions from 'expo-permissions';
 import * as ImagePicker from 'expo-image-picker';
+import {Image} from 'react-native';
+import * as ImageManipulator from 'expo-image-manipulator';
 
 /**
  * Queries for user-created albums in media gallery
@@ -78,5 +80,13 @@ const askMediaLibraryPermission = async () => {
     
     return granted;
 }
-
-export  { askMediaLibraryPermission, getAlbumList, getAlbum, getAssetsInAlbum, launchCamera };
+const resizeImage = async (image) => {
+    // console.log(image);
+    const manipResult = await ImageManipulator.manipulateAsync(
+        image.uri,
+      [{ resize: { width: 480} }],
+      { compress: 0.7, format: ImageManipulator.SaveFormat.JPEG }
+    ); 
+    return manipResult;
+}
+export  { askMediaLibraryPermission, getAlbumList, getAlbum, getAssetsInAlbum, launchCamera, resizeImage };

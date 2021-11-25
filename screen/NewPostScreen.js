@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { StyleSheet, View, FlatList, Image, Button, TouchableOpacity  } from 'react-native'
+import { StyleSheet, View, FlatList, Image, Button, TouchableOpacity, ImageBackground  } from 'react-native'
 import { Text } from 'react-native-paper'
 import { theme } from '../components/core/theme'
 import { Icon } from 'react-native-elements'
@@ -40,6 +40,7 @@ export default function NewPostScreen({ navigation }) {
     post.addPost(data)
     .then(res => {
       console.log(res.data);
+      // console.log(data.images)
     })
       .catch(error => {
         console.log("Failed");
@@ -88,6 +89,9 @@ const formatIntoBase64String = (data, mediaType) => {
   const addImage = () => {
     navigation.navigate("MediaPicker");
   }
+  const handleRemoveAsset = (asset) => {
+    dispatch(mediaActions.removeAsset(asset));
+  }
 
   return (
     <View style={{ flex: 1 }}>
@@ -120,9 +124,21 @@ const formatIntoBase64String = (data, mediaType) => {
           data={selectedAssets}
           renderItem={({ item }) => (
               <View>
-              <TouchableOpacity>
+              {/* <TouchableOpacity>
               <Image style={styles.image} source={{uri: item.uri}} />
-              </TouchableOpacity>
+              </TouchableOpacity> */}
+              <ImageBackground 
+                source={{uri: item.uri}}
+                style={styles.image}
+              >
+                <Icon 
+                    name='close' 
+                    type='ant-design' 
+                    size={16} 
+                    iconStyle={styles.removeIcon}
+                    onPress={() => handleRemoveAsset(item)}
+                />
+              </ImageBackground>
               </View>
           )
         }/>
@@ -173,5 +189,10 @@ const styles = StyleSheet.create({
     // justifyContent: 'flex-end',
     // flexDirection: 'row',
     marginRight: 10
+  },
+  removeIcon: {
+    backgroundColor: '#fff', 
+    borderRadius: 10, 
+    alignSelf: 'flex-end'
   },
 })

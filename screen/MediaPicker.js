@@ -186,7 +186,10 @@ const MediaPicker = ({ navigation }) => {
 
     const handleAlbumSelected = (album) => setSelectedAlbum(album);
     
-    const handleItemSelected = (item) => {
+    const handleItemSelected = async (item) => {
+      const result = await ImageHelper.resizeImage(item);
+      item.uri = result.uri;
+      console.log(item);
       if (selectedAssets.indexOf(item) >= 0) {
         dispatch(mediaActions.removeAsset(item))
       } else {

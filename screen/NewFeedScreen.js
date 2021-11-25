@@ -1,5 +1,7 @@
-import React, { useState, useEffect, version } from 'react'
-import { StyleSheet, View, Text, Image, FlatList, StatusBar, Dimensions, Button, Pressable } from 'react-native'
+import React, { useState, useEffect, version, useCallback } from 'react'
+import { StyleSheet, View, Text, Image,
+     FlatList, StatusBar, Dimensions,
+    Button, Pressable, RefreshControl} from 'react-native'
 import { Avatar } from 'react-native-elements';
 import { MaterialCommunityIcons, Ionicons, Octicons } from 'react-native-vector-icons';
 import FeedImage from '../images/Store_local_image/anhquan.jpg';
@@ -11,8 +13,9 @@ import {post} from "../handle_api";
 import {token} from "../handle_api/token"
 const { width } = Dimensions.get('window')
 
- 
-
+const wait = (timeout) => {
+    return new Promise(resolve => setTimeout(resolve, timeout));
+}
 
 
 
@@ -30,7 +33,7 @@ import { NavigationContainer } from '@react-navigation/native';
 export default function NewFeedScreen({ navigation }) {
     const [datapost, setDatapost] = useState("");
     const [imagePath, setImagePath] = useState("");
-    
+    const [refreshing, setRefreshing] = useState(false);
 
     
 
@@ -82,20 +85,44 @@ export default function NewFeedScreen({ navigation }) {
         // );
         navigation.navigate("SearchScreen")
     }
+    const onRefresh = useCallback(() => {
+        console.log("refresh");
+        setRefreshing(true);
 
-    useEffect(() => {
-    post.getListPost_newfeed(token)
-      .then(res => {
-        // console.log(res.data.data);
+        post.getListPost_newfeed(token)
+            .then(res => {
+                // console.log(res.data.data);
+                
+                setDatapost(res.data.data.reverse());
+                console.log("refrssssh");
+
+            })
+            .catch(error => {
+                console.log("Failed")
+                console.log(error.response.data)
+            })
         
-        setDatapost(res.data.data.reverse());
-    })
-      .catch(error => {
-        console.log("Failed")
-        console.log(error.response.data)
-    })
+        wait(1000).then(() => setRefreshing(false)
+        
+        );
+      }, []);
+    
 
-    });
+    // useEffect(() => {
+    // post.getListPost_newfeed(token)
+    //   .then(res => {
+    //     // console.log(res.data.data);
+        
+    //     setDatapost(res.data.data.reverse());
+    //     console.log(datapost.length);
+
+    // })
+    //   .catch(error => {
+    //     console.log("Failed")
+    //     console.log(error.response.data)
+    // })
+
+    // });
     const splitDateTime = (raw_date) => {
         // 2021-11-14T17:16:51.653Z
         const list_text = raw_date.split(":");
@@ -141,7 +168,7 @@ export default function NewFeedScreen({ navigation }) {
                         {item.described}
                     </Text>
                     <View style={styles.containerImage}>
-                        <Slider item={images} index={0} />
+                        <Slider item={item.images} index={0} />
                         <Text></Text>
                     </View>
 
@@ -237,6 +264,12 @@ export default function NewFeedScreen({ navigation }) {
                 <FlatList
                     // numColumns={1}
                     // horizontal={false}
+                    refreshControl={
+                        <RefreshControl
+                        refreshing={refreshing}
+                        onRefresh={onRefresh}
+                        />
+                    }
                     initialNumToRender={7}
                     data={datapost}
                     renderItem={({ item }) => renderItem(item)}
