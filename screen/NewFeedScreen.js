@@ -34,59 +34,57 @@ export default function NewFeedScreen({ navigation }) {
     const [datapost, setDatapost] = useState("");
     const [imagePath, setImagePath] = useState("");
     const [refreshing, setRefreshing] = useState(false);
-
-    
-
-    
-
-    const DATA_demo_posts = [
-        {
-            id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
-            title: 'Post 1',
-            user_name: "Hoang Huy Quan",
-            content: "Post 1"
-        },
-        {
-            id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
-            title: 'Chao em anh dung day tuy chieu',
-            user_name: "Bui Manh Tuan",
-            content: "Post 2"
-        },
-        {
-            id: '58694a0f-3da1-471f-bd96-145571e29d72',
-            title: 'Anh la Quan cuto', 
-            user_name: "Tung gay lo",
-            content: "Post 3"
-        },
-    ];
-    const images = [
-        FeedImage,
-        FeedImage1,
-        FeedImage2
-    ]
+    const [toggleItem, setToggleItem] = useState("");
     const onLikePress = (userId, postId) => {
     }
     const onDislikePress = (userId, postId) => {
     }
     const [isModalVisible, setModalVisible] = useState(false);
     const [isModalReportVisible, setModalReportVisible] = useState(false);
-    const toggleModal = () => {
+    const toggleModal = (item) => {
         setModalVisible(!isModalVisible);
+        setToggleItem(item);
+        
     };
+
+    const toggleEditPost = () => {
+        setModalVisible(!isModalVisible);
+        // console.log(toggleItem);
+        navigation.navigate("EditPostScreen",{ toggleItem });
+
+    }
+
+    const toggleDeletePost = () => {
+        setModalVisible(!isModalVisible);
+        const data = {
+            "postId": toggleItem._id,
+            "token": token
+        }
+        post.deletePost(data)
+            .then(res => {
+            console.log(res.data);
+            // console.log(data.images)
+            })
+            .catch(error => {
+                console.log("Failed");
+                console.log(error.response.data);
+            })
+
+    }
+    
+
     const toggleReportModal = () => {
         setModalReportVisible(!isModalReportVisible);
         setModalVisible(false)
     }
     const onSearchPress = () => {
-        // ImgToBase64.getBase64String('../images/Store_local_image/anh3.jpg')
-        // .then(base64String => console.log(base64String))
-        // .catch(err => console.log("Errorrrr")
-        
-        // );
         navigation.navigate("SearchScreen")
     }
+
+    
+
     const onRefresh = useCallback(() => {
-        console.log("refresh");
+        
         setRefreshing(true);
 
         post.getListPost_newfeed(token)
@@ -95,11 +93,13 @@ export default function NewFeedScreen({ navigation }) {
                 
                 setDatapost(res.data.data.reverse());
                 console.log("refrssssh");
+                // console.log(datapost[0]._id);
 
             })
             .catch(error => {
                 console.log("Failed")
-                console.log(error.response.data)
+                console.log(error);
+                console.log("Log done");
             })
         
         wait(1000).then(() => setRefreshing(false)
@@ -108,21 +108,20 @@ export default function NewFeedScreen({ navigation }) {
       }, []);
     
 
-    // useEffect(() => {
-    // post.getListPost_newfeed(token)
-    //   .then(res => {
-    //     // console.log(res.data.data);
+    useEffect(() => {
+    post.getListPost_newfeed(token)
+      .then(res => {
         
-    //     setDatapost(res.data.data.reverse());
-    //     console.log(datapost.length);
+        setDatapost(res.data.data.reverse());
+        console.log(datapost.length);
 
-    // })
-    //   .catch(error => {
-    //     console.log("Failed")
-    //     console.log(error.response.data)
-    // })
+    })
+      .catch(error => {
+        console.log("Failed")
+    })
 
-    // });
+    },[]);
+
     const splitDateTime = (raw_date) => {
         // 2021-11-14T17:16:51.653Z
         const list_text = raw_date.split(":");
@@ -142,6 +141,7 @@ export default function NewFeedScreen({ navigation }) {
 
     const renderItem = (item) => {
         const date_time = splitDateTime(item.updatedAt);
+
         return (
             <View style={styles.containerPost}>
                 <View style={styles.containerPostHeader}>
@@ -160,7 +160,7 @@ export default function NewFeedScreen({ navigation }) {
                         </View>
                     </View>
                     <View style={styles.optionDot}>
-                        <MaterialCommunityIcons name="dots-vertical" style={styles.dotStyle} onPress={toggleModal} />
+                        <MaterialCommunityIcons name="dots-vertical" style={styles.dotStyle} onPress={() => toggleModal(item)} />
                     </View>
                 </View>
                 <View style={styles.containerFeed}>
@@ -214,11 +214,11 @@ export default function NewFeedScreen({ navigation }) {
                     style={styles.modal}
                 >
                     <View>
-                        <Pressable style={styles.button} onPress={toggleModal}>
+                        <Pressable style={styles.button} onPress={toggleEditPost}>
                             <Text style={styles.text}>Chỉnh sửa bài đăng</Text>
                         </Pressable>
                         <LinePartition color={theme.colors.silver} />
-                        <Pressable style={styles.button} onPress={toggleModal}>
+                        <Pressable style={styles.button} onPress={toggleDeletePost}>
                             <Text style={styles.text}>Xóa bài đăng</Text>
                         </Pressable>
                         <LinePartition color={theme.colors.silver} />
@@ -251,16 +251,7 @@ export default function NewFeedScreen({ navigation }) {
                         </Pressable>
                     </View>
                 </Modal>
-                {/* <View>
-                    <Video source={video}></Video>
-                </View> */}
-                {/* <Video source={{ uri: './/images/1.mp4' }}   // Can be a URL or a local file.
-                    ref={(ref) => {
-                        this.player = ref
-                    }}                                      // Store reference
-                    onBuffer={this.onBuffer}                // Callback when remote video is buffering
-                    onError={this.videoError}               // Callback when video cannot be loaded
-                    style={styles.backgroundVideo} /> */}
+
                 <FlatList
                     // numColumns={1}
                     // horizontal={false}
