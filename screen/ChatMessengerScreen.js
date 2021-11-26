@@ -6,10 +6,21 @@ import React, {
   useRef,
 } from "react";
 import { GiftedChat } from "react-native-gifted-chat";
-import { View, StyleSheet, Button, TouchableOpacity } from "react-native";
+import {
+  View,
+  StyleSheet,
+  Button,
+  TouchableOpacity,
+  Pressable,
+  Dimensions,
+} from "react-native";
 import { Avatar, Icon } from "react-native-elements";
+import Modal from "react-native-modal";
+import { LinePartition } from "../components";
 import { io } from "socket.io-client";
 import { message } from "../handle_api";
+import { theme } from "../components/core/theme";
+const { width } = Dimensions.get("window");
 
 export default function ChatMessengerScreen({ route, navigation }) {
   const socket = useRef();
@@ -22,7 +33,17 @@ export default function ChatMessengerScreen({ route, navigation }) {
     "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InR1YW5raWQyNiIsImlkIjoiNjE4N2FlNDY3YjJiYzUzMDMwNWQ4MGNlIiwiaWF0IjoxNjM2ODU1MDQ0fQ.jL4Ss_ONfRgOXmR4MrePGJ0S1cumjOewMxIlSHt9opI";
   const receiverId = "618e992874550a22a4cb2a98";
   const senderId = "618e975874550a22a4cb2a90";
-  
+
+  const [isModalVisible, setModalVisible] = useState(false);
+  const [isModalReportVisible, setModalReportVisible] = useState(false);
+  const toggleModal = () => {
+    setModalVisible(!isModalVisible);
+  };
+  const toggleReportModal = () => {
+    setModalReportVisible(!isModalReportVisible);
+    setModalVisible(false);
+  };
+
   const onBack = () => {
     navigation.navigate("MainScreen");
   };
@@ -36,6 +57,30 @@ export default function ChatMessengerScreen({ route, navigation }) {
         </View>
       ),
       headerTitle: item.name,
+      headerRight: () => <Icon name={"menu"} size={40} onPress={toggleModal} />,
+      modal : () => (
+        <View>
+        <Modal
+          isVisible={isModalVisible}
+          animationIn="slideInUp"
+          style={styles.modal}
+        >
+          <View>
+            <Pressable style={styles.button} onPress={toggleModal}>
+              <Text style={styles.text}>Chỉnh sửa biệt danh</Text>
+            </Pressable>
+            <LinePartition color={theme.colors.silver} />
+            <Pressable style={styles.button} onPress={toggleModal}>
+              <Text style={styles.text}>Xóa đoạn chat </Text>
+            </Pressable>
+            <LinePartition color={theme.colors.silver} />
+            <Pressable style={styles.button} onPress={toggleModal}>
+              <Text style={styles.text}>Chặn</Text>
+            </Pressable>
+          </View>
+        </Modal>
+      </View>
+      )
     });
   }, [navigation]);
 
@@ -90,19 +135,40 @@ export default function ChatMessengerScreen({ route, navigation }) {
   }, []);
 
   return (
-    <GiftedChat
-      showAvatarForEveryMessage={true}
-      messages={messages}
-      onSend={(messages) => onSend(messages)}
-      user={{
-        _id: senderId,
-      }}
-    />
+    <View>
+      <GiftedChat
+        showAvatarForEveryMessage={true}
+        messages={messages}
+        onSend={(messages) => onSend(messages)}
+        user={{
+          _id: senderId,
+        }}
+      />
+      
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
   headerLeft: {
     flexDirection: "row",
+  },
+  text: {
+    fontSize: 16,
+    lineHeight: 21,
+    letterSpacing: 0.25,
+    color: theme.colors.black,
+  },
+  modal: {
+    justifyContent: "flex-end",
+    margin: 0,
+  },
+  button: {
+    backgroundColor: theme.colors.white,
+    color: theme.colors.black,
+    width: width,
+    height: 35,
+    alignItems: "center",
+    justifyContent: "center",
   },
 });
