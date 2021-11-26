@@ -16,13 +16,29 @@ import {
 import {post} from "../handle_api";
 import {token} from "../handle_api/token"
 
-export default function NewPostScreen({ navigation }) {
+export default function EditPostScreen({ route, navigation }) {
   const [status, setStatus] = useState("")
-
-  const selectedAssets = useSelector(state => state.media.selectedAssets);
+  const {toggleItem} = route.params;
   const dispatch = useDispatch();
+ 
+  
+ 
+  
+  useEffect(() => {
+    
+    for (let index = 0; index < toggleItem.images.length; index++){
+      const images = {}
+      // console.log(toggleItem.images[index].base64);
+      images.uri = `data:image/jpeg;base64,${toggleItem.images[index].base64}`
+      images.id = toggleItem.images[index]._id;
+      dispatch(mediaActions.addAsset(images));
+    }
+    console.log("Done");
+  
+  }, []);
+  const selectedAssets = useSelector(state => state.media.selectedAssets);
 
-  const upLoad = async () => {
+  const editUpLoad = async () => {
 
     const imageAssets = selectedAssets.filter(asset => asset.mediaType === 'photo');
     const videoAssets = selectedAssets.filter(asset => asset.mediaType === 'video');
@@ -32,31 +48,27 @@ export default function NewPostScreen({ navigation }) {
     
     const data = {
       token: token,
+      postId: toggleItem._id,
       described: status,
       images: convertedImageAssets,
       videos: convertedVideoAssets
     }
-
-    post.addPost(data)
-    .then(res => {
-      console.log(res.data);
-      // console.log(data.images)
-    })
-      .catch(error => {
-        console.log("Failed");
-        console.log(error.response.data);
-    })
-    dispatch(mediaActions.resetState());
-
-    navigation.navigate("MainScreen");
-
-  }
-  const goBack = () => {
-    dispatch(mediaActions.resetState());
-    navigation.navigate("MainScreen");
-  }
-
   
+
+    post.editPost(data)
+      .then(res => {
+        console.log(res.data);
+        // console.log(data.images)
+      })
+        .catch(error => {
+          console.log("Failed");
+          console.log(error.response.data);
+      })
+  dispatch(mediaActions.resetState());
+
+  navigation.navigate("MainScreen");
+
+  }
 
 
   const convertToBase64 = async (assets) => {
@@ -82,11 +94,18 @@ const formatIntoBase64String = (data, mediaType) => {
     return `data:${mediaType};base64,${data}`;
 }
 
+
+
   const addImage = () => {
     navigation.navigate("MediaPicker");
   }
+
   const handleRemoveAsset = (asset) => {
     dispatch(mediaActions.removeAsset(asset));
+  }
+  const goBack = () => {
+    dispatch(mediaActions.resetState());
+    navigation.navigate("MainScreen");
   }
 
   return (
@@ -98,15 +117,15 @@ const formatIntoBase64String = (data, mediaType) => {
         <View style={styles.headerRight}>
           {/* <Text style={styles.dang}>Đăng</Text> */}
           <Button title="Đăng" style={styles.upload}
-          onPress={upLoad}
+          onPress={editUpLoad}
           />
         </View>
       </View>
-      <Text style={styles.tus}>Bạn đang nghĩ gì?</Text>
+      <Text style={styles.tus}>Chỉnh sửa bài viết</Text>
       <TextInput style={styles.status}
-        placeholder="Trạng thái của bạn"
         returnKeyType="next"
-        // value={status}
+        defaultValue={toggleItem.described}
+        // value={itemPost.described}
         onChangeText={setStatus}
         multiline={true}
         numberOfLines={5}
@@ -118,8 +137,12 @@ const formatIntoBase64String = (data, mediaType) => {
         <FlatList
           numColumns={3}
           data={selectedAssets}
+          keyExtractor={(item) => item.id.toString()}
           renderItem={({ item }) => (
               <View>
+              {/* <TouchableOpacity>
+              <Image style={styles.image} source={{uri: item.uri}} />
+              </TouchableOpacity> */}
               <ImageBackground 
                 source={{uri: item.uri}}
                 style={styles.image}
