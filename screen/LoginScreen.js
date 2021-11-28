@@ -10,21 +10,25 @@ import {
 }
   from '../components'
 import Toast from 'react-native-toast-message';
+import { useSelector, useDispatch } from 'react-redux';
 import { auth } from '../handle_api';
 export default function LoginScreen({ navigation }) {
   const [phonenumber, setPhonenumber] = useState("")
   const [password, setPassword] = useState("")
-
+  const dispatch = useDispatch();
   const onLoginPressed = () => {
     const data = {
       phonenumber: phonenumber,
       password: password
     }
-    console.log("Test")
-    console.log(phonenumber)
+    // console.log("Test")
+    // console.log(phonenumber)
     auth.login(data)
       .then(res => {
-        console.log(res.data);
+        // console.log(res.data)
+        const token = res.data.token;
+        // call dispatch to store token
+        dispatch({ type: 'STORE_TOKEN', payload: token })
         Toast.show({
           type: 'success',
           text1: 'Đăng nhập thành công'
@@ -39,7 +43,7 @@ export default function LoginScreen({ navigation }) {
           type: 'error',
           text1: 'Tài khoản hoặc mật khẩu không chính xác'
         });
-        console.log(error.response.data)
+        console.log(error)
         // setPassword({ value: '', error: '' })
       })
   }
@@ -51,22 +55,22 @@ export default function LoginScreen({ navigation }) {
       <TextInput
         label="Số điện thoại"
         returnKeyType="next"
-        value={phonenumber.value}
+        value={phonenumber}
         onChangeText={(text) => setPhonenumber(text)}
-        error={!!phonenumber.error}
-        errorText={phonenumber.error}
+        // error={!!phonenumber.error}
+        // errorText={phonenumber.error}
         autoCapitalize="none"
-        autoCompleteType="phonenumber"
-        textContentType="phonenumber"
-        keyboardType="phonenumber"
+      // autoCompleteType="phonenumber"
+      // textContentType="phonenumber"
+      // keyboardType="phonenumber"
       />
       <TextInput
         label="Mật khẩu"
         returnKeyType="done"
-        value={password.value}
+        value={password}
         onChangeText={(text) => setPassword(text)}
-        error={!!password.error}
-        errorText={password.error}
+        // error={!!password.error}
+        // errorText={password.error}
         secureTextEntry
       />
       <View style={styles.forgotPassword}>

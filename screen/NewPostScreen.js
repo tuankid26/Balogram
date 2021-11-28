@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { StyleSheet, View, FlatList, Image, Button, TouchableOpacity, ImageBackground  } from 'react-native'
+import { StyleSheet, View, FlatList, Image, Button, TouchableOpacity, ImageBackground } from 'react-native'
 import { Text } from 'react-native-paper'
 import { theme } from '../components/core/theme'
 import { Icon } from 'react-native-elements'
@@ -13,23 +13,22 @@ import {
   TextInput
 } from '../components'
 
-import {post} from "../handle_api";
-import {token} from "../handle_api/token"
+import { post } from "../handle_api";
 
 export default function NewPostScreen({ navigation }) {
   const [status, setStatus] = useState("")
 
   const selectedAssets = useSelector(state => state.media.selectedAssets);
   const dispatch = useDispatch();
-
+  const token = useSelector(state => state.authReducer.token);
   const upLoad = async () => {
 
     const imageAssets = selectedAssets.filter(asset => asset.mediaType === 'photo');
     const videoAssets = selectedAssets.filter(asset => asset.mediaType === 'video');
-    
+
     const convertedImageAssets = await convertToBase64(imageAssets);
     const convertedVideoAssets = await convertToBase64(videoAssets);
-    
+
     const data = {
       token: token,
       described: status,
@@ -38,14 +37,13 @@ export default function NewPostScreen({ navigation }) {
     }
 
     post.addPost(data)
-    .then(res => {
-      console.log(res.data);
-      // console.log(data.images)
-    })
+      .then(res => {
+        console.log(res.data);
+      })
       .catch(error => {
         console.log("Failed");
         console.log(error.response.data);
-    })
+      })
     dispatch(mediaActions.resetState());
 
     navigation.navigate("MainScreen");
@@ -56,19 +54,19 @@ export default function NewPostScreen({ navigation }) {
     navigation.navigate("MainScreen");
   }
 
-  
+
 
 
   const convertToBase64 = async (assets) => {
     const mimeTypes = assets.map(asset => {
-        const fileName = asset.filename;
-        const mediaType = asset.mediaType === 'photo' ? 'image' : 'video';
-        let extension = fileName.split('.')[1];
-        if (extension === 'jpg') {
-            extension = 'jpeg';
-        }
+      const fileName = asset.filename;
+      const mediaType = asset.mediaType === 'photo' ? 'image' : 'video';
+      let extension = fileName.split('.')[1];
+      if (extension === 'jpg') {
+        extension = 'jpeg';
+      }
 
-        return `${mediaType}/${extension}`;
+      return `${mediaType}/${extension}`;
     });
 
     const assetPromises = assets.map(asset => FileSystem.readAsStringAsync(asset.uri, { encoding: FileSystem.EncodingType.Base64 }));
@@ -76,11 +74,11 @@ export default function NewPostScreen({ navigation }) {
 
     const base64Assets = convertedAssets.map((asset, idx) => formatIntoBase64String(asset, mimeTypes[idx]));
     return base64Assets;
-}
+  }
 
-const formatIntoBase64String = (data, mediaType) => {
+  const formatIntoBase64String = (data, mediaType) => {
     return `data:${mediaType};base64,${data}`;
-}
+  }
 
   const addImage = () => {
     navigation.navigate("MediaPicker");
@@ -98,7 +96,7 @@ const formatIntoBase64String = (data, mediaType) => {
         <View style={styles.headerRight}>
           {/* <Text style={styles.dang}>Đăng</Text> */}
           <Button title="Đăng" style={styles.upload}
-          onPress={upLoad}
+            onPress={upLoad}
           />
         </View>
       </View>
@@ -119,33 +117,33 @@ const formatIntoBase64String = (data, mediaType) => {
           numColumns={3}
           data={selectedAssets}
           renderItem={({ item }) => (
-              <View>
-              <ImageBackground 
-                source={{uri: item.uri}}
+            <View>
+              <ImageBackground
+                source={{ uri: item.uri }}
                 style={styles.image}
               >
-                <Icon 
-                    name='close' 
-                    type='ant-design' 
-                    size={16} 
-                    iconStyle={styles.removeIcon}
-                    onPress={() => handleRemoveAsset(item)}
+                <Icon
+                  name='close'
+                  type='ant-design'
+                  size={16}
+                  iconStyle={styles.removeIcon}
+                  onPress={() => handleRemoveAsset(item)}
                 />
               </ImageBackground>
-              </View>
+            </View>
           )
-        }/>
+          } />
       </View>
-        
+
     </View >
   )
 }
 
 const styles = StyleSheet.create({
-  upload:{
-   fontSize: 40,
-   fontWeight: 'bold',
-   marginLeft: 20
+  upload: {
+    fontSize: 40,
+    fontWeight: 'bold',
+    marginLeft: 20
   },
   tus: {
     color: "black",
@@ -184,8 +182,8 @@ const styles = StyleSheet.create({
     marginRight: 10
   },
   removeIcon: {
-    backgroundColor: '#fff', 
-    borderRadius: 10, 
+    backgroundColor: '#fff',
+    borderRadius: 10,
     alignSelf: 'flex-end'
   },
 })

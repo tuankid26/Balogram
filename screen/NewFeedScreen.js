@@ -1,7 +1,9 @@
 import React, { useState, useEffect, version, useCallback } from 'react'
-import { StyleSheet, View, Text, Image,
-     FlatList, StatusBar, Dimensions,
-    Button, Pressable, RefreshControl} from 'react-native'
+import {
+    StyleSheet, View, Text, Image,
+    FlatList, StatusBar, Dimensions,
+    Button, Pressable, RefreshControl
+} from 'react-native'
 import { Avatar } from 'react-native-elements';
 import { MaterialCommunityIcons, Ionicons, Octicons } from 'react-native-vector-icons';
 import FeedImage from '../images/Store_local_image/anhquan.jpg';
@@ -9,8 +11,8 @@ import FeedImage1 from '../images/Store_local_image/anh2.jpg';
 import FeedImage2 from '../images/Store_local_image/anh3.jpg';
 import { theme } from '../components/core/theme'
 import Modal from "react-native-modal";
-import {post} from "../handle_api";
-import {token} from "../handle_api/token"
+import { post } from "../handle_api";
+import { useSelector, useDispatch } from 'react-redux';
 const { width } = Dimensions.get('window')
 
 const wait = (timeout) => {
@@ -35,6 +37,7 @@ export default function NewFeedScreen({ navigation }) {
     const [imagePath, setImagePath] = useState("");
     const [refreshing, setRefreshing] = useState(false);
     const [toggleItem, setToggleItem] = useState("");
+    const token = useSelector(state => state.authReducer.token);
     const onLikePress = (userId, postId) => {
     }
     const onDislikePress = (userId, postId) => {
@@ -44,13 +47,13 @@ export default function NewFeedScreen({ navigation }) {
     const toggleModal = (item) => {
         setModalVisible(!isModalVisible);
         setToggleItem(item);
-        
+
     };
 
     const toggleEditPost = () => {
         setModalVisible(!isModalVisible);
         // console.log(toggleItem);
-        navigation.navigate("EditPostScreen",{ toggleItem });
+        navigation.navigate("EditPostScreen", { toggleItem });
 
     }
 
@@ -62,8 +65,8 @@ export default function NewFeedScreen({ navigation }) {
         }
         post.deletePost(data)
             .then(res => {
-            console.log(res.data);
-            // console.log(data.images)
+                console.log(res.data);
+                // console.log(data.images)
             })
             .catch(error => {
                 console.log("Failed");
@@ -71,7 +74,7 @@ export default function NewFeedScreen({ navigation }) {
             })
 
     }
-    
+
 
     const toggleReportModal = () => {
         setModalReportVisible(!isModalReportVisible);
@@ -81,16 +84,16 @@ export default function NewFeedScreen({ navigation }) {
         navigation.navigate("SearchScreen")
     }
 
-    
+
 
     const onRefresh = useCallback(() => {
-        
+
         setRefreshing(true);
 
         post.getListPost_newfeed(token)
             .then(res => {
                 // console.log(res.data.data);
-                
+
                 setDatapost(res.data.data.reverse());
                 console.log("refrssssh");
                 // console.log(datapost[0]._id);
@@ -101,26 +104,26 @@ export default function NewFeedScreen({ navigation }) {
                 console.log(error);
                 console.log("Log done");
             })
-        
+
         wait(1000).then(() => setRefreshing(false)
-        
+
         );
-      }, []);
-    
+    }, []);
+
 
     useEffect(() => {
-    post.getListPost_newfeed(token)
-      .then(res => {
-        
-        setDatapost(res.data.data.reverse());
-        console.log(datapost.length);
+        post.getListPost_newfeed(token)
+            .then(res => {
 
-    })
-      .catch(error => {
-        console.log("Failed")
-    })
+                setDatapost(res.data.data.reverse());
+                console.log(datapost.length);
 
-    },[]);
+            })
+            .catch(error => {
+                console.log("Failed")
+            })
+
+    }, []);
 
     const splitDateTime = (raw_date) => {
         // 2021-11-14T17:16:51.653Z
@@ -257,8 +260,8 @@ export default function NewFeedScreen({ navigation }) {
                     // horizontal={false}
                     refreshControl={
                         <RefreshControl
-                        refreshing={refreshing}
-                        onRefresh={onRefresh}
+                            refreshing={refreshing}
+                            onRefresh={onRefresh}
                         />
                     }
                     initialNumToRender={7}

@@ -5,6 +5,7 @@ const initState = {
 const authReducer = (state = initState, action) => {
     switch (action.type) {
         case 'STORE_TOKEN': {
+            console.log(action.payload)
             return {
                 ...state,
                 token: action.payload

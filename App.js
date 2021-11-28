@@ -26,19 +26,19 @@ const Stack = createStackNavigator()
 
 const AppWrapper = () => {
     return (
-      <Provider store={store}>
-        <App/>
-      </Provider>
+        <Provider store={store}>
+            <App />
+        </Provider>
     );
 }
 
 
 const App = () => {
     return (
-    <SafeAreaProvider>
+        <SafeAreaProvider>
             <NavigationContainer>
                 <Stack.Navigator
-                    initialRouteName="MainScreen"
+                    initialRouteName="LoginScreen"
                 // screenOptions={{
                 //     headerShown: false,
                 // }}
@@ -57,7 +57,7 @@ const App = () => {
                     <Stack.Screen name="EditPostScreen" options={{ headerShown: false }} component={EditPostScreen} />
                 </Stack.Navigator>
             </NavigationContainer>
-    </SafeAreaProvider>
+        </SafeAreaProvider>
     )
 }
 
