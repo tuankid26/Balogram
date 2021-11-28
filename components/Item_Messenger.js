@@ -10,7 +10,6 @@ class Item_Messenger extends Component {
 
    render() {
        const {item} = this.props
-        console.log(item)
        return (
                <View style={styles.container}>
                    <View style={styles.bgAvatar}>

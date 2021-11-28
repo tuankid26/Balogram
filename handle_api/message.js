@@ -37,4 +37,15 @@ const sendMessage = async (chatId, senderId, receiverId, msg, token) => {
     return sendResult;
 }
 
-export { getMessages, sendMessage };
+const deleteMessage = async (messageId, token) => {
+    const getResult = await api({
+        method: 'GET',
+        url: `/chats/deleteMessage/${messageId}`,
+        headers: {
+            'Authorization': `Bearer ${token}`
+        }
+    });
+    return getResult;
+}
+
+export { getMessages, sendMessage, deleteMessage };

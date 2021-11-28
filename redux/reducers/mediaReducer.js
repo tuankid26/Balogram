@@ -15,7 +15,7 @@ const removeAsset = (removedAsset, state) => {
     return state.selectedAssets.filter(asset => asset.uri !== removedAsset.uri);
 }
 
-export default mediaReducer = (state = initialState, action) => {
+const mediaReducer = (state = initialState, action) => {
     switch (action.type) {
         case 'ADD_ASSET':
             return {

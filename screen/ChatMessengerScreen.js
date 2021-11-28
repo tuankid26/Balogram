@@ -1,26 +1,11 @@
-import React, {
-  useState,
-  useCallback,
-  useEffect,
-  useLayoutEffect,
-  useRef,
-} from "react";
+import React, {useState,useCallback,useEffect,useLayoutEffect,useRef} from "react";
 import { GiftedChat } from "react-native-gifted-chat";
-import {
-  View,
-  StyleSheet,
-  Button,
-  TouchableOpacity,
-  Pressable,
-  Dimensions,
-} from "react-native";
+import {View,StyleSheet} from "react-native";
 import { Avatar, Icon } from "react-native-elements";
-import Modal from "react-native-modal";
-import { LinePartition } from "../components";
 import { io } from "socket.io-client";
-import { message } from "../handle_api";
-import { theme } from "../components/core/theme";
-const { width } = Dimensions.get("window");
+import { chat, message } from "../handle_api";
+
+const SOCKET_URL =  "http://192.168.0.102:3000";
 
 export default function ChatMessengerScreen({ route, navigation }) {
   const socket = useRef();
@@ -29,21 +14,12 @@ export default function ChatMessengerScreen({ route, navigation }) {
   const [arrivalMessage, setArrivalMessage] = useState(null);
 
   const chatId = item.id;
+  
   const token =
     "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InR1YW5raWQyNiIsImlkIjoiNjE4N2FlNDY3YjJiYzUzMDMwNWQ4MGNlIiwiaWF0IjoxNjM2ODU1MDQ0fQ.jL4Ss_ONfRgOXmR4MrePGJ0S1cumjOewMxIlSHt9opI";
   const receiverId = "618e992874550a22a4cb2a98";
   const senderId = "618e975874550a22a4cb2a90";
-
-  const [isModalVisible, setModalVisible] = useState(false);
-  const [isModalReportVisible, setModalReportVisible] = useState(false);
-  const toggleModal = () => {
-    setModalVisible(!isModalVisible);
-  };
-  const toggleReportModal = () => {
-    setModalReportVisible(!isModalReportVisible);
-    setModalVisible(false);
-  };
-
+  
   const onBack = () => {
     navigation.navigate("MainScreen");
   };
@@ -57,30 +33,7 @@ export default function ChatMessengerScreen({ route, navigation }) {
         </View>
       ),
       headerTitle: item.name,
-      headerRight: () => <Icon name={"menu"} size={40} onPress={toggleModal} />,
-      modal : () => (
-        <View>
-        <Modal
-          isVisible={isModalVisible}
-          animationIn="slideInUp"
-          style={styles.modal}
-        >
-          <View>
-            <Pressable style={styles.button} onPress={toggleModal}>
-              <Text style={styles.text}>Chỉnh sửa biệt danh</Text>
-            </Pressable>
-            <LinePartition color={theme.colors.silver} />
-            <Pressable style={styles.button} onPress={toggleModal}>
-              <Text style={styles.text}>Xóa đoạn chat </Text>
-            </Pressable>
-            <LinePartition color={theme.colors.silver} />
-            <Pressable style={styles.button} onPress={toggleModal}>
-              <Text style={styles.text}>Chặn</Text>
-            </Pressable>
-          </View>
-        </Modal>
-      </View>
-      )
+      headerRight: () => <View><Icon name={"menu"} size={40}  /></View>,
     });
   }, [navigation]);
 
@@ -88,8 +41,7 @@ export default function ChatMessengerScreen({ route, navigation }) {
     const initialize = async () => {
       const newMessages = await fetchMessages();
       setMessages(
-        newMessages
-          .map((msg) => ({
+        newMessages.map((msg) => ({
             _id: msg._id,
             text: msg.content,
             createdAt: msg.createdAt,
@@ -100,14 +52,33 @@ export default function ChatMessengerScreen({ route, navigation }) {
           }))
           .reverse()
       );
+  
+      
+      socket.current = io(SOCKET_URL);
     };
     initialize();
   }, []);
 
+  useEffect(() => {
+    socket.current?.on('getMessage', (data) => {
+      if (senderId === data.receivedId) {
+        const newMsg = {
+          _id: data._id,
+          text: data.content, 
+          createdAt: data.createdAt,
+          user: {
+            _id: data.senderId,
+          },
+        };
+       
+        setMessages((previousMessages) => GiftedChat.append(previousMessages, [newMsg]));
+      } 
+    });
+  }, [socket])
+
   const fetchMessages = async () => {
     try {
       const res = await message.getMessages(chatId, token);
-      console.log(res.data.data);
       return res.data.data;
     } catch (err) {
       console.log(err);
@@ -134,8 +105,35 @@ export default function ChatMessengerScreen({ route, navigation }) {
     }
   }, []);
 
+  const onDelete = async (messageIdToDelete) => {
+    try {
+      const deleteMess = await message.deleteMessage(messageIdToDelete, token);
+      setMessages(messages.filter(message => message._id !== messageIdToDelete) )
+    } catch (err) {
+      console.log(err);
+    }
+    // setMessages(messages.filter(message => message._id !== messageIdToDelete) )
+    }
+
+  const onLongPress = (context, message) => {
+    const options = ['Copy','Delete Message', 'Cancel'];
+    const cancelButtonIndex = options.length - 1;
+    context.actionSheet().showActionSheetWithOptions({
+        options,
+        cancelButtonIndex
+    }, (buttonIndex) => {
+        switch (buttonIndex) {
+            case 0:
+                Clipboard.setString(message.text);
+                break;
+            case 1:
+                onDelete(message._id) //pass the function here
+                break;
+        }
+    });
+}
+
   return (
-    <View>
       <GiftedChat
         showAvatarForEveryMessage={true}
         messages={messages}
@@ -143,32 +141,13 @@ export default function ChatMessengerScreen({ route, navigation }) {
         user={{
           _id: senderId,
         }}
+        onLongPress = {onLongPress}
       />
-      
-    </View>
   );
 }
 
 const styles = StyleSheet.create({
   headerLeft: {
     flexDirection: "row",
-  },
-  text: {
-    fontSize: 16,
-    lineHeight: 21,
-    letterSpacing: 0.25,
-    color: theme.colors.black,
-  },
-  modal: {
-    justifyContent: "flex-end",
-    margin: 0,
-  },
-  button: {
-    backgroundColor: theme.colors.white,
-    color: theme.colors.black,
-    width: width,
-    height: 35,
-    alignItems: "center",
-    justifyContent: "center",
   },
 });
