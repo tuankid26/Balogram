@@ -10,7 +10,6 @@ class Item_Messenger extends Component {
 
    render() {
        const {item} = this.props
-
        return (
                <View style={styles.container}>
                    <View style={styles.bgAvatar}>
@@ -21,7 +20,7 @@ class Item_Messenger extends Component {
                    </View>
                    <View style={styles.info}>
                        <Text style={styles.name}>{item.name}</Text>
-                       <Text numberOfLines={1}>{item.description}</Text>
+                       <Text numberOfLines={1}>{item.text}</Text>
                    </View>
                    <View style={styles.bgSeen}>
                        <Image 
