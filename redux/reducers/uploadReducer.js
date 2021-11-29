@@ -5,7 +5,7 @@ const initialState = {
 };
 
 
-const uploadReducer = (state=initialState, action) => {
+export default uploadReducer = (state = initialState, action) => {
     switch (action.type) {
         case 'UPLOADING':
             return {
@@ -20,7 +20,7 @@ const uploadReducer = (state=initialState, action) => {
                 uploadSuccess: true
             };
 
-        case 'UPLOAD_FAILURE': 
+        case 'UPLOAD_FAILURE':
             return {
                 ...state,
                 uploading: false,
@@ -30,7 +30,7 @@ const uploadReducer = (state=initialState, action) => {
         case 'RESET':
             return initialState;
 
-        default: 
+        default:
             return state;
     }
 }

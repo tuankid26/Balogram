@@ -73,7 +73,7 @@ export default function MainMessengerScreen({ navigation }) {
         // ref={"flatList"}
         data={chats}
         renderItem={({ item }) => renderItem(item)}
-        keyExtractor={(item) => item.id}
+        keyExtractor={(item) => item.id.toString()}
       />
     </View>
   );

@@ -114,10 +114,8 @@ export default function NewFeedScreen({ navigation }) {
     useEffect(() => {
         post.getListPost_newfeed(token)
             .then(res => {
-
                 setDatapost(res.data.data.reverse());
                 console.log(datapost.length);
-
             })
             .catch(error => {
                 console.log("Failed")
@@ -137,8 +135,8 @@ export default function NewFeedScreen({ navigation }) {
     const onAddPost = () => {
         navigation.navigate('NewPostScreen');
     }
-    const onComment = () => {
-        navigation.navigate('CommentScreen');
+    const onComment = (postId, userId) => {
+        navigation.navigate('CommentScreen', { postId: postId, userId: userId });
     }
 
 
@@ -179,14 +177,14 @@ export default function NewFeedScreen({ navigation }) {
                         <Text style={styles.numberReact}>10 lượt thích</Text>
                         <View style={styles.reactIconBox}>
                             <MaterialCommunityIcons name="heart-outline" style={styles.reactIcon} />
-                            <Octicons name="comment" style={styles.reactIcon} onPress={onComment} />
+                            <Octicons name="comment" style={styles.reactIcon} onPress={() => onComment(item._id, item.author._id)} />
                         </View>
                         <Text style={styles.comment}
-                        // onPress={() => props.navigation.navigate('Comment', { postId: item.id, uid: item.user.uid })}
+                            onPress={() => onComment(item._id)}
                         >
                             View Comments...
                         </Text>
-                        <Comment />
+                        <Comment postID={item._id} />
                     </View>
                 </View>
 

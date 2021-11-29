@@ -1,4 +1,4 @@
-// import Carousel, { Pagination } from 'react-native-snap-carousel';
+import Carousel, { Pagination } from 'react-native-snap-carousel';
 import React, { Component } from 'react';
 import { Dimensions, Text, Image, StyleSheet } from 'react-native';
 import {
