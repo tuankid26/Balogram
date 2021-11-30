@@ -1,25 +1,21 @@
-import React, {useState,useCallback,useEffect,useLayoutEffect,useRef} from "react";
+import React, { useState, useCallback, useEffect, useLayoutEffect, useRef } from "react";
 import { GiftedChat } from "react-native-gifted-chat";
-import {View,StyleSheet} from "react-native";
+import { View, StyleSheet } from "react-native";
 import { Avatar, Icon } from "react-native-elements";
 import { io } from "socket.io-client";
 import { chat, message } from "../handle_api";
-
-const SOCKET_URL =  "http://192.168.0.102:3000";
+import { useSelector, useDispatch } from 'react-redux';
+const SOCKET_URL = "http://192.168.0.102:3000";
 
 export default function ChatMessengerScreen({ route, navigation }) {
   const socket = useRef();
   const { item } = route.params;
   const [messages, setMessages] = useState([]);
   const [arrivalMessage, setArrivalMessage] = useState(null);
-
-  const chatId = item.id;
-  
-  const token =
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InR1YW5raWQyNiIsImlkIjoiNjE4N2FlNDY3YjJiYzUzMDMwNWQ4MGNlIiwiaWF0IjoxNjM2ODU1MDQ0fQ.jL4Ss_ONfRgOXmR4MrePGJ0S1cumjOewMxIlSHt9opI";
-  const receiverId = "618e992874550a22a4cb2a98";
-  const senderId = "618e975874550a22a4cb2a90";
-  
+  const chatId = item._id;
+  const token = useSelector(state => state.authReducer.token);
+  const receiverId = item.receivedId
+  const senderId = item.sendId[0]
   const onBack = () => {
     navigation.navigate("MainScreen");
   };
@@ -33,7 +29,7 @@ export default function ChatMessengerScreen({ route, navigation }) {
         </View>
       ),
       headerTitle: item.name,
-      headerRight: () => <View><Icon name={"menu"} size={40}  /></View>,
+      headerRight: () => <View><Icon name={"menu"} size={40} onPress={() => navigation.navigate("ChatInformation", { item })} /></View>,
     });
   }, [navigation]);
 
@@ -42,18 +38,18 @@ export default function ChatMessengerScreen({ route, navigation }) {
       const newMessages = await fetchMessages();
       setMessages(
         newMessages.map((msg) => ({
-            _id: msg._id,
-            text: msg.content,
-            createdAt: msg.createdAt,
-            user: {
-              _id: msg.user._id,
-              name: msg.user.username,
-            },
-          }))
+          _id: msg._id,
+          text: msg.content,
+          createdAt: msg.createdAt,
+          user: {
+            _id: msg.user._id,
+            name: msg.user.username,
+          },
+        }))
           .reverse()
       );
-  
-      
+
+
       socket.current = io(SOCKET_URL);
     };
     initialize();
@@ -64,15 +60,15 @@ export default function ChatMessengerScreen({ route, navigation }) {
       if (senderId === data.receivedId) {
         const newMsg = {
           _id: data._id,
-          text: data.content, 
+          text: data.content,
           createdAt: data.createdAt,
           user: {
             _id: data.senderId,
           },
         };
-       
+
         setMessages((previousMessages) => GiftedChat.append(previousMessages, [newMsg]));
-      } 
+      }
     });
   }, [socket])
 
@@ -108,41 +104,41 @@ export default function ChatMessengerScreen({ route, navigation }) {
   const onDelete = async (messageIdToDelete) => {
     try {
       const deleteMess = await message.deleteMessage(messageIdToDelete, token);
-      setMessages(messages.filter(message => message._id !== messageIdToDelete) )
+      setMessages(messages.filter(message => message._id !== messageIdToDelete))
     } catch (err) {
       console.log(err);
     }
     // setMessages(messages.filter(message => message._id !== messageIdToDelete) )
-    }
+  }
 
   const onLongPress = (context, message) => {
-    const options = ['Copy','Delete Message', 'Cancel'];
+    const options = ['Copy', 'Delete Message', 'Cancel'];
     const cancelButtonIndex = options.length - 1;
     context.actionSheet().showActionSheetWithOptions({
-        options,
-        cancelButtonIndex
+      options,
+      cancelButtonIndex
     }, (buttonIndex) => {
-        switch (buttonIndex) {
-            case 0:
-                Clipboard.setString(message.text);
-                break;
-            case 1:
-                onDelete(message._id) //pass the function here
-                break;
-        }
+      switch (buttonIndex) {
+        case 0:
+          Clipboard.setString(message.text);
+          break;
+        case 1:
+          onDelete(message._id) //pass the function here
+          break;
+      }
     });
-}
+  }
 
   return (
-      <GiftedChat
-        showAvatarForEveryMessage={true}
-        messages={messages}
-        onSend={(messages) => onSend(messages)}
-        user={{
-          _id: senderId,
-        }}
-        onLongPress = {onLongPress}
-      />
+    <GiftedChat
+      showAvatarForEveryMessage={true}
+      messages={messages}
+      onSend={(messages) => onSend(messages)}
+      user={{
+        _id: senderId,
+      }}
+      onLongPress={onLongPress}
+    />
   );
 }
 

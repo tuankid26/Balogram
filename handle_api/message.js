@@ -1,4 +1,4 @@
-   
+
 import api from './api';
 
 const getMessages = async (chatId, token) => {
@@ -17,20 +17,20 @@ const sendMessage = async (chatId, senderId, receiverId, msg, token) => {
         receivedId: receiverId,
         chatId: chatId,
         member: [
-            {_id: senderId},
-            {_id: receiverId}
+            { _id: senderId },
+            { _id: receiverId }
         ],
         content: msg,
         type: "PRIVATE_CHAT"
-      };
+    };
 
-    
+
     const sendResult = await api({
         method: 'POST',
         url: '/chats/send/',
         data: newMessage,
         headers: {
-        'Authorization': `Bearer ${token}`
+            'Authorization': `Bearer ${token}`
         }
     });
 
@@ -40,7 +40,7 @@ const sendMessage = async (chatId, senderId, receiverId, msg, token) => {
 const deleteMessage = async (messageId, token) => {
     const getResult = await api({
         method: 'GET',
-        url: `/chats/deleteMessage/${messageId}`,
+        url: `/chats/deleteMess/${messageId}`,
         headers: {
             'Authorization': `Bearer ${token}`
         }
