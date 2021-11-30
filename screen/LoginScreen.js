@@ -25,7 +25,6 @@ export default function LoginScreen({ navigation }) {
     // console.log(phonenumber)
     auth.login(data)
       .then(res => {
-        // console.log(res.data)
         const token = res.data.token;
         // call dispatch to store token
         dispatch({ type: 'STORE_TOKEN', payload: token })

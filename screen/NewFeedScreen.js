@@ -93,11 +93,9 @@ export default function NewFeedScreen({ navigation }) {
         post.getListPost_newfeed(token)
             .then(res => {
                 // console.log(res.data.data);
-
                 setDatapost(res.data.data.reverse());
                 console.log("refrssssh");
                 // console.log(datapost[0]._id);
-
             })
             .catch(error => {
                 console.log("Failed")
@@ -138,7 +136,6 @@ export default function NewFeedScreen({ navigation }) {
     const onComment = (postId, userId) => {
         navigation.navigate('CommentScreen', { postId: postId, userId: userId });
     }
-
 
     const renderItem = (item) => {
         const date_time = splitDateTime(item.updatedAt);
