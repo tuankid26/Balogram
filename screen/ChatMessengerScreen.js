@@ -16,14 +16,14 @@ export default function ChatMessengerScreen({ route, navigation }) {
   const chatId = item.id;
   
   const token =
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InR1YW5raWQyNiIsImlkIjoiNjE4N2FlNDY3YjJiYzUzMDMwNWQ4MGNlIiwiaWF0IjoxNjM2ODU1MDQ0fQ.jL4Ss_ONfRgOXmR4MrePGJ0S1cumjOewMxIlSHt9opI";
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRydW5ndnVob2FuZyIsImlkIjoiNjE4ZTk3NTg3NDU1MGEyMmE0Y2IyYTkwIiwiaWF0IjoxNjM2NzM0ODA5fQ.NwBPkKkhl8IHr64k-4EwTPMhtzY2IM0J6TXqm8c-DNk";
   const receiverId = "618e992874550a22a4cb2a98";
   const senderId = "618e975874550a22a4cb2a90";
   
   const onBack = () => {
     navigation.navigate("MainScreen");
   };
-
+  
   useLayoutEffect(() => {
     navigation.setOptions({
       headerLeft: () => (
@@ -33,7 +33,7 @@ export default function ChatMessengerScreen({ route, navigation }) {
         </View>
       ),
       headerTitle: item.name,
-      headerRight: () => <View><Icon name={"menu"} size={40}  /></View>,
+      headerRight: () => <View><Icon name={"menu"} size={40} onPress={() => navigation.navigate("ChatInformation",{item})}  /></View>,
     });
   }, [navigation]);
 
@@ -52,8 +52,6 @@ export default function ChatMessengerScreen({ route, navigation }) {
           }))
           .reverse()
       );
-  
-      
       socket.current = io(SOCKET_URL);
     };
     initialize();
@@ -96,6 +94,14 @@ export default function ChatMessengerScreen({ route, navigation }) {
           newMsgObj.text,
           token
         );
+        const newMsg = sendResult.data.data;
+        socket.current?.emit('sendMessage', {
+          _id: newMsg._id,
+          senderId: senderId,
+          receivedId: receiverId,
+          content: newMsgObj.text,
+          createdAt: newMsg.createdAt
+        });
       } catch (err) {
         console.log(err);
       }

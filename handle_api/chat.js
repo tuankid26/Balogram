@@ -12,6 +12,17 @@ const listChat = async (token) => {
     return getResult;
 }
 
+const deleteChat = async (chatId, token) => {
+    const getResult = await api({
+        method: 'GET',
+        url: `/chats/deleteChat/${chatId}`,
+        headers: {
+            'Authorization': `Bearer ${token}`
+        }
+    });
+    return getResult;
+}
 
 
-export { listChat };
+
+export { listChat,deleteChat };

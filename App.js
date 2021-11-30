@@ -17,7 +17,9 @@ import {
     SearchScreen,
     SettingScreen,
     MediaPicker,
-    EditPostScreen
+    EditPostScreen,
+    ChatInformation,
+    MainMessengerScreen
 } from './screen'
 import NewPostScreen from './screen/NewPostScreen';
 
@@ -55,6 +57,9 @@ const App = () => {
                     <Stack.Screen name="SettingScreen" options={{ headerShown: false }} component={SettingScreen} />
                     <Stack.Screen name="MediaPicker" options={{ headerShown: false }} component={MediaPicker} />
                     <Stack.Screen name="EditPostScreen" options={{ headerShown: false }} component={EditPostScreen} />
+                    <Stack.Screen name="ChatInformation" options={{ headerShown: false }} component={ChatInformation} />
+                    <Stack.Screen name="MainMessengerScreen" options={{ headerShown: false }} component={MainMessengerScreen} />
+                
                 </Stack.Navigator>
             </NavigationContainer>
     </SafeAreaProvider>
