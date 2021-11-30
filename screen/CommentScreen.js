@@ -8,50 +8,47 @@ import {
 } from "react-native";
 import { StyleSheet, Dimensions } from "react-native";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
-
-import { BackButton, ItemComment } from "../components";
+import { useSelector, useDispatch } from 'react-redux';
+import {
+  BackButton,
+  ItemComment
+} from "../components";
 import { theme } from "../components/core/theme";
-import axios from "axios";
 
-const postId = "60c452e4ae8c0f00220f462e";
-const auth =
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InR1YW5raWQyNiIsImlkIjoiNjE4N2FlNDY3YjJiYzUzMDMwNWQ4MGNlIiwiaWF0IjoxNjM2ODU1MDQ0fQ.jL4Ss_ONfRgOXmR4MrePGJ0S1cumjOewMxIlSHt9opI";
-const url = "http://192.168.0.101:8000/api/v1";
+import { comment } from "../handle_api";
 
-export default function CommentScreen({ navigation }) {
+export default function CommentScreen({ route, navigation }) {
+  const postID = route.params.postId
+  const userID = route.params.userID
   const [data, setData] = useState([]);
-  const [getData, setGetData] = useState(false);
   const [noData, setNoData] = useState(false);
-  const [text, setText] = useState("");
+  const [content, setContent] = useState("");
+  const token = useSelector(state => state.authReducer.token);
 
-  const onBack = () => {
-    navigation.navigate("MainScreen");
-  };
-
+  const object = {
+    token: token,
+    content: content,
+    userID: userID,
+    postID: postID
+  }
   useEffect(() => {
-    axios
-      .get(`${url}/postcomment/list/${postId}`, {
-        headers: { Authorization: `Bearer ${auth}` },
-      })
+    comment.listComment(token, postID)
       .then((res) => {
         setData(res.data.data);
-        if (data != null) setGetData(true);
-        data.length == 0 ? setNoData(true) : setNoData(false);
       })
       .catch((error) => console.log(error));
-  });
+  }, [content])
+
+  useEffect(() => {
+    if (data == null) {
+      data.length == 0 ? setNoData(true) : setNoData(false);
+    }
+  }, [data])
 
   const onSend = () => {
-    axios
-      .post(
-        `${url}/postcomment/create/${postId}`,
-        { content: text },
-        {
-          headers: { Authorization: `Bearer ${auth}` },
-        }
-      )
+    setContent("");
+    comment.createComment(object)
       .then((res) => {
-        if ((res.status = "200")) setText("");
       })
       .catch((error) => console.log(error));
   };
@@ -63,12 +60,13 @@ export default function CommentScreen({ navigation }) {
         <Text style={styles.title}>Bình luận</Text>
       </View>
       <View style={styles.body}>
-        {getData && !noData ? (
+        {!noData ? (
           <FlatList
             // ref={"flatList"}
+            refreshing={true}
             data={data}
             renderItem={({ item }) => <ItemComment item={item} />}
-            keyExtractor={(item) => item.id}
+            keyExtractor={(item) => item._id.toString()}
           />
         ) : (
           <View style={styles.comment_blank}>
@@ -85,7 +83,8 @@ export default function CommentScreen({ navigation }) {
         <TextInput
           style={styles.input}
           placeholder="Write a comment..."
-          onChangeText={(text) => setText(text)}
+          defaultValue={content}
+          onChangeText={(text) => setContent(text)}
           multiline={true}
           numberOfLines={1}
         />

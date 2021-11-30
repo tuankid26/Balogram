@@ -1,4 +1,7 @@
 import * as auth from './auth';
+import * as message from './message'
+import * as chat from './chat'
 import * as post from './posts';
-export { auth, post};
+import * as comment from './comment'
+export { auth, message, chat, post, comment };
 

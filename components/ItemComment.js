@@ -7,7 +7,7 @@ const avatar = require("../images/avatar/4.jpg");
 class ItemComment extends Component {
   render() {
     const { item } = this.props;
-
+    // console.log(item)
     return (
       <View style={styles.container}>
         <View style={styles.bgAvatar}>
@@ -37,8 +37,8 @@ const styles = StyleSheet.create({
     paddingBottom: 5,
     paddingRight: 13,
     borderRadius: 20,
-    backgroundColor : '#EEEEEE',
-    
+    backgroundColor: '#EEEEEE',
+
   },
   bgAvatar: {
     flex: 2,
@@ -61,6 +61,7 @@ const styles = StyleSheet.create({
     fontWeight: "600",
     fontSize: 18,
     paddingBottom: 3,
+    fontWeight: 'bold'
   },
   comment: {
     color: "black",

@@ -7,40 +7,41 @@ import {
     Dimensions,
     TouchableOpacity,
 } from "react-native";
+import { useSelector, useDispatch } from 'react-redux';
 import { BackButton } from "../components";
 import { theme } from "../components/core/theme";
-import { Icon, Divider } from "react-native-elements";
-import { MaterialCommunityIcons, FontAwesome } from "react-native-vector-icons";
-import { useSelector, useDispatch } from 'react-redux';
+import { Divider } from "react-native-elements";
+import { MaterialCommunityIcons } from "react-native-vector-icons";
+import { chat, message } from "../handle_api";
 const { width } = Dimensions.get("window");
 
-export default function SettingScreen({ navigation }) {
-    const dispatch = useDispatch();
-    const logout = () => {
-        dispatch({ type: 'REMOVE_TOKEN' })
-        navigation.navigate("LoginScreen")
-    }
+export default function ChatInformation({ route, navigation }) {
+    const token = useSelector(state => state.authReducer.token);
+    const { item } = route.params;
+    console.log(item)
+    const onDeleteChat = async () => {
+        try {
+            const deleteChat = await chat.deleteChat(item._id, token);
+            navigation.navigate("MainMessengerScreen");
+        } catch (err) {
+            console.log(err);
+        }
+    };
     return (
         <View style={styles.wrapper}>
             <View style={styles.header}>
-                {/* <MaterialCommunityIcons
-                    name="arrow-left"
-                    style={styles.icon}
-                // onPress={() => navigation.navigate("SearchScreen")}
-                /> */}
                 <BackButton goBack={navigation.goBack} />
-                <Text style={styles.title}>Cài đặt</Text>
+                <Text style={styles.title}>Tùy chọn</Text>
             </View>
-
-            <TouchableOpacity>
+            <TouchableOpacity onPress={onDeleteChat}>
                 <View style={styles.container}>
                     <MaterialCommunityIcons
-                        name="shield-account"
+                        name="delete"
                         style={styles.icon}
-                        color='green'
+                        color="red"
                     />
                     <View style={styles.info}>
-                        <Text style={styles.name}>Tài khoản và bảo mật</Text>
+                        <Text style={styles.name}>Xóa cuộc trò chuyện</Text>
                     </View>
                 </View>
                 <Divider style={{ margintop: 10, marginLeft: 45 }} />
@@ -49,13 +50,12 @@ export default function SettingScreen({ navigation }) {
             <TouchableOpacity>
                 <View style={styles.container}>
                     <MaterialCommunityIcons
-                        name="monitor-screenshot"
+                        name="block-helper"
                         style={styles.icon}
-                        color='#B1AE57'
-                    // onPress={() => navigation.navigate("SearchScreen")}
+                    // color="#B1AE57"
                     />
                     <View style={styles.info}>
-                        <Text style={styles.name}>Giao diện</Text>
+                        <Text style={styles.name}>Block</Text>
                     </View>
                 </View>
                 <Divider style={{ margintop: 10, marginLeft: 45 }} />
@@ -64,42 +64,12 @@ export default function SettingScreen({ navigation }) {
             <TouchableOpacity>
                 <View style={styles.container}>
                     <MaterialCommunityIcons
-                        name="bell-outline"
+                        name="alert"
                         style={styles.icon}
-                        color='#B61E1E'
-                    // onPress={() => navigation.navigate("SearchScreen")}
+                    // color="#B1AE57"
                     />
                     <View style={styles.info}>
-                        <Text style={styles.name}>Thông báo</Text>
-                    </View>
-                </View>
-                <Divider style={{ margintop: 10, marginLeft: 45 }} />
-            </TouchableOpacity>
-
-            <TouchableOpacity>
-                <View style={styles.container}>
-                    <MaterialCommunityIcons
-                        name="cog-outline"
-                        style={styles.icon}
-                        color='#468548'
-                    // onPress={() => navigation.navigate("SearchScreen")}
-                    />
-                    <View style={styles.info}>
-                        <Text style={styles.name}>Cài đặt ứng dụng</Text>
-                    </View>
-                </View>
-                <Divider style={{ margintop: 10, marginLeft: 45 }} />
-            </TouchableOpacity>
-
-            <TouchableOpacity onPress={() => logout()}>
-                <View style={styles.container} >
-                    <MaterialCommunityIcons
-                        name="logout-variant"
-                        style={styles.icon}
-                        color='#920B0B'
-                    />
-                    <View style={styles.info}>
-                        <Text style={styles.name}>Đăng xuất</Text>
+                        <Text style={styles.name}>Report</Text>
                     </View>
                 </View>
                 <Divider style={{ margintop: 10, marginLeft: 45 }} />

@@ -17,14 +17,14 @@ const EmptyScreen = () => {
 export default function MainScreen() {
 
     return (
-        <Tab.Navigator initialRouteName="Profile" labeled={false}
+        <Tab.Navigator initialRouteName="Feed" labeled={false}
             activeColor={theme.colors.button}
             barStyle={{ backgroundColor: theme.colors.white }}
         >
             <Tab.Screen name="Feed" component={NewFeedScreen}
                 options={{
                     tabBarIcon: ({ color, size }) => (
-                        <MaterialCommunityIcons name="home" color='#B0D8AF' size={26} />
+                        <MaterialCommunityIcons name="home" color={color} size={26} />
                     ),
                 }} />
             <Tab.Screen name="Friend" component={FriendScreen}
