@@ -7,9 +7,24 @@ import {
 } from "../components";
 import { theme } from "../components/core/theme";
 import { MaterialCommunityIcons, Ionicons } from "react-native-vector-icons";
+import { friend } from "../handle_api";
 const { width } = Dimensions.get("window");
 
 export default function FriendScreen({ navigation }) {
+    const [datalistf, setDatalistf] = useState("");
+
+    useEffect(() => {
+        friend.getListFriend(token)
+            .then(res => {
+                setDatalistf(res.data.data.reverse());
+                console.log(datalistf.length);
+            })
+            .catch(error => {
+                console.log("Failed")
+            })
+
+    }, []);
+
     const onSearchPress = () => {
         navigation.navigate("SearchScreen")
     }
@@ -36,7 +51,7 @@ export default function FriendScreen({ navigation }) {
             </View>
             <LinePartition color={theme.colors.silver} />
             <FlatList
-                data={data}
+                data={datalistf}
                 renderItem={({ item }) => <FriendActive item={item} />}
                 keyExtractor={(item) => item.id.toString()}
             />
