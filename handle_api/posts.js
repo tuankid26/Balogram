@@ -71,6 +71,17 @@ const deletePost = async(data)=> {
     return deleteInfo;
 }
 
+const actionLikePost = async(data)=>{
+    const token = data.token;
+    const postId = data.postId;
+    const likeInfo = await api({
+        method: "POST",
+        url: `/postLike/action/${postId}`,
+        headers: { Authorization: `Bearer ${token}` }
+    });
+    return likeInfo;
+}
 
 
-export {addPost, getListPost_newfeed, editPost, deletePost};
+
+export {addPost, getListPost_newfeed, editPost, deletePost, actionLikePost};
