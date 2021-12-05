@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { useState, useEffect } from 'react'
 import { View, FlatList, Text, StyleSheet, Dimensions } from "react-native";
 import { data } from "../log_data/data.js";
 import {
@@ -8,8 +9,24 @@ import {
 import { theme } from "../components/core/theme";
 import { MaterialCommunityIcons, Ionicons } from "react-native-vector-icons";
 const { width } = Dimensions.get("window");
-
+import {friend} from "../handle_api";
+import { useSelector, useDispatch } from 'react-redux';
 export default function FriendScreen({ navigation }) {
+    const [datafriend, setDataFriend] = useState("");
+    const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InZhbmgxIiwiaWQiOiI2MWFjNjIxOTM1MDBlNTFjYjBhNjBhODAiLCJpYXQiOjE2Mzg2ODcyNTd9.QDeEosuZsf6BiZ-vpouXTAuWhiaTvbDHeI2-aXMKnTo";
+
+    useEffect(() => {
+        friend.getListFriend(token)
+            .then(res => {
+                setDataFriend(res.data.data.reverse());
+                console.log(datafriend.length);
+            })
+            .catch(error => {
+                console.log("Failed")
+            })
+
+    }, []);
+
     const onSearchPress = () => {
         navigation.navigate("SearchScreen")
     }
@@ -36,7 +53,7 @@ export default function FriendScreen({ navigation }) {
             </View>
             <LinePartition color={theme.colors.silver} />
             <FlatList
-                data={data}
+                data={datafriend}
                 renderItem={({ item }) => <FriendActive item={item} />}
                 keyExtractor={(item) => item.id.toString()}
             />
