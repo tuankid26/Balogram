@@ -1,4 +1,4 @@
-   
+
 import api from './api';
 
 const listChat = async (token) => {
@@ -25,4 +25,4 @@ const deleteChat = async (chatId, token) => {
 
 
 
-export { listChat,deleteChat };
+export { listChat, deleteChat };

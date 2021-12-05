@@ -17,8 +17,8 @@ import {
     SearchScreen,
     SettingScreen,
     MediaPicker,
-    EditPostScreen,
     ChatInformation,
+    EditPostScreen,
     MainMessengerScreen
 } from './screen'
 import NewPostScreen from './screen/NewPostScreen';
@@ -28,19 +28,19 @@ const Stack = createStackNavigator()
 
 const AppWrapper = () => {
     return (
-      <Provider store={store}>
-        <App/>
-      </Provider>
+        <Provider store={store}>
+            <App />
+        </Provider>
     );
 }
 
 
 const App = () => {
     return (
-    <SafeAreaProvider>
+        <SafeAreaProvider>
             <NavigationContainer>
                 <Stack.Navigator
-                    initialRouteName="MainScreen"
+                    initialRouteName="LoginScreen"
                 // screenOptions={{
                 //     headerShown: false,
                 // }}
@@ -56,13 +56,12 @@ const App = () => {
                     <Stack.Screen name="SearchScreen" options={{ headerShown: false }} component={SearchScreen} />
                     <Stack.Screen name="SettingScreen" options={{ headerShown: false }} component={SettingScreen} />
                     <Stack.Screen name="MediaPicker" options={{ headerShown: false }} component={MediaPicker} />
-                    <Stack.Screen name="EditPostScreen" options={{ headerShown: false }} component={EditPostScreen} />
                     <Stack.Screen name="ChatInformation" options={{ headerShown: false }} component={ChatInformation} />
+                    <Stack.Screen name="EditPostScreen" options={{ headerShown: false }} component={EditPostScreen} />
                     <Stack.Screen name="MainMessengerScreen" options={{ headerShown: false }} component={MainMessengerScreen} />
-                
                 </Stack.Navigator>
             </NavigationContainer>
-    </SafeAreaProvider>
+        </SafeAreaProvider>
     )
 }
 

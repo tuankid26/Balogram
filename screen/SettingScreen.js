@@ -11,9 +11,15 @@ import { BackButton } from "../components";
 import { theme } from "../components/core/theme";
 import { Icon, Divider } from "react-native-elements";
 import { MaterialCommunityIcons, FontAwesome } from "react-native-vector-icons";
+import { useSelector, useDispatch } from 'react-redux';
 const { width } = Dimensions.get("window");
 
 export default function SettingScreen({ navigation }) {
+    const dispatch = useDispatch();
+    const logout = () => {
+        dispatch({ type: 'REMOVE_TOKEN' })
+        navigation.navigate("LoginScreen")
+    }
     return (
         <View style={styles.wrapper}>
             <View style={styles.header}>
@@ -85,13 +91,12 @@ export default function SettingScreen({ navigation }) {
                 <Divider style={{ margintop: 10, marginLeft: 45 }} />
             </TouchableOpacity>
 
-            <TouchableOpacity>
-                <View style={styles.container}>
+            <TouchableOpacity onPress={() => logout()}>
+                <View style={styles.container} >
                     <MaterialCommunityIcons
                         name="logout-variant"
                         style={styles.icon}
                         color='#920B0B'
-                    // onPress={() => navigation.navigate("SearchScreen")}
                     />
                     <View style={styles.info}>
                         <Text style={styles.name}>Đăng xuất</Text>

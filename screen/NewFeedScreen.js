@@ -1,7 +1,10 @@
 import React, { useState, useEffect, version, useCallback } from 'react'
-import { StyleSheet, View, Text, Image,
-     FlatList, StatusBar, Dimensions,
-    Button, Pressable, RefreshControl} from 'react-native'
+import {
+    StyleSheet, View, Text, Image,
+    FlatList, StatusBar, Dimensions,
+    Button, Pressable, RefreshControl,
+    TouchableWithoutFeedback
+} from 'react-native'
 import { Avatar } from 'react-native-elements';
 import { MaterialCommunityIcons, Ionicons, Octicons } from 'react-native-vector-icons';
 import FeedImage from '../images/Store_local_image/anhquan.jpg';
@@ -9,8 +12,8 @@ import FeedImage1 from '../images/Store_local_image/anh2.jpg';
 import FeedImage2 from '../images/Store_local_image/anh3.jpg';
 import { theme } from '../components/core/theme'
 import Modal from "react-native-modal";
-import {post} from "../handle_api";
-import {token} from "../handle_api/token"
+import { post } from "../handle_api";
+import { useSelector, useDispatch } from 'react-redux';
 const { width } = Dimensions.get('window')
 
 const wait = (timeout) => {
@@ -35,22 +38,64 @@ export default function NewFeedScreen({ navigation }) {
     const [imagePath, setImagePath] = useState("");
     const [refreshing, setRefreshing] = useState(false);
     const [toggleItem, setToggleItem] = useState("");
-    const onLikePress = (userId, postId) => {
+    // const [doubleTouch, setDoubleTouch] = useState(0);
+    const token = useSelector(state => state.authReducer.token);
+
+    const onLikePress = (userId,postId) => {
+        setDatapost([...datapost].map(object => {
+            const isLikeTmp = object.isLike;
+            // Handle list like and status liked
+            if(object._id === postId) {
+
+                let arrLike = object.like;
+                let arrLikeNotContainCurrentUser = arrLike.filter((item) => {
+                    return item != userId
+                });
+                if (arrLikeNotContainCurrentUser.length === arrLike.length) {
+                    arrLike.push(userId);
+                } else {
+                    arrLike = arrLikeNotContainCurrentUser;
+                }
+
+              return {
+                
+                ...object,
+                "isLike": !isLikeTmp,
+                "like": arrLike
+              }
+            }
+            else return object;
+        }));
+
+        const data = {
+            "postId": postId,
+            "token": token
+        }
+        post.actionLikePost(data)
+            .then(res => {
+            })
+            .catch(error => {
+                console.log("Failed");
+                console.log(error.response.data);
+            })
+
+        
+        
+        
     }
-    const onDislikePress = (userId, postId) => {
-    }
+
     const [isModalVisible, setModalVisible] = useState(false);
     const [isModalReportVisible, setModalReportVisible] = useState(false);
     const toggleModal = (item) => {
         setModalVisible(!isModalVisible);
         setToggleItem(item);
-        
+
     };
 
     const toggleEditPost = () => {
         setModalVisible(!isModalVisible);
         // console.log(toggleItem);
-        navigation.navigate("EditPostScreen",{ toggleItem });
+        navigation.navigate("EditPostScreen", { toggleItem });
 
     }
 
@@ -62,8 +107,8 @@ export default function NewFeedScreen({ navigation }) {
         }
         post.deletePost(data)
             .then(res => {
-            console.log(res.data);
-            // console.log(data.images)
+                // console.log(res.data);
+                // console.log(data.images)
             })
             .catch(error => {
                 console.log("Failed");
@@ -71,7 +116,7 @@ export default function NewFeedScreen({ navigation }) {
             })
 
     }
-    
+
 
     const toggleReportModal = () => {
         setModalReportVisible(!isModalReportVisible);
@@ -81,19 +126,17 @@ export default function NewFeedScreen({ navigation }) {
         navigation.navigate("SearchScreen")
     }
 
-    
+
 
     const onRefresh = useCallback(() => {
-        
+
         setRefreshing(true);
 
         post.getListPost_newfeed(token)
             .then(res => {
-                // console.log(res.data.data);
-                
+
                 setDatapost(res.data.data.reverse());
                 console.log("refrssssh");
-                // console.log(datapost[0]._id);
 
             })
             .catch(error => {
@@ -101,26 +144,23 @@ export default function NewFeedScreen({ navigation }) {
                 console.log(error);
                 console.log("Log done");
             })
-        
-        wait(1000).then(() => setRefreshing(false)
-        
+
+        wait(500).then(() => setRefreshing(false)
+
         );
-      }, []);
-    
+    }, []);
+
 
     useEffect(() => {
-    post.getListPost_newfeed(token)
-      .then(res => {
-        
-        setDatapost(res.data.data.reverse());
-        console.log(datapost.length);
+        post.getListPost_newfeed(token)
+            .then(res => {
+                setDatapost(res.data.data.reverse());
+            })
+            .catch(error => {
+                console.log("Failed")
+            })
 
-    })
-      .catch(error => {
-        console.log("Failed")
-    })
-
-    },[]);
+    }, []);
 
     const splitDateTime = (raw_date) => {
         // 2021-11-14T17:16:51.653Z
@@ -131,17 +171,21 @@ export default function NewFeedScreen({ navigation }) {
         const new_text = date + " lúc " + hour_minute;
         return new_text;
     }
+
     const onAddPost = () => {
         navigation.navigate('NewPostScreen');
     }
-    const onComment = () => {
-        navigation.navigate('CommentScreen');
+    const onComment = (postId, userId) => {
+        navigation.navigate('CommentScreen', { postId: postId, userId: userId });
     }
 
 
     const renderItem = (item) => {
         const date_time = splitDateTime(item.updatedAt);
-
+        const num_like = item.like.length;
+        const text_like = num_like + " lượt thích";
+        // console.log(datapost[0]);
+        const itemIsLike = item.isLike;
         return (
             <View style={styles.containerPost}>
                 <View style={styles.containerPostHeader}>
@@ -164,26 +208,49 @@ export default function NewFeedScreen({ navigation }) {
                     </View>
                 </View>
                 <View style={styles.containerFeed}>
-                    <Text>
+                    <Text style={styles.described}>
                         {item.described}
                     </Text>
+                    {/* <TouchableWithoutFeedback
+                        onPress={() => {
+                            setDoubleTouch(doubleTouch+ 1);
+                            if (doubleTouch == 2) {
+                                clearTimeout(this.backTimer)
+                                console.warn("Clicked twice")
+                            } else {
+                                this.backTimer = setTimeout(() => {
+                                setDoubleTouch(0);
+                                }, 3000)
+                            }
+
+                        }}
+                    > */}
+                    
                     <View style={styles.containerImage}>
                         <Slider item={item.images} index={0} />
                         <Text></Text>
                     </View>
+                    {/* </TouchableWithoutFeedback> */}
 
                     <View style={styles.containerReact}>
-                        <Text style={styles.numberReact}>10 lượt thích</Text>
+                        <Text style={styles.numberReact}>{text_like}</Text>
                         <View style={styles.reactIconBox}>
-                            <MaterialCommunityIcons name="heart-outline" style={styles.reactIcon} />
-                            <Octicons name="comment" style={styles.reactIcon} onPress={onComment} />
+                                <Pressable onPress={() => onLikePress(item.userCall, item._id)}>
+                                <MaterialCommunityIcons
+                                    name={itemIsLike ? "heart" : "heart-outline"}
+                                    style={styles.reactIcon}
+                                    color={itemIsLike ? "red" : "black"}
+                                />
+                                </Pressable>
+                            
+                            <Octicons name="comment" style={styles.reactIcon} onPress={() => onComment(item._id, item.author._id)} />
                         </View>
                         <Text style={styles.comment}
-                        // onPress={() => props.navigation.navigate('Comment', { postId: item.id, uid: item.user.uid })}
+                            onPress={() => onComment(item._id)}
                         >
                             View Comments...
                         </Text>
-                        <Comment />
+                        <Comment postID={item._id} />
                     </View>
                 </View>
 
@@ -257,8 +324,8 @@ export default function NewFeedScreen({ navigation }) {
                     // horizontal={false}
                     refreshControl={
                         <RefreshControl
-                        refreshing={refreshing}
-                        onRefresh={onRefresh}
+                            refreshing={refreshing}
+                            onRefresh={onRefresh}
                         />
                     }
                     initialNumToRender={7}
@@ -273,6 +340,12 @@ export default function NewFeedScreen({ navigation }) {
 }
 
 const styles = StyleSheet.create({
+    described:{
+        marginLeft: 7,
+        fontSize: 18,
+        // fontFamily: 'San Francisco',
+        // fontWeight: 'bold',
+    },  
     backgroundVideo: {
         position: 'absolute',
         top: 0,
@@ -281,6 +354,7 @@ const styles = StyleSheet.create({
         right: 0,
     },
     numberReact: {
+        marginLeft: 7,
         fontSize: 18
     },
     button: {

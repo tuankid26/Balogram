@@ -1,15 +1,15 @@
-const modalReducer = (state = {type: null, data: null}, action) => {
+const modalReducer = (state = { type: null, data: null }, action) => {
     // console.log(action);
     switch (action.type) {
-        case 'SHOW': 
+        case 'SHOW':
             return {
-                ...state, 
-                type: action.payload.modalType, 
+                ...state,
+                type: action.payload.modalType,
                 data: action.payload.propsData
             };
         case 'HIDE':
             return {
-                ...state, 
+                ...state,
                 type: null,
                 data: null
             };

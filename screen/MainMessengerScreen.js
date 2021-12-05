@@ -8,27 +8,29 @@ import {
   Dimensions,
 } from "react-native";
 import { Ionicons } from "react-native-vector-icons";
-
-import { data } from "../log_data/data.js";
 import Item_Messenger from "../components/Item_Messenger";
 import { LinePartition } from "../components";
 import { theme } from "../components/core/theme";
-
+import { useSelector } from 'react-redux';
 import { chat } from "../handle_api";
+
 export default function MainMessengerScreen({ navigation }) {
   const [chats, setChats] = useState([]);
-  const token =
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRydW5ndnVob2FuZyIsImlkIjoiNjE4ZTk3NTg3NDU1MGEyMmE0Y2IyYTkwIiwiaWF0IjoxNjM2NzM0ODA5fQ.NwBPkKkhl8IHr64k-4EwTPMhtzY2IM0J6TXqm8c-DNk";
+  const token = useSelector(state => state.authReducer.token);
   useEffect(() => {
     const initialize = async () => {
       const newChats = await fetchChats();
       setChats(
         newChats
           .map((msg) => ({
-            id: msg[0]._id,
+            receivedId: msg[1]._id,
+            sendId: msg[0].member.filter((item) => {
+              return item !== msg[1]._id
+            }),
             name: msg[1].username,
             avatar: msg[1].avatar,
             text: msg[2].content,
+            _id: msg[0]._id
           }))
           .reverse()
       );
@@ -73,7 +75,7 @@ export default function MainMessengerScreen({ navigation }) {
         // ref={"flatList"}
         data={chats}
         renderItem={({ item }) => renderItem(item)}
-        keyExtractor={(item) => item.id}
+        keyExtractor={(item) => item._id.toString()}
       />
     </View>
   );

@@ -1,12 +1,12 @@
 
 const initialState = {
-    albumName: null, 
+    albumName: null,
     selectedAssets: []
 };
 
 
 const addAsset = (asset, state) => {
-    
+
     return [...state.selectedAssets, asset];
 
 }
@@ -15,7 +15,7 @@ const removeAsset = (removedAsset, state) => {
     return state.selectedAssets.filter(asset => asset.uri !== removedAsset.uri);
 }
 
-const mediaReducer = (state = initialState, action) => {
+export default mediaReducer = (state = initialState, action) => {
     switch (action.type) {
         case 'ADD_ASSET':
             return {
@@ -29,7 +29,7 @@ const mediaReducer = (state = initialState, action) => {
                 selectedAssets: removeAsset(action.payload, state)
             };
 
-        case 'EMPTY': 
+        case 'EMPTY':
             return initialState;
 
         case 'SET_ALBUM_NAME':
@@ -38,8 +38,7 @@ const mediaReducer = (state = initialState, action) => {
                 albumName: action.payload
             };
 
-        default: 
+        default:
             return state;
     }
 }
-
