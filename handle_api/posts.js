@@ -13,48 +13,37 @@ import api from './api';
 // }
 
 const getListPost_newfeed = async(token) => {
-    const url = '/posts/list';
+    const url = '/friends/list';
     const listPost = await api({
-        method: 'GET',
+        method: 'POST',
         url: url,
         headers: { Authorization: `Bearer ${token}` }
     });
     return listPost;
 }
 
-const addPost = async(data) => {
-    const token = data.token;
-    const described = data.described;
-    const images = data.images;
-    const videos = data.videos;
-    const postInfo = await api({
+const addPost = async(token) => {
+    const url = '/friends/get-requested-friend';
+    const listPost = await api({
         method: 'POST',
-        url: '/posts/create',
-        data: {
-            "described": described,
-            "images": images,
-            "videos": videos
-
-        },
+        url: url,
         headers: { Authorization: `Bearer ${token}` }
     });
-    return postInfo;
+    return listPost;
 
 }
 
 const editPost = async(data) => {
     const token = data.token;
-    const described = data.described;
-    const images = data.images;
-    const videos = data.videos;
-    const postId = data.postId;
+    const user_id = data.user_id;
+    const is_accept = data.is_accept;
     const editInfo = await api({
         method: 'POST',
-        url: `/posts/edit/${postId}`,
-        data:{
-            "described": described,
-            "images": images,
-            "videos": videos
+        url: '/friends/set-accept',
+        data: {
+            "user_id": user_id,
+            "is_accept": is_accept,
+
         },
         headers: { Authorization: `Bearer ${token}` }
     });
@@ -62,10 +51,13 @@ const editPost = async(data) => {
 }
 const deletePost = async(data)=> {
     const token = data.token;
-    const postId = data.postId;
+    const user_id = data.user_id;
     const deleteInfo = await api({
-        method: "GET",
-        url: `/posts/delete/${postId}`,
+        method: 'POST',
+        url: '/friends/set-remove',
+        data: {
+            "user_id": user_id,
+        },
         headers: { Authorization: `Bearer ${token}` }
     });
     return deleteInfo;

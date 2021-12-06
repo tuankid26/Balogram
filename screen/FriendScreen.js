@@ -10,24 +10,26 @@ import { theme } from "../components/core/theme";
 import { MaterialCommunityIcons, Ionicons } from "react-native-vector-icons";
 const { width } = Dimensions.get("window");
 import {friend} from "../handle_api";
+import { post } from "../handle_api";
 import { useSelector, useDispatch } from 'react-redux';
 export default function FriendScreen({ navigation }) {
-    const [datafriend, setDataFriend] = useState("");
-    const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InZhbmgxIiwiaWQiOiI2MWFjNjIxOTM1MDBlNTFjYjBhNjBhODAiLCJpYXQiOjE2Mzg2ODcyNTd9.QDeEosuZsf6BiZ-vpouXTAuWhiaTvbDHeI2-aXMKnTo";
+    const [datafriend, setDataFriend] = useState([]);
+    // const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InZhbmgxIiwiaWQiOiI2MWFjNjIxOTM1MDBlNTFjYjBhNjBhODAiLCJpYXQiOjE2Mzg2ODcyNTd9.QDeEosuZsf6BiZ-vpouXTAuWhiaTvbDHeI2-aXMKnTo";
+    const token = useSelector(state => state.authReducer.token);
+    useEffect(() => {
+        post.getListPost_newfeed(token)
+            .then(res => {
+                setDataFriend(res.data.data.friends);
+                console.log(datafriend.length);
+                console.log("datafriend.length");
+                // console.log(datafriend);
+            })
+            .catch(error => {
+                console.log("Failed2");
+                console.log(error);
+            })
 
-    // useEffect(() => {
-    //     friend.getListFriend(token)
-    //         .then(res => {
-    //             setDataFriend(res.data.data.reverse());
-    //             console.log(datafriend.length);
-    //             console.log("datafriend.length");
-    //             console.log(datafriend);
-    //         })
-    //         .catch(error => {
-    //             console.log("Failed")
-    //         })
-
-    // }, []);
+    }, []);
 
     const onSearchPress = () => {
         navigation.navigate("SearchScreen")
@@ -55,7 +57,7 @@ export default function FriendScreen({ navigation }) {
             </View>
             <LinePartition color={theme.colors.silver} />
             <FlatList
-                data={data}
+                data={datafriend}
                 renderItem={({ item }) => <FriendActive item={item} />}
                 // keyExtractor={(item) => item.id.toString()}
             />

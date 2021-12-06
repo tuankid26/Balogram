@@ -14,11 +14,11 @@ class FriendActive extends Component {
                     <View style={styles.bgAvatar}>
                         <Avatar.Image
                             size={45}
-                            source={item.avatar}
+                            source={'../images/Store_local_image/anh2.jpg'}
                         />
                     </View>
                     <View style={styles.info}>
-                        <Text style={styles.name}>{item.name}</Text>
+                        <Text style={styles.name}>{item.username}</Text>
                         {/* <Divider style = {{marginTop : 12}}/> */}
                     </View>
                     <View>
