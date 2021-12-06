@@ -24,7 +24,7 @@ export default function AddFriendScreen({ navigation }) {
     useEffect(() => {
         console.log("datafriend.length1");
         console.log(datafriend.length);
-        post.addPost(token)
+        post.getRequestFriend(token)
             .then(res => {
                 // console.log(datafriend.length);
                 // console.log("datafriend.length");
@@ -46,7 +46,7 @@ export default function AddFriendScreen({ navigation }) {
             "token": token,
             "is_accept": "1",
         }
-        post.editPost(dataAccept)
+        post.setAcceptFriend(dataAccept)
             .then(res => {
                 console.log(res.data);
                 const updateData = datafriend.filter(item => item._id !== res.data.data.sender);
@@ -66,7 +66,7 @@ export default function AddFriendScreen({ navigation }) {
             "user_id": userID,
             "token": token,
         }
-        post.deletePost(dataRemove)
+        post.setRemoveFriend(dataRemove)
             .then(res => {
                 console.log(res.data);
                 const updateData = datafriend.filter(item => item._id !== res.data.data.sender);

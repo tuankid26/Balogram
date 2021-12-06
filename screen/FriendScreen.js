@@ -17,7 +17,7 @@ export default function FriendScreen({ navigation }) {
     // const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InZhbmgxIiwiaWQiOiI2MWFjNjIxOTM1MDBlNTFjYjBhNjBhODAiLCJpYXQiOjE2Mzg2ODcyNTd9.QDeEosuZsf6BiZ-vpouXTAuWhiaTvbDHeI2-aXMKnTo";
     const token = useSelector(state => state.authReducer.token);
     useEffect(() => {
-        post.getListPost_newfeed(token)
+        post.getListFriend(token)
             .then(res => {
                 setDataFriend(res.data.data.friends);
                 console.log(datafriend.length);
@@ -29,7 +29,7 @@ export default function FriendScreen({ navigation }) {
                 console.log(error);
             })
 
-    }, []);
+    }, datafriend);
 
     const onSearchPress = () => {
         navigation.navigate("SearchScreen")
