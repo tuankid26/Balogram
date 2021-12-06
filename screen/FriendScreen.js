@@ -15,17 +15,19 @@ export default function FriendScreen({ navigation }) {
     const [datafriend, setDataFriend] = useState("");
     const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InZhbmgxIiwiaWQiOiI2MWFjNjIxOTM1MDBlNTFjYjBhNjBhODAiLCJpYXQiOjE2Mzg2ODcyNTd9.QDeEosuZsf6BiZ-vpouXTAuWhiaTvbDHeI2-aXMKnTo";
 
-    useEffect(() => {
-        friend.getListFriend(token)
-            .then(res => {
-                setDataFriend(res.data.data.reverse());
-                console.log(datafriend.length);
-            })
-            .catch(error => {
-                console.log("Failed")
-            })
+    // useEffect(() => {
+    //     friend.getListFriend(token)
+    //         .then(res => {
+    //             setDataFriend(res.data.data.reverse());
+    //             console.log(datafriend.length);
+    //             console.log("datafriend.length");
+    //             console.log(datafriend);
+    //         })
+    //         .catch(error => {
+    //             console.log("Failed")
+    //         })
 
-    }, []);
+    // }, []);
 
     const onSearchPress = () => {
         navigation.navigate("SearchScreen")
@@ -53,9 +55,9 @@ export default function FriendScreen({ navigation }) {
             </View>
             <LinePartition color={theme.colors.silver} />
             <FlatList
-                data={datafriend}
+                data={data}
                 renderItem={({ item }) => <FriendActive item={item} />}
-                keyExtractor={(item) => item.id.toString()}
+                // keyExtractor={(item) => item.id.toString()}
             />
         </View>
     );
