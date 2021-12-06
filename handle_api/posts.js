@@ -12,7 +12,7 @@ import api from './api';
 //     return createResult;
 // }
 
-const getListPost_newfeed = async(token) => {
+const getListFriend = async(token) => {
     const url = '/friends/list';
     const listPost = await api({
         method: 'POST',
@@ -22,7 +22,7 @@ const getListPost_newfeed = async(token) => {
     return listPost;
 }
 
-const addPost = async(token) => {
+const getRequestFriend = async(token) => {
     const url = '/friends/get-requested-friend';
     const listPost = await api({
         method: 'POST',
@@ -33,7 +33,7 @@ const addPost = async(token) => {
 
 }
 
-const editPost = async(data) => {
+const setAcceptFriend = async(data) => {
     const token = data.token;
     const user_id = data.user_id;
     const is_accept = data.is_accept;
@@ -49,7 +49,7 @@ const editPost = async(data) => {
     });
     return editInfo;
 }
-const deletePost = async(data)=> {
+const setRemoveFriend = async(data)=> {
     const token = data.token;
     const user_id = data.user_id;
     const deleteInfo = await api({
@@ -65,4 +65,4 @@ const deletePost = async(data)=> {
 
 
 
-export {addPost, getListPost_newfeed, editPost, deletePost};
+export {addPost, getListPost_newfeed, editPost, deletePost,setAcceptFriend,setRemoveFriend,getListFriend,getRequestFriend};
