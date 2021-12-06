@@ -16,8 +16,9 @@ import {
 import { post } from "../handle_api";
 
 export default function EditPostScreen({ route, navigation }) {
-  const [status, setStatus] = useState("")
+  
   const { toggleItem } = route.params;
+  const [status, setStatus] = useState(toggleItem.described);
   const dispatch = useDispatch();
   const token = useSelector(state => state.authReducer.token);
 
@@ -27,12 +28,12 @@ export default function EditPostScreen({ route, navigation }) {
 
     for (let index = 0; index < toggleItem.images.length; index++) {
       const images = {}
-      // console.log(toggleItem.images[index].base64);
+      // console.log(toggleItem.images[index]);
       images.uri = `data:image/jpeg;base64,${toggleItem.images[index].base64}`
       images.id = toggleItem.images[index]._id;
+      images.mediaType = 'cache';
       dispatch(mediaActions.addAsset(images));
     }
-    console.log("Done");
 
   }, []);
   const selectedAssets = useSelector(state => state.media.selectedAssets);
@@ -41,15 +42,17 @@ export default function EditPostScreen({ route, navigation }) {
 
     const imageAssets = selectedAssets.filter(asset => asset.mediaType === 'photo');
     const videoAssets = selectedAssets.filter(asset => asset.mediaType === 'video');
+    const cacheAssets = selectedAssets.filter(asset => asset.mediaType === 'cache');
+    const convertCacheImageAssets = cacheAssets.map(asset => asset.uri);
 
     const convertedImageAssets = await convertToBase64(imageAssets);
     const convertedVideoAssets = await convertToBase64(videoAssets);
-
+    const cacheConcatImageAssets = convertCacheImageAssets.concat(convertedImageAssets);
     const data = {
       token: token,
       postId: toggleItem._id,
       described: status,
-      images: convertedImageAssets,
+      images: cacheConcatImageAssets,
       videos: convertedVideoAssets
     }
 

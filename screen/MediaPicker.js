@@ -147,7 +147,7 @@ const Content = props => {
 };
 
 const MediaPicker = ({ navigation }) => {
-  const albumNames = ['Camera', 'Screenshots', 'Messenger', 'Zalo', 'Facebook'];
+  const albumNames = ['Camera', 'Screenshots', 'Instagram', 'Zalo', 'Facebook'];
   const dispatch = useDispatch();
   const [selectedAlbum, setSelectedAlbum] = useState(albumNames[0]);
   const [albumAssets, setAlbumAssets] = useState([]);
@@ -189,7 +189,7 @@ const MediaPicker = ({ navigation }) => {
   const handleItemSelected = async (item) => {
     const result = await ImageHelper.resizeImage(item);
     item.uri = result.uri;
-    console.log(item);
+    // console.log(item);
     if (selectedAssets.indexOf(item) >= 0) {
       dispatch(mediaActions.removeAsset(item))
     } else {

@@ -65,7 +65,7 @@ export default function NewFeedScreen({ navigation }) {
         }
         post.deletePost(data)
             .then(res => {
-                console.log(res.data);
+                // console.log(res.data);
                 // console.log(data.images)
             })
             .catch(error => {
@@ -95,6 +95,7 @@ export default function NewFeedScreen({ navigation }) {
                 // console.log(res.data.data);
                 setDatapost(res.data.data.reverse());
                 console.log("refrssssh");
+                // console.log(datapost[0].images.length);
                 // console.log(datapost[0]._id);
             })
             .catch(error => {
@@ -113,7 +114,6 @@ export default function NewFeedScreen({ navigation }) {
         post.getListPost_newfeed(token)
             .then(res => {
                 setDatapost(res.data.data.reverse());
-                console.log(datapost.length);
             })
             .catch(error => {
                 console.log("Failed")
@@ -139,7 +139,6 @@ export default function NewFeedScreen({ navigation }) {
 
     const renderItem = (item) => {
         const date_time = splitDateTime(item.updatedAt);
-
         return (
             <View style={styles.containerPost}>
                 <View style={styles.containerPostHeader}>
@@ -162,7 +161,7 @@ export default function NewFeedScreen({ navigation }) {
                     </View>
                 </View>
                 <View style={styles.containerFeed}>
-                    <Text>
+                    <Text style={styles.described}>
                         {item.described}
                     </Text>
                     <View style={styles.containerImage}>
@@ -271,6 +270,12 @@ export default function NewFeedScreen({ navigation }) {
 }
 
 const styles = StyleSheet.create({
+    described:{
+        marginLeft: 7,
+        fontSize: 18,
+        // fontFamily: 'San Francisco',
+        // fontWeight: 'bold',
+    },  
     backgroundVideo: {
         position: 'absolute',
         top: 0,

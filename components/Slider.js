@@ -17,6 +17,17 @@ export default class MyCarousel extends Component {
             activeSlide: props.index,
             images: props.item
         }
+        
+    }
+
+   
+    componentDidUpdate(prevProps){ 
+
+       if (this.state.images != prevProps.item){
+           this.setState({images: prevProps.item})
+           this.setState({entries: prevProps.item})
+           this.setState({activeSlide: prevProps.index})
+       }
     }
 
     _renderItem({ item, index }) {
@@ -55,7 +66,6 @@ export default class MyCarousel extends Component {
     render() {
         const sliderWidth = Dimensions.get('window').width;
         const itemHeight = Dimensions.get('window').height;
-
         return (
             <View>
                 <Carousel
