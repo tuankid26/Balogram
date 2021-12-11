@@ -15,12 +15,12 @@ const listComment = async (token, postID) => {
 const createComment = async (object) => {
     const getResult = await api({
         method: 'POST',
-        url: `/postcomment/create/${object.postID}`,
+        url: `/postcomment/create/${object.postId}`,
         headers: {
             'Authorization': `Bearer ${object.token}`
         },
         data: {
-            userID: object.userID,
+            userId: object.userId,
             content: object.content
         }
     });

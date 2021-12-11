@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { View, FlatList, Text, StyleSheet, Dimensions } from "react-native";
+import { View, FlatList, Text, StyleSheet, Dimensions, SafeAreaView } from "react-native";
 import { data } from "../log_data/data.js";
 import {
     FriendActive,
@@ -14,6 +14,7 @@ export default function FriendScreen({ navigation }) {
         navigation.navigate("SearchScreen")
     }
     return (
+        
         <View style={styles.wrapper}>
             {/* <View style={styles.header}>
                 <Text style={styles.title}>List Friend</Text>

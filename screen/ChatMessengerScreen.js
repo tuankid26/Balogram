@@ -19,7 +19,7 @@ export default function ChatMessengerScreen({ route, navigation }) {
   const onBack = () => {
     navigation.navigate("MainScreen");
   };
-
+  
   useLayoutEffect(() => {
     navigation.setOptions({
       headerLeft: () => (
@@ -48,8 +48,6 @@ export default function ChatMessengerScreen({ route, navigation }) {
         }))
           .reverse()
       );
-
-
       socket.current = io(SOCKET_URL);
     };
     initialize();
@@ -92,6 +90,14 @@ export default function ChatMessengerScreen({ route, navigation }) {
           newMsgObj.text,
           token
         );
+        const newMsg = sendResult.data.data;
+        socket.current?.emit('sendMessage', {
+          _id: newMsg._id,
+          senderId: senderId,
+          receivedId: receiverId,
+          content: newMsgObj.text,
+          createdAt: newMsg.createdAt
+        });
       } catch (err) {
         console.log(err);
       }
