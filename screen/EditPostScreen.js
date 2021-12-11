@@ -4,7 +4,7 @@ import { Text } from 'react-native-paper'
 import { theme } from '../components/core/theme'
 import { Icon } from 'react-native-elements'
 import { useSelector, useDispatch } from 'react-redux';
-import { mediaActions } from '../redux/actions';
+import { mediaActions, uploadActions } from '../redux/actions';
 import * as FileSystem from 'expo-file-system';
 
 
@@ -39,7 +39,7 @@ export default function EditPostScreen({ route, navigation }) {
   const selectedAssets = useSelector(state => state.media.selectedAssets);
 
   const editUpLoad = async () => {
-
+    dispatch(uploadActions.uploading());
     const imageAssets = selectedAssets.filter(asset => asset.mediaType === 'photo');
     const videoAssets = selectedAssets.filter(asset => asset.mediaType === 'video');
     const cacheAssets = selectedAssets.filter(asset => asset.mediaType === 'cache');
@@ -56,16 +56,15 @@ export default function EditPostScreen({ route, navigation }) {
       videos: convertedVideoAssets
     }
 
+    try{
+      const res = await post.editPost(data);
+      console.log("EDIT DONE");
+      dispatch(uploadActions.uploadSuccess(res.data.data));
+    } catch (err) {
+      const errMsg = err.response ? err.response.message : "Error occured!";
+      dispatch(uploadActions.uploadFailure(errMsg));
+    }
 
-    post.editPost(data)
-      .then(res => {
-        console.log(res.data);
-        // console.log(data.images)
-      })
-      .catch(error => {
-        console.log("Failed");
-        console.log(error.response.data);
-      })
     dispatch(mediaActions.resetState());
 
     navigation.navigate("MainScreen");

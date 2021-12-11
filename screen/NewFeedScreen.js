@@ -5,23 +5,22 @@ import {
     Button, Pressable, RefreshControl,
     TouchableWithoutFeedback
 } from 'react-native'
+
+import FeedImage from '../images/Store_local_image/anhquan.jpg';
+
 import { Avatar } from 'react-native-elements';
 import { MaterialCommunityIcons, Ionicons, Octicons } from 'react-native-vector-icons';
-import FeedImage from '../images/Store_local_image/anhquan.jpg';
-import FeedImage1 from '../images/Store_local_image/anh2.jpg';
-import FeedImage2 from '../images/Store_local_image/anh3.jpg';
 import { theme } from '../components/core/theme'
 import Modal from "react-native-modal";
 import { post } from "../handle_api";
 import { useSelector, useDispatch } from 'react-redux';
+import { uploadActions } from '../redux/actions';
+import {PostsHelper} from '../helpers';
 const { width } = Dimensions.get('window')
 
 const wait = (timeout) => {
     return new Promise(resolve => setTimeout(resolve, timeout));
 }
-
-
-
 
 import {
     LinePartition,
@@ -38,10 +37,16 @@ export default function NewFeedScreen({ navigation }) {
     const [imagePath, setImagePath] = useState("");
     const [refreshing, setRefreshing] = useState(false);
     const [toggleItem, setToggleItem] = useState("");
-    // const [doubleTouch, setDoubleTouch] = useState(0);
+    const [doubleTouch, setDoubleTouch] = useState(0);
     const token = useSelector(state => state.authReducer.token);
+    const uploadStatus = useSelector((state) => {
+        return state.upload;
+    });
+    const dispatch = useDispatch();
 
     const onLikePress = (userId,postId) => {
+        // const convertDatapost = PostsHelper.SetLike(userId, postId, datapost);
+        // setDatapost(convertDatapost);
         setDatapost([...datapost].map(object => {
             const isLikeTmp = object.isLike;
             // Handle list like and status liked
@@ -77,12 +82,9 @@ export default function NewFeedScreen({ navigation }) {
             .catch(error => {
                 console.log("Failed");
                 console.log(error.response.data);
-            })
-
-        
-        
-        
+            })  
     }
+
 
     const [isModalVisible, setModalVisible] = useState(false);
     const [isModalReportVisible, setModalReportVisible] = useState(false);
@@ -94,26 +96,24 @@ export default function NewFeedScreen({ navigation }) {
 
     const toggleEditPost = () => {
         setModalVisible(!isModalVisible);
-        // console.log(toggleItem);
         navigation.navigate("EditPostScreen", { toggleItem });
 
     }
 
-    const toggleDeletePost = () => {
+    const toggleDeletePost = async () => {
         setModalVisible(!isModalVisible);
         const data = {
             "postId": toggleItem._id,
             "token": token
         }
-        post.deletePost(data)
-            .then(res => {
-                // console.log(res.data);
-                // console.log(data.images)
-            })
-            .catch(error => {
-                console.log("Failed");
-                console.log(error.response.data);
-            })
+        try{
+
+        const res = await post.deletePost(data);
+        fetchPosts();
+
+        } catch (err){
+            console.log(err);
+        }
 
     }
 
@@ -126,41 +126,45 @@ export default function NewFeedScreen({ navigation }) {
         navigation.navigate("SearchScreen")
     }
 
+    const fetchPosts = async () => {
+        try {
+          const dataFeed = await post.getListPost_newfeed(token);
+          setDatapost(dataFeed.data.data.reverse());
+          console.log("refrssssh");
+        } catch (err) {
+          console.log(err);
+        }
+    };
+
+    
+
 
 
     const onRefresh = useCallback(() => {
 
         setRefreshing(true);
-
-        post.getListPost_newfeed(token)
-            .then(res => {
-
-                setDatapost(res.data.data.reverse());
-                console.log("refrssssh");
-
-            })
-            .catch(error => {
-                console.log("Failed")
-                console.log(error);
-                console.log("Log done");
-            })
-
-        wait(500).then(() => setRefreshing(false)
+        fetchPosts();
+        wait(1000).then(() => setRefreshing(false)
 
         );
     }, []);
 
 
     useEffect(() => {
-        post.getListPost_newfeed(token)
-            .then(res => {
-                setDatapost(res.data.data.reverse());
-            })
-            .catch(error => {
-                console.log("Failed")
-            })
+        fetchPosts();
+        
 
     }, []);
+
+    useEffect(() => {
+        if (uploadStatus.data) {
+            fetchPosts();
+          dispatch(uploadActions.resetState());
+        } else if (uploadStatus.err) {
+        }
+        }, [uploadStatus]);
+
+    
 
     const splitDateTime = (raw_date) => {
         // 2021-11-14T17:16:51.653Z
@@ -178,13 +182,21 @@ export default function NewFeedScreen({ navigation }) {
     const onComment = (postId, userId) => {
         navigation.navigate('CommentScreen', { postId: postId, userId: userId });
     }
+    const handleDoubleTap = () => {
+        const now = Date.now();
+        const DOUBLE_PRESS_DELAY = 300;
+        if (doubleTouch && (now - doubleTouch) < DOUBLE_PRESS_DELAY) {
+          console.log("Hey");
+        } else {
+            setDoubleTouch(now);
+        }
+      }
 
 
     const renderItem = (item) => {
         const date_time = splitDateTime(item.updatedAt);
         const num_like = item.like.length;
         const text_like = num_like + " lượt thích";
-        // console.log(datapost[0]);
         const itemIsLike = item.isLike;
         return (
             <View style={styles.containerPost}>
@@ -207,30 +219,18 @@ export default function NewFeedScreen({ navigation }) {
                         <MaterialCommunityIcons name="dots-vertical" style={styles.dotStyle} onPress={() => toggleModal(item)} />
                     </View>
                 </View>
+                {/* <TouchableWithoutFeedback onPress={handleDoubleTap}> */}
                 <View style={styles.containerFeed}>
                     <Text style={styles.described}>
                         {item.described}
                     </Text>
-                    {/* <TouchableWithoutFeedback
-                        onPress={() => {
-                            setDoubleTouch(doubleTouch+ 1);
-                            if (doubleTouch == 2) {
-                                clearTimeout(this.backTimer)
-                                console.warn("Clicked twice")
-                            } else {
-                                this.backTimer = setTimeout(() => {
-                                setDoubleTouch(0);
-                                }, 3000)
-                            }
-
-                        }}
-                    > */}
+                    
                     
                     <View style={styles.containerImage}>
                         <Slider item={item.images} index={0} />
                         <Text></Text>
                     </View>
-                    {/* </TouchableWithoutFeedback> */}
+                    
 
                     <View style={styles.containerReact}>
                         <Text style={styles.numberReact}>{text_like}</Text>
@@ -250,9 +250,10 @@ export default function NewFeedScreen({ navigation }) {
                         >
                             View Comments...
                         </Text>
-                        <Comment postID={item._id} />
+                        {/* <Comment postID={item._id} /> */}
                     </View>
                 </View>
+       
 
             </View>
         );

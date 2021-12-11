@@ -4,7 +4,7 @@ import { Text } from 'react-native-paper'
 import { theme } from '../components/core/theme'
 import { Icon } from 'react-native-elements'
 import { useSelector, useDispatch } from 'react-redux';
-import { mediaActions } from '../redux/actions';
+import { mediaActions, uploadActions } from '../redux/actions';
 import * as FileSystem from 'expo-file-system';
 
 
@@ -22,7 +22,7 @@ export default function NewPostScreen({ navigation }) {
   const dispatch = useDispatch();
   const token = useSelector(state => state.authReducer.token);
   const upLoad = async () => {
-
+    dispatch(uploadActions.uploading());
     const imageAssets = selectedAssets.filter(asset => asset.mediaType === 'photo');
     const videoAssets = selectedAssets.filter(asset => asset.mediaType === 'video');
 
@@ -36,14 +36,13 @@ export default function NewPostScreen({ navigation }) {
       videos: convertedVideoAssets
     }
 
-    post.addPost(data)
-      .then(res => {
-        // console.log(res.data);
-      })
-      .catch(error => {
-        console.log("Failed");
-        console.log(error.response.data);
-      })
+    try {
+      const res = await post.addPost(data);
+      dispatch(uploadActions.uploadSuccess(res.data.data));
+    } catch (err) {
+      const errMsg = err.response ? err.response.message : "Error occured!";
+      dispatch(uploadActions.uploadFailure(errMsg));
+    }
     dispatch(mediaActions.resetState());
 
     navigation.navigate("MainScreen");

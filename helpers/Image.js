@@ -85,7 +85,7 @@ const resizeImage = async (image) => {
     const manipResult = await ImageManipulator.manipulateAsync(
         image.uri,
       [{ resize: { width: 720} }],
-      { compress: 0.7, format: ImageManipulator.SaveFormat.JPEG }
+      { compress: 0.5, format: ImageManipulator.SaveFormat.JPEG }
     ); 
     return manipResult;
 }
