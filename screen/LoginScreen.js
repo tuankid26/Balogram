@@ -20,16 +20,14 @@ export default function LoginScreen({ navigation }) {
     const data = {
       // phonenumber: phonenumber,
       // password: password
-      phonenumber: "000001",
+      phonenumber: "000002",
       password: "123123123"
     }
     // console.log("Test")
-    // console.log(phonenumber)
+    
     auth.login(data)
       .then(res => {
-        // console.log(res.data)
         const token = res.data.token;
-        // call dispatch to store token
         dispatch({ type: 'STORE_TOKEN', payload: token })
         Toast.show({
           type: 'success',
