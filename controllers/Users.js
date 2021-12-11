@@ -19,7 +19,7 @@ usersController.register = async (req, res, next) => {
             phonenumber: phonenumber
         })
 
-        if (user) {
+        if (!user) {
             return res.status(httpStatus.BAD_REQUEST).json({
                 message: 'Phone number already exists'
             });
