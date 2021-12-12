@@ -14,7 +14,7 @@ class FriendActive extends Component {
                     <View style={styles.bgAvatar}>
                         <Avatar.Image
                             size={45}
-                            source={'../images/Store_local_image/anh2.jpg'}
+                            source={{uri:'../images/Store_local_image/anh2.jpg'}}
                         />
                     </View>
                     <View style={styles.info}>

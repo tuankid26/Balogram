@@ -7,6 +7,7 @@ import {
     LinePartition
 } from "../components";
 import { theme } from "../components/core/theme";
+import { useIsFocused } from '@react-navigation/native';
 import { MaterialCommunityIcons, Ionicons } from "react-native-vector-icons";
 const { width } = Dimensions.get("window");
 import {friend} from "../handle_api";
@@ -16,10 +17,11 @@ export default function FriendScreen({ navigation }) {
     const [datafriend, setDataFriend] = useState([]);
     // const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InZhbmgxIiwiaWQiOiI2MWFjNjIxOTM1MDBlNTFjYjBhNjBhODAiLCJpYXQiOjE2Mzg2ODcyNTd9.QDeEosuZsf6BiZ-vpouXTAuWhiaTvbDHeI2-aXMKnTo";
     const token = useSelector(state => state.authReducer.token);
+    const isFocused = useIsFocused();
     useEffect(() => {
         post.getListFriend(token)
             .then(res => {
-                setDataFriend(res.data.data.friends);
+                if(isFocused) setDataFriend(res.data.data.friends);
                 console.log(datafriend.length);
                 console.log("datafriend.length");
                 // console.log(datafriend);
@@ -29,7 +31,7 @@ export default function FriendScreen({ navigation }) {
                 console.log(error);
             })
 
-    }, datafriend);
+    }, [isFocused]);
 
     const onSearchPress = () => {
         navigation.navigate("SearchScreen")
@@ -59,7 +61,7 @@ export default function FriendScreen({ navigation }) {
             <FlatList
                 data={datafriend}
                 renderItem={({ item }) => <FriendActive item={item} />}
-                // keyExtractor={(item) => item.id.toString()}
+                keyExtractor={(item) => item._id.toString()}
             />
         </View>
     );
