@@ -145,17 +145,19 @@ friendsController.setRemoveFriend = async (req, res, next) => {
         } else {
             final = friendRc1;
         }
-        if (final.status != '1') {
-            res.status(200).json({
-                code: 200,
-                success: false,
-                message: "Khong thể thao tác",
-            });
-        }
+        console.log(final.status);
+        console.log(final.status);
+        // if (final.status != '1') {
+        //     return res.status(200).json({
+        //         code: 200,
+        //         success: false,
+        //         message: "Khong thể thao tác2",
+        //     });
+        // }
 
         final.status = '3';
         final.save();
-
+        
         res.status(200).json({
             code: 200,
             success: true,
