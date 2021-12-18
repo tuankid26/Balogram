@@ -8,6 +8,7 @@ import {
 import { theme } from './core/theme';
 
 const { width: screenWidth } = Dimensions.get('window')
+const { height: screenHeight } = Dimensions.get('window')
 
 export default class MyCarousel extends Component {
     constructor(props) {
@@ -20,7 +21,6 @@ export default class MyCarousel extends Component {
         
     }
 
-   
     componentDidUpdate(prevProps){ 
 
        if (this.state.images != prevProps.item){
@@ -71,8 +71,8 @@ export default class MyCarousel extends Component {
                 <Carousel
                     layout='tinder'
                     sliderWidth={screenWidth}
-                    sliderHeight={screenWidth}
-                    itemWidth={screenWidth - 10}
+                    sliderHeight={screenHeight}
+                    itemWidth={screenWidth}
                     data={this.state.images}
                     renderItem={this._renderItem}
                     onSnapToItem={index => this.setState({ activeSlide: index })}
@@ -87,18 +87,14 @@ export default class MyCarousel extends Component {
 }
 
 const styles = StyleSheet.create({
-    item: {
-        width: screenWidth - 60,
-        height: screenWidth - 60,
-    },
+    
     imageContainer: {
         borderRadius: 8,
         // borderWidth: 1
     },
     image: {
-        width: 350,
-        height: 400,
-        maxHeight: 400
+        width: screenWidth,
+        height: screenHeight + 100,
     },
     container: {
         height: 400,
