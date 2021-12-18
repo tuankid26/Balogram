@@ -4,8 +4,10 @@ const login = async (data) => {
     const loginInfo = await api({
         method: 'POST',
         url: '/users/login',
-        data: { "phonenumber": data.phonenumber,
-                "password": data.password },
+        data: {
+            "phonenumber": data.phonenumber,
+            "password": data.password
+        },
     });
     return loginInfo;
 };
@@ -24,5 +26,36 @@ const register = async (data) => {
     return registerInfo
 }
 
-export { login, register };
+const changePassword = async (data) => {
+    const changePasswordInfo = await api({
+        method: 'POST',
+        url: '/users/change-password',
+        data: {
+            "currentPassword": data.currentPassword,
+            "newPassword": data.newPassword,
+            "repeatNewPassword": data.repeatNewPassword
+        },
+        headers: {
+            'Authorization': `Bearer ${data.token}`
+        }
+    })
+}
+const edit = async (data) => {
+    const editInfo = await api({
+        method: 'POST',
+        url: '/users/edit',
+        data: {
+            'username': data.newInfo.username,
+            'gender': data.newInfo.gender,
+            'birthday': data.newInfo.birthday,
+            'description': data.newInfo.description,
+            'address': data.newInfo.address
+        },
+        headers: {
+            'Authorization': `Bearer ${data.token}`
+        }
+    })
+}
+
+export { login, register, changePassword, edit };
 

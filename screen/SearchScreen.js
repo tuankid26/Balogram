@@ -1,12 +1,21 @@
-import React, { PureComponent, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Text, View } from 'react-native';
 import { SearchBar, Button, ListItem, Avatar, Icon } from 'react-native-elements';
-import { StyleSheet, Image, FlatList, StatusBar } from 'react-native';
-import { theme } from '../components/core/theme';
-import { Ionicons } from 'react-native-vector-icons'
-
+import { StyleSheet, Image, FlatList, StatusBar, TouchableOpacity } from 'react-native';
+import {
+    Ionicons, FontAwesome
+} from 'react-native-vector-icons'
+import { search } from '../handle_api/search';
+import { BackButton } from '../components';
+import { useSelector, useDispatch } from 'react-redux';
 export default function SearchScreen({ navigation }) {
-
+    const dispatch = useDispatch()
+    const [text, setText] = useState();
+    const [strange, setStrange] = useState([]);
+    const [showRecent, setShowRecent] = useState(true)
+    const [friends, setFriends] = useState([]);
+    const recentData = useSelector(state => state.searchReducer.arr)
+    const token = useSelector(state => state.authReducer.token);
     const data = [
         {
             id: 1,
@@ -18,87 +27,128 @@ export default function SearchScreen({ navigation }) {
             name: 'Nguyễn Anh Thi',
             avatar: require('../images/avatar/2.jpg')
         }
+        ,
+        {
+            id: 23,
+            name: 'Nguyễn Anh Thi',
+            avatar: require('../images/avatar/2.jpg')
+        }
     ];
-
-    const updateSearch = (search) => {
-        setSearch(search);
-
+    const onSubmit = () => {
+        setShowRecent(false)
+        search(token, text)
+            .then(res => {
+                setFriends(res.data.friends)
+                setStrange(res.data.strange)
+            })
+            .catch(error => {
+                console.log(error.response.data)
+            })
     }
-    const onpress = () => {
-
+    const renderRecent = (item) => {
+        return (
+            <View>
+                <TouchableOpacity style={styles.recentContainer}>
+                    <View style={styles.recentWrapper}>
+                        <Avatar source={require('../images/avatar/1.jpg')} size={60} rounded />
+                        <Text>{item.username}</Text>
+                    </View>
+                </TouchableOpacity>
+            </View>
+        )
     }
-
-    const [search, setSearch] = useState();
-
-    const onback = () => {
-        navigation.navigate("MainScreen");
+    const onPressUser = (item) => {
+        dispatch({ type: 'ADD_ITEM', payload: item })
     }
-
 
     return (
         <View style={styles.outline}>
-
             <View style={styles.header}>
-                <Icon name={'chevron-left'}
-                    size={60}
-                    onPress={onback} style={styles.Icon} />
+                <TouchableOpacity style={{ justifyContent: 'center', width: 40 }}>
+                    <BackButton goBack={navigation.goBack} />
+                </TouchableOpacity>
                 <View style={styles.SearchBar}>
                     <SearchBar
                         lightTheme
-                        round
-                        placeholder="Type Here..."
-                        onChangeText={updateSearch}
-                        value={search}
+                        showLoading={true}
+                        placeholder="Tìm kiếm"
+                        onChangeText={(text) => setText(text)}
+                        value={text}
+                        containerStyle={{ height: 50, justifyContent: 'center', backgroundColor: '#ecf0f1' }}
+                        inputContainerStyle={{ backgroundColor: '#ecf0f1' }}
                     />
                 </View>
+                <TouchableOpacity style={{ justifyContent: 'center', width: 40, alignItems: 'center' }}>
+                    <FontAwesome name="search" size={25} onPress={onSubmit} />
+                </TouchableOpacity>
             </View>
-
-            <View>
-                <View style={styles.container}>
-                    <Text style={styles.text}>Bạn bè</Text>
-
-                    <View style={styles.card}>
-
-                        {
-                            data.map((l, i) => (
-                                <ListItem key={i} bottomDivider >
-                                    <Avatar source={l.avatar} size={60} rounded />
-                                    <ListItem.Content>
-                                        <ListItem.Title>{l.name}</ListItem.Title>
-                                    </ListItem.Content>
-                                    <Ionicons name='people-outline' style={styles.icon} />
-                                </ListItem>
-                            ))
-                        }
-                        <Button onPress={onpress} title="Xem tất cả" />
+            {showRecent &&
+                <View style={{ flex: 1 }}>
+                    <View>
+                        <Text style={styles.text}>Gần đây</Text>
+                        <FlatList
+                            data={recentData}
+                            renderItem={({ item }) => renderRecent(item)}
+                            keyExtractor={(item) => item._id.toString()}
+                            numColumns={3}
+                        />
                     </View>
                 </View>
-            </View>
-            <View>
-
-                <View style={styles.container_2}>
-                    <Text style={styles.text}>Kết bạn</Text>
-
-                    <View style={styles.card}>
-
-                        {
-                            data.map((l, i) => (
-                                <ListItem key={i} bottomDivider >
-                                    <Avatar source={l.avatar} size={60} rounded />
-                                    <ListItem.Content>
-                                        <ListItem.Title>{l.name}</ListItem.Title>
-                                    </ListItem.Content>
-                                    <Ionicons name='md-person-add-outline' style={styles.icon} />
-                                </ListItem>
-                            ))
-                        }
-
-                        <Button onPress={onpress} title="Xem tất cả" />
+            }
+            {friends.length != 0 && friends &&
+                <View>
+                    <View style={styles.container}>
+                        <Text style={styles.text}>Bạn bè</Text>
+                        <View style={styles.card}>
+                            {
+                                friends
+                                    .filter((l, i) => (i <= 1))
+                                    .map((l, i) => (
+                                        <ListItem key={i} bottomDivider >
+                                            <TouchableOpacity>
+                                                <Avatar source={require('../images/avatar/1.jpg')} size={60} rounded />
+                                            </TouchableOpacity>
+                                            <ListItem.Content>
+                                                <ListItem.Title>{l.username}</ListItem.Title>
+                                            </ListItem.Content>
+                                            <TouchableOpacity>
+                                                <Ionicons name='people-outline' style={styles.icon} />
+                                            </TouchableOpacity>
+                                        </ListItem>
+                                    ))
+                            }
+                            <Button onPress={onpress} title="Xem tất cả" />
+                        </View>
                     </View>
                 </View>
-            </View>
-
-
+            }
+            {strange.length != 0 && strange &&
+                <View>
+                    <View style={styles.container_2}>
+                        <Text style={styles.text}>Kết bạn</Text>
+                        <View style={styles.card}>
+                            {
+                                strange
+                                    .filter((l, i) => (i <= 1))
+                                    .map((l, i) => (
+                                        <ListItem key={i} bottomDivider >
+                                            <TouchableOpacity onPress={() => onPressUser(l)}>
+                                                <Avatar source={require('../images/avatar/1.jpg')} size={60} rounded />
+                                            </TouchableOpacity>
+                                            <ListItem.Content>
+                                                <ListItem.Title>{l.username}</ListItem.Title>
+                                            </ListItem.Content>
+                                            <TouchableOpacity>
+                                                <Ionicons name='md-person-add-outline' style={styles.icon} />
+                                            </TouchableOpacity>
+                                        </ListItem>
+                                    ))
+                            }
+                            <Button title="Xem tất cả" />
+                        </View>
+                    </View>
+                </View>
+            }
         </View>
 
     );
@@ -106,6 +156,14 @@ export default function SearchScreen({ navigation }) {
 
 const styles = StyleSheet.create({
     outline: {
+        flex: 1
+    },
+    recentWrapper: {
+        padding: 10,
+        alignItems: 'center'
+    },
+    recentContainer: {
+        width: 120
     },
     icon: {
         fontSize: 25
@@ -140,12 +198,11 @@ const styles = StyleSheet.create({
         // paddingTop: 15
     },
     SearchBar: {
-        width: '83%'
+        width: '78%'
         // flex: 1
     },
     card: {
         marginTop: 10,
-        height: 250,
         marginLeft: 6,
         width: "97%",
         backgroundColor: "white",
