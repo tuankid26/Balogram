@@ -1,16 +1,6 @@
 import api from './api';
-// import * as FileSystem from 'expo-file-system';
-// import { Asset } from 'expo-asset';
 
-// const addPost = async(postData, token) => {
-//     const createResult = await api({
-//         method: 'POST',
-//         url: '/posts/create',
-//         data: postData,
-//         headers: { Authorization: `Bearer ${token}` }
-//     });
-//     return createResult;
-// }
+
 
 const getListFriend = async(token) => {
     const url = '/friends/list';

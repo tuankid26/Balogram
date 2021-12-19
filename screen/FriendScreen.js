@@ -17,7 +17,7 @@ export default function FriendScreen({ navigation }) {
     const token = useSelector(state => state.authReducer.token);
     const isFocused = useIsFocused();
     useEffect(() => {
-        post.getListFriend(token)
+        friend.getListFriend(token)
             .then(res => {
                 if(isFocused) setDataFriend(res.data.data.friends);
             })

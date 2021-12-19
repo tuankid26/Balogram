@@ -19,7 +19,7 @@ export default function AddFriendScreen({ navigation }) {
     const token = useSelector(state => state.authReducer.token);
     useEffect(() => {
         let isMounted = true; 
-        post.getRequestFriend(token)
+        friend.getRequestFriend(token)
             .then(res => {
                 if (isMounted) setDataFriend(res.data.data.friends);
                 
@@ -45,7 +45,7 @@ export default function AddFriendScreen({ navigation }) {
             "token": token,
             "is_accept": "1",
         }
-        post.setAcceptFriend(dataAccept)
+        friend.setAcceptFriend(dataAccept)
             .then(res => {
                 const updateData = datafriend.filter(item => item._id !== res.data.data.sender);
                 setDataFriend(updateData);
@@ -63,7 +63,7 @@ export default function AddFriendScreen({ navigation }) {
             "user_id": userID,
             "token": token,
         }
-        post.setRemoveFriend(dataRemove)
+        friend.setRemoveFriend(dataRemove)
             .then(res => {
                 const updateData = datafriend.filter(item => item._id !== res.data.data.sender);
                 setDataFriend(updateData);
