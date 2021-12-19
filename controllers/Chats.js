@@ -88,8 +88,8 @@ chatController.getMessages = async (req, res, next) => {
 
 chatController.listChat = async (req, res, next) => {
   try {
-    console.log(req.userId);
-    
+    // console.log(req.userId);
+
     let Chats = await ChatModel.find({
       member: req.userId,
     });
@@ -100,7 +100,7 @@ chatController.listChat = async (req, res, next) => {
       let listItem = [];
       listItem.push(chatItem);
 
-      let userId ;
+      let userId;
       chatItem.member[0] == req.userId ? userId = chatItem.member[1] : userId = chatItem.member[0];
       let user = await UserModel.findById(userId);
       listItem.push(user);

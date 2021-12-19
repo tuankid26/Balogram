@@ -9,11 +9,11 @@ postCommentController.create = async (req, res, next) => {
         try {
             post = await PostModel.findById(req.params.postId);
             if (post == null) {
-                return res.status(httpStatus.NOT_FOUND).json({message: "Can not find post"});
+                return res.status(httpStatus.NOT_FOUND).json({ message: "Can not find post" });
             }
         } catch (error) {
-            return res.status(httpStatus.INTERNAL_SERVER_ERROR).json({message: error.message});
-        }const {
+            return res.status(httpStatus.INTERNAL_SERVER_ERROR).json({ message: error.message });
+        } const {
             content,
             commentAnswered
         } = req.body;
@@ -48,7 +48,7 @@ postCommentController.create = async (req, res, next) => {
 
 postCommentController.list = async (req, res, next) => {
     try {
-        console.log(req.params.postId);
+        // console.log(req.params.postId);
         let postComments = await PostCommentModel.find({
             post: req.params.postId
         }).populate('user', [
@@ -58,7 +58,7 @@ postCommentController.list = async (req, res, next) => {
             data: postComments
         });
     } catch (error) {
-        return res.status(httpStatus.INTERNAL_SERVER_ERROR).json({message: error.message});
+        return res.status(httpStatus.INTERNAL_SERVER_ERROR).json({ message: error.message });
     }
 
 }

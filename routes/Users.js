@@ -1,5 +1,5 @@
 const usersController = require("../controllers/Users");
-const {asyncWrapper} = require("../utils/asyncWrapper");
+const { asyncWrapper } = require("../utils/asyncWrapper");
 const express = require("express");
 const usersRoutes = express.Router();
 const ValidationMiddleware = require("../middlewares/validate");
@@ -36,8 +36,22 @@ usersRoutes.get(
 );
 
 
-usersRoutes.post("/set-block-user", auth, usersController.setBlock);
-usersRoutes.post("/set-block-diary", auth, usersController.setBlockDiary);
-usersRoutes.post("/search", auth, usersController.searchUser);
+usersRoutes.post(
+    "/set-block-user",
+    auth,
+    usersController.setBlock
+);
+
+usersRoutes.post(
+    "/set-block-diary",
+    auth,
+    usersController.setBlockDiary
+);
+
+usersRoutes.post(
+    "/search",
+    auth,
+    usersController.searchUser
+);
 
 module.exports = usersRoutes;
