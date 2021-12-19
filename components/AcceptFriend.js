@@ -1,16 +1,14 @@
 import React, { Component } from "react";
-import { View, Text, Image, TouchableOpacity } from "react-native";
+import { View, Text,  TouchableOpacity } from "react-native";
 import { StyleSheet, Dimensions } from "react-native";
 import { Avatar, Button, Divider } from "react-native-paper";
 import { data }  from "../log_data/data.js" ;
-import FeedImage1 from '../images/Store_local_image/anh2.jpg';
 import { friend } from "../handle_api/index.js";
 const { width } = Dimensions.get("window");
 export default class AcceptFriend extends Component {
 
 
      setAcceptFriend = (userID) => {
-        // setModalVisible(!isModalVisible);
         const dataAccept = {
             "user_id": userID,
             "token": token,
@@ -18,8 +16,7 @@ export default class AcceptFriend extends Component {
         }
         friend.setAcceptFriend(dataAccept)
             .then(res => {
-                console.log(res.data);
-                // console.log(data.images)
+               
             })
             .catch(error => {
                 console.log("Failed");
@@ -29,15 +26,12 @@ export default class AcceptFriend extends Component {
     }
 
     setRemoveFriend = (userID) => {
-        // setModalVisible(!isModalVisible);
         const dataRemove = {
             "user_id": userID,
             "token": token,
         }
         friend.setRemoveFriend(dataRemove)
             .then(res => {
-                console.log(res.data);
-                // console.log(data.images)
             })
             .catch(error => {
                 console.log("Failed");

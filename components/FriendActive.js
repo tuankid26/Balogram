@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, Text, Image, TouchableOpacity } from 'react-native'
+import { View, Text, TouchableOpacity } from 'react-native'
 import { StyleSheet, Dimensions } from 'react-native'
 import { Avatar, Divider } from 'react-native-paper'
 import { MaterialCommunityIcons } from 'react-native-vector-icons';
@@ -19,7 +19,6 @@ class FriendActive extends Component {
                     </View>
                     <View style={styles.info}>
                         <Text style={styles.name}>{item.username}</Text>
-                        {/* <Divider style = {{marginTop : 12}}/> */}
                     </View>
                     <View>
                         <MaterialCommunityIcons name='message-processing-outline' style={styles.icon} />

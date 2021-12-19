@@ -7,7 +7,6 @@ import {
 } from "../components";
 const { width } = Dimensions.get("window");
 import {friend} from "../handle_api";
-import { post } from "../handle_api";
 import { useSelector } from 'react-redux';
 import { useState, useEffect } from 'react'
 
@@ -140,7 +139,6 @@ const styles = StyleSheet.create({
         color: "black",
         padding: 10,
         marginLeft:80
-        // alignSelf: "center",
     },
     container: {
         flexDirection: "row",

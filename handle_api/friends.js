@@ -27,8 +27,6 @@ const setRequestFriend = async(data) => {
 }
 
 const getRequestFriend = async(token) => {
-    // const url1 = ;
-    console.log("datafriend.length111");
     const getRequest = await api({
         method: 'POST',
         url: '/friends/get-requested-friend',
@@ -36,7 +34,6 @@ const getRequestFriend = async(token) => {
             Authorization: `Bearer ${token}`
         }
     });
-    console.log("datafriend.length2222");
     return getRequest;
 }
 
