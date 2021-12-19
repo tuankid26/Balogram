@@ -1,33 +1,28 @@
-import React, { Component } from "react";
+import React from "react";
 import { useState, useEffect } from 'react'
 import { View, FlatList, Text, StyleSheet, Dimensions } from "react-native";
-import { data } from "../log_data/data.js";
 import {
     FriendActive,
     LinePartition
 } from "../components";
 import { theme } from "../components/core/theme";
 import { useIsFocused } from '@react-navigation/native';
-import { MaterialCommunityIcons, Ionicons } from "react-native-vector-icons";
+import {  Ionicons } from "react-native-vector-icons";
 const { width } = Dimensions.get("window");
 import {friend} from "../handle_api";
 import { post } from "../handle_api";
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 export default function FriendScreen({ navigation }) {
     const [datafriend, setDataFriend] = useState([]);
-    // const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InZhbmgxIiwiaWQiOiI2MWFjNjIxOTM1MDBlNTFjYjBhNjBhODAiLCJpYXQiOjE2Mzg2ODcyNTd9.QDeEosuZsf6BiZ-vpouXTAuWhiaTvbDHeI2-aXMKnTo";
     const token = useSelector(state => state.authReducer.token);
     const isFocused = useIsFocused();
     useEffect(() => {
         post.getListFriend(token)
             .then(res => {
                 if(isFocused) setDataFriend(res.data.data.friends);
-                console.log(datafriend.length);
-                console.log("datafriend.length");
-                // console.log(datafriend);
             })
             .catch(error => {
-                console.log("Failed2");
+                console.log("Failed");
                 console.log(error);
             })
 
@@ -38,16 +33,6 @@ export default function FriendScreen({ navigation }) {
     }
     return (
         <View style={styles.wrapper}>
-            {/* <View style={styles.header}>
-                <Text style={styles.title}>List Friend</Text>
-                <View style={styles.addFriend}>
-                    <MaterialCommunityIcons
-                        name="account-plus-outline"
-                        style={styles.icon}
-                        onPress={() => navigation.navigate('AddFriendScreen')}
-                    />
-                </View>
-            </View> */}
             <View style={styles.headerBar}>
                 <View style={styles.headerLeft}>
                     <Text style={styles.title}>BaloGram</Text>

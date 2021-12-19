@@ -1,17 +1,14 @@
-import React, { Component } from "react";
+import React from "react";
 import { View, FlatList, Text, StyleSheet, Dimensions,TouchableOpacity } from "react-native";
-import { data }  from "../log_data/data.js" ;
 import { theme } from "../components/core/theme";
-import { MaterialCommunityIcons } from "react-native-vector-icons";
 import { Avatar, Button, Divider } from "react-native-paper";
 import {
-    AcceptFriend,
     BackButton
 } from "../components";
 const { width } = Dimensions.get("window");
 import {friend} from "../handle_api";
 import { post } from "../handle_api";
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { useState, useEffect } from 'react'
 
 
@@ -19,34 +16,22 @@ import { useState, useEffect } from 'react'
 export default function AddFriendScreen({ navigation }) {
     
     const [datafriend, setDataFriend] = useState([]);
-    // const token1 = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InZhbmgxIiwiaWQiOiI2MWFjNjIxOTM1MDBlNTFjYjBhNjBhODAiLCJpYXQiOjE2Mzg2ODcyNTd9.QDeEosuZsf6BiZ-vpouXTAuWhiaTvbDHeI2-aXMKnTo";
     const token = useSelector(state => state.authReducer.token);
     useEffect(() => {
         let isMounted = true; 
-        console.log("datafriend.length1");
-        console.log(datafriend.length);
         post.getRequestFriend(token)
             .then(res => {
-                // console.log(datafriend.length);
-                // console.log("datafriend.length");
-                // console.log(datafriend);
                 if (isMounted) setDataFriend(res.data.data.friends);
-                // setDataFriend(res.data.data.reverse());
                 
             })
             
             .catch(error => {
                 if (error.response) {
-                    // There is an error response from the server
-                    // You can anticipate error.response.data here
                     const error = err.response.data;
                     dispatch(addError(error.message));
                 } else if (error.request) {
-                    // The request was made but no response was received
-                    // Error details are stored in error.reqeust
                     console.log(error.request);
                 } else {
-                    // Some other errors
                     console.log('Error', error.message);
                 }
             })
@@ -55,7 +40,6 @@ export default function AddFriendScreen({ navigation }) {
     }, []);
 
     const setAcceptFriend = (userID) => {
-        // setModalVisible(!isModalVisible);
         const dataAccept = {
             "user_id": userID,
             "token": token,
@@ -63,12 +47,9 @@ export default function AddFriendScreen({ navigation }) {
         }
         post.setAcceptFriend(dataAccept)
             .then(res => {
-                console.log(res.data);
                 const updateData = datafriend.filter(item => item._id !== res.data.data.sender);
-                console.log(updateData);
                 setDataFriend(updateData);
 
-                // console.log(data.images)
             })
             .catch(error => {
                 console.log("Failed");
@@ -78,29 +59,23 @@ export default function AddFriendScreen({ navigation }) {
     }
 
     const setRemoveFriend = (userID) => {
-        // setModalVisible(!isModalVisible);
         const dataRemove = {
             "user_id": userID,
             "token": token,
         }
         post.setRemoveFriend(dataRemove)
             .then(res => {
-                console.log(res.data);
                 const updateData = datafriend.filter(item => item._id !== res.data.data.sender);
                 setDataFriend(updateData);
-                // console.log(data.images)
             })
             .catch(error => {
-                console.log("Failed");
+                console.log("Failed"); 
                 console.log(error.response.data);
             })
 
     }
 
     const renderItem = (item) => {
-        // console.log("item.length");
-        // console.log(item.username);
-        // console.log(item);
         return (
         <TouchableOpacity>
                 <View style={styles.container}>
@@ -134,8 +109,6 @@ export default function AddFriendScreen({ navigation }) {
              <FlatList
 
                 data={datafriend }
-                
-                // renderItem={({ item }) => <AcceptFriend item={item} />}
                 renderItem={({ item }) => renderItem(item)}
                 keyExtractor={(item) => item._id.toString()}
                 
