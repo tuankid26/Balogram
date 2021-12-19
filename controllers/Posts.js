@@ -104,6 +104,9 @@ postsController.edit = async (req, res, next) => {
             videos,
         } = req.body;
         let dataImages = [];
+        console.log("Edit post");
+        console.log(described);
+        console.log(images.length);
         if (Array.isArray(images)) {
             for (const image of images) {
                 // check is old file
@@ -279,6 +282,13 @@ postsController.list = async (req, res, next) => {
         let postWithIsLike = [];
         for (let i = 0; i < posts.length; i++) {
             let postItem = posts[i].toObject();
+            let postItemLike = [];
+
+            for (let indexIdLike = 0; indexIdLike < postItem.like.length; indexIdLike++){
+                const userLikeId = String(postItem.like[indexIdLike]);
+                postItemLike.push(userLikeId);
+            }
+
             let postBase64 = []
             if (postItem.images.length > 0) {
                 for (let indexImage = 0; indexImage < postItem.images.length; indexImage++) {
@@ -289,7 +299,8 @@ postsController.list = async (req, res, next) => {
                 }
 
             }
-            postItem.isLike = postItem.like.includes(req.userId);
+            postItem.userCall = userId;
+            postItem.isLike = postItemLike.includes(userId);
             postWithIsLike.push(postItem);
         }
         console.log("CAll API POSt list");

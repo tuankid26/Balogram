@@ -30,7 +30,7 @@ postLikeController.action = async (req, res, next) => {
         if (!post) {
             return res.status(httpStatus.NOT_FOUND).json({message: "Can not find post"});
         }
-        post.isLike = post.like.includes(req.userId);
+        post.isLike = arrLike.includes(userId);
         return res.status(httpStatus.OK).json({
             data: post
         });
