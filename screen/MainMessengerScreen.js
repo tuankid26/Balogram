@@ -41,6 +41,7 @@ export default function MainMessengerScreen({ navigation }) {
   const fetchChats = async () => {
     try {
       const res = await chat.listChat(token);
+      console.log(res.data.data)
       return res.data.data;
     } catch (err) {
       console.log(err);
@@ -48,6 +49,7 @@ export default function MainMessengerScreen({ navigation }) {
   };
 
   const renderItem = (item) => {
+    // console.log(item)
     return (
       <View>
         <TouchableOpacity
