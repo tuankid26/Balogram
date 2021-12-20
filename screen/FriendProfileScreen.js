@@ -6,63 +6,122 @@ import {
     Image,
     FlatList,
     Dimensions,
-    Modal,
     Pressable,
     SafeAreaView,
-    RefreshControl,
     TouchableOpacity
 } from "react-native";
+import Modal from "react-native-modal";
 import { Avatar } from "react-native-paper";
-import { MaterialCommunityIcons, Ionicons, Octicons, Entypo } from 'react-native-vector-icons';
+import { MaterialCommunityIcons, Ionicons, Octicons, Entypo, FontAwesome, MaterialIcons } from 'react-native-vector-icons';
 import {
-    LinePartition,
     Comment,
-    Slider
+    Slider,
 }
     from '../components'
 const { width, height } = Dimensions.get("screen");
 import { theme } from "../components/core/theme";
 import { useSelector } from 'react-redux';
-import { post } from "../handle_api";
-export default function FriendProfile({ navigation }) {
+import { post, auth, search } from "../handle_api";
+export default function FriendProfile({ route, navigation }) {
     const [datapost, setDatapost] = useState("");
-    const [refreshing, setRefreshing] = useState(false);
-    const [isFriend, setIsFriend] = useState(true)
+    const [isFriend, setIsFriend] = useState()
+    const phonenumber = route.params.item.phonenumber
+    const [info, setInfo] = useState()
+    const Friend_ID = route.params.item._id
     const username = useSelector(state => state.infoReducer.username);
     const token = useSelector(state => state.authReducer.token)
-    const userId = useSelector(state => state.infoReducer.userId)
-    const description = useSelector(state => state.infoReducer.description)
     const [isModalVisible, setModalVisible] = useState(false);
-    const [toggleItem, setToggleItem] = useState("");
-    const wait = (timeout) => {
-        return new Promise(resolve => setTimeout(resolve, timeout));
-    }
+    const [isProfileModalVisible, setProFileModalVisible] = useState(false);
     const toggleModal = (item) => {
         setModalVisible(!isModalVisible);
         setToggleItem(item);
     };
-    const toggleDeletePost = () => {
-        setModalVisible(!isModalVisible);
-        const data = {
-            "postId": toggleItem._id,
-            "token": token
-        }
-        post.deletePost(data)
+    const viewInfo = () => {
+        setProFileModalVisible(true)
+    }
+    useEffect(() => {
+        auth.getUser(token, Friend_ID)
             .then(res => {
+                setInfo(res.data.data)
             })
             .catch(error => {
-                console.log("Failed");
-                console.log(error.response.data);
+                console.log("Failed2")
             })
+        search.search(token, phonenumber)
+            .then(res => {
+                const f = res.data.strange.filter(({ _id }) => _id == Friend_ID)
+                f.length == 0 ? setIsFriend(true) : setIsFriend(false)
+            })
+            .catch(error => {
+                console.log(error)
+                console.log("Failed1")
+            })
+
+        post.getListPost_newfeed(token, Friend_ID)
+            .then(res => {
+                isFriend && isFriend == true ?
+                    setDatapost(res.data.data.reverse()) : setDatapost([]);
+            })
+            .catch(error => {
+                console.log("Failed")
+            })
+    }, [])
+    const ProfileModal = () => {
+        return (
+            <Modal Modal
+                isVisible={isProfileModalVisible}
+                onBackdropPress={() => setProFileModalVisible(false)
+                }
+                style={styles.content}
+            >
+                <View style={{ height: '40%', backgroundColor: '#D0FFFF', marginTop: 100 }}>
+                    <View style={{ flexDirection: 'row', alignItems: 'center', padding: 10 }}>
+                        <FontAwesome name="user" size={25} color='#8FCCE5' />
+                        <Text style={{ fontSize: 15, marginLeft: 5 }}>Tên người dùng: </Text>
+                        <Text style={{ fontSize: 15, fontWeight: 'bold' }}>{info && info.username}</Text>
+                    </View>
+                    <View style={{ flexDirection: 'row', alignItems: 'center', padding: 10 }}>
+                        <FontAwesome name="transgender" size={25} color='#FABEBE' />
+                        <Text style={{ fontSize: 15, marginLeft: 5 }}>Giới tính: </Text>
+                        <Text style={{ fontSize: 15, fontWeight: 'bold' }}>{info && info.gender}</Text>
+                    </View>
+                    <View style={{ flexDirection: 'row', alignItems: 'center', padding: 10 }}>
+                        <FontAwesome name="birthday-cake" size={25} color='#DC5353' />
+                        <Text style={{ fontSize: 15, marginLeft: 5 }}>Ngày sinh: </Text>
+                        <Text style={{ fontSize: 15, fontWeight: 'bold' }}>{info && info.birthday}</Text>
+                    </View>
+                    <View style={{ flexDirection: 'row', alignItems: 'center', padding: 10 }}>
+                        <MaterialIcons name="description" size={25} color='#E4D865' />
+                        <Text style={{ fontSize: 15, marginLeft: 5 }}>Mô tả: </Text>
+                        <Text style={{ fontSize: 15, fontWeight: 'bold' }}>{info && info.description}</Text>
+                    </View>
+                    <View style={{ flexDirection: 'row', alignItems: 'center', padding: 10 }}>
+                        <MaterialCommunityIcons name="home-city" size={25} color='#72BB4F' />
+                        <Text style={{ fontSize: 15, marginLeft: 5 }}>Thành phố: </Text>
+                        <Text style={{ fontSize: 15, fontWeight: 'bold' }}>{info && info.address}</Text>
+                    </View>
+                </View>
+            </Modal >
+
+        )
     }
-    const toggleEditPost = () => {
-        setModalVisible(!isModalVisible);
-        navigation.navigate("EditPostScreen", { toggleItem });
-    }
+
     const Profile = () => {
         return (
             <View style={styles.container}>
                 <View>
+                    <View style={{ position: 'absolute', zIndex: 999, flexDirection: 'row' }}>
+                        <View>
+                            <TouchableOpacity onPress={navigation.goBack}>
+                                <Ionicons name='arrow-back' size={30} />
+                            </TouchableOpacity>
+                        </View>
+                        <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'flex-end' }} >
+                            <TouchableOpacity >
+                                <Entypo name='dots-three-horizontal' size={25} />
+                            </TouchableOpacity>
+                        </View>
+                    </View>
                     <Image
                         style={styles.background}
                         source={{
@@ -79,51 +138,50 @@ export default function FriendProfile({ navigation }) {
                         />
                     </View>
                 </View>
-                <View style={styles.containerInfo}>
-                    <Text style={{ fontSize: 28, textAlign: "center", fontWeight: "500" }}>
-                        {" "}
-                        {username}{" "}
-                    </Text>
-                    <Text style={styles.intro}> {description} </Text>
-                </View>
-                {isFriend ?
-                    <View>
-                        <View style={styles.containerGallery}>
-                            <View style={{ width: '50%', alignItems: 'center', left: 20 }}>
-                                <Text style={{ fontSize: 20, borderWidth: 1, borderColor: 'green', width: 80, textAlign: 'center', borderRadius: 10 }}>Bạn bè</Text>
-                            </View>
-                            <View style={{ alignItems: 'center', width: '50%', right: 20 }}>
-                                <Text style={{ fontSize: 20, borderWidth: 1, borderColor: '#9A4747', width: 80, textAlign: 'center', borderRadius: 10 }}>Nhắn tin</Text>
-                            </View>
-                        </View>
-                        <TouchableOpacity style={{ flexDirection: 'row', alignItems: 'center', marginTop: 10, marginBottom: 10 }}>
-                            <Entypo name="dots-three-horizontal" size={20} />
-                            <Text style={{ marginLeft: 10, fontSize: 20 }}>Thông tin giới thiệu</Text>
-                        </TouchableOpacity>
+                {
+                    info &&
+                    <View style={styles.containerInfo}>
+                        <Text style={{ fontSize: 28, textAlign: "center", fontWeight: "500" }}>
+                            {info.username}
+                        </Text>
+                        <Text style={styles.intro}> {info.description} </Text>
                     </View>
-                    :
-                    <View style={styles.containerGallery}>
+                }
+                {
+                    isFriend && isFriend == true ?
                         <View>
-                            <Text style={{ fontSize: 20, borderWidth: 1, borderColor: 'green', width: 80, textAlign: 'center', borderRadius: 10 }}>Kết bạn</Text>
+                            <View style={styles.containerGallery}>
+                                <View style={{ width: '50%', alignItems: 'center', left: 20 }}>
+                                    <Text style={{ fontSize: 20, borderWidth: 1, borderColor: 'green', width: 80, textAlign: 'center', borderRadius: 10 }}>Bạn bè</Text>
+                                </View>
+                                <View style={{ alignItems: 'center', width: '50%', right: 20 }}>
+                                    <Text style={{ fontSize: 20, borderWidth: 1, borderColor: '#9A4747', width: 80, textAlign: 'center', borderRadius: 10 }}>Nhắn tin</Text>
+                                </View>
+                            </View>
+                            <TouchableOpacity style={{ flexDirection: 'row', alignItems: 'center', marginTop: 10, marginBottom: 10 }} onPress={viewInfo}>
+                                <Entypo name="dots-three-horizontal" size={20} />
+                                <Text style={{ marginLeft: 10, fontSize: 20 }}>Thông tin giới thiệu</Text>
+                            </TouchableOpacity>
                         </View>
-                    </View>
+                        :
+                        <View>
+                            <View style={styles.containerGallery}>
+                                <View>
+                                    <Text style={{ fontSize: 20, borderWidth: 1, borderColor: 'green', width: 80, textAlign: 'center', borderRadius: 10 }}>Kết bạn</Text>
+                                </View>
+                            </View>
+                            <View>
+                                <Text style={{ textAlign: 'center', fontStyle: 'italic', color: '#9A4747' }}>Không thể xem nhật ký của người lạ</Text>
+                            </View>
+                        </View>
                 }
                 <View style={{ padding: 5, backgroundColor: 'white' }}>
                     <Text style={{ fontSize: 20, backgroundColor: '#BFE5F5', width: 85, borderRadius: 10, paddingLeft: 8 }}>Nhật ký</Text>
                 </View>
-            </View>
+            </View >
         )
     }
 
-    useEffect(() => {
-        post.getListPost_newfeed(token, userId)
-            .then(res => {
-                setDatapost(res.data.data.reverse());
-            })
-            .catch(error => {
-                console.log("Failed")
-            })
-    }, []);
     const splitDateTime = (raw_date) => {
         // 2021-11-14T17:16:51.653Z
         const list_text = raw_date.split(":");
@@ -133,19 +191,6 @@ export default function FriendProfile({ navigation }) {
         const new_text = date + " lúc " + hour_minute;
         return new_text;
     }
-    const onRefresh = useCallback(() => {
-        setRefreshing(true);
-
-        post.getListPost_newfeed(token, userId)
-            .then(res => {
-                setDatapost(res.data.data.reverse());
-            })
-            .catch(error => {
-                console.log("Failed")
-            })
-        wait(500).then(() => setRefreshing(false)
-        );
-    }, []);
     const onLikePress = (userId, postId) => {
         setDatapost([...datapost].map(object => {
             const isLikeTmp = object.isLike;
@@ -180,9 +225,6 @@ export default function FriendProfile({ navigation }) {
                 console.log("Failed");
                 console.log(error.response.data);
             })
-    }
-    const onAddPost = () => {
-        navigation.navigate('NewPostScreen');
     }
     const onComment = (postId, userId) => {
         navigation.navigate('CommentScreen', { postId: postId, userId: userId });
@@ -261,13 +303,13 @@ export default function FriendProfile({ navigation }) {
         <View
             style={{ flex: 1 }}
         >
-            <Modal
+            {/* <Modal
                 visible={isModalVisible}
                 animationIn='slideInUp'
                 transparent={true}
             >
                 <View style={styles.modal}>
-                    <View >
+                     <View >
                         <Pressable style={styles.button} onPress={toggleEditPost}>
                             <Text style={styles.text}>Chỉnh sửa bài đăng</Text>
                         </Pressable>
@@ -276,30 +318,12 @@ export default function FriendProfile({ navigation }) {
                             <Text style={styles.text}>Xóa bài đăng</Text>
                         </Pressable>
                         <LinePartition color={theme.colors.silver} />
-                    </View>
+                    </View> 
                 </View>
-            </Modal >
-            <View style={styles.headerBar}>
-                <View style={styles.headerLeft}>
-                    <Text style={styles.title}>BaloGram</Text>
-                </View>
-                <View style={styles.headerRight}>
-                    <Ionicons name="md-search-outline" style={styles.icon} />
-                    <Ionicons
-                        name="settings-outline"
-                        style={styles.icon}
-                        onPress={() => navigation.navigate("SettingScreen")}
-                    />
-                </View>
-            </View>
+            </Modal > */}
+            <ProfileModal />
             <SafeAreaView style={{ flex: 1 }}>
                 <FlatList
-                    refreshControl={
-                        <RefreshControl
-                            refreshing={refreshing}
-                            onRefresh={onRefresh}
-                        />
-                    }
                     data={datapost}
                     renderItem={({ item }) => renderItem(item)}
                     keyExtractor={(item) => item._id.toString()}
@@ -310,6 +334,12 @@ export default function FriendProfile({ navigation }) {
 }
 
 const styles = StyleSheet.create({
+    content: {
+        backgroundColor: 'white',
+        padding: 22,
+        borderRadius: 4,
+        borderColor: 'rgba(0, 0, 0, 0.1)',
+    },
     container: {
         flex: 1,
     },

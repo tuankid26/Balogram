@@ -6,7 +6,6 @@ import NewFeedScreen from './NewFeedScreen';
 // import ChannelScreen from './ChatMessengerScreen';
 import MainMessengerScreen from './MainMessengerScreen';
 import ProfileScreen from './ProfileScreen';
-import FriendProfile from './FriendProfileScreen';
 import NotificationScreen from './NotificationScreen'
 import FriendScreen from './FriendScreen';
 const Tab = createMaterialBottomTabNavigator();
@@ -64,7 +63,7 @@ export default function MainScreen() {
                         <MaterialCommunityIcons name="bell-outline" color={color} size={26} />
                     ),
                 }} />
-            <Tab.Screen name="Profile" component={FriendProfile}
+            <Tab.Screen name="Profile" component={ProfileScreen}
                 listeners={({ navigation }) => ({
                     tabPress: event => {
                         event.preventDefault();

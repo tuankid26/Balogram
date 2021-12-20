@@ -18,37 +18,33 @@ import { theme } from "../components/core/theme";
 import { comment } from "../handle_api";
 
 export default function CommentScreen({ route, navigation }) {
-  const postID = route.params.postId
-  const userID = route.params.userID
+  const postId = route.params.postId
+  const userId = route.params.userId
   const [data, setData] = useState([]);
   const [noData, setNoData] = useState(false);
   const [content, setContent] = useState("");
   const token = useSelector(state => state.authReducer.token);
-
+  
   const object = {
     token: token,
     content: content,
-    userID: userID,
-    postID: postID
+    userId: userId,
+    postId: postId
   }
-  useEffect(() => {
-    comment.listComment(token, postID)
+  useEffect(  () => {
+    comment.listComment(token, postId)
       .then((res) => {
         setData(res.data.data);
       })
       .catch((error) => console.log(error));
   }, [content])
 
-  useEffect(() => {
-    if (data == null) {
-      data.length == 0 ? setNoData(true) : setNoData(false);
-    }
-  }, [data])
-
   const onSend = () => {
     setContent("");
     comment.createComment(object)
       .then((res) => {
+        const newComment = res.data.data
+        setData([...data,newComment])
       })
       .catch((error) => console.log(error));
   };
@@ -59,8 +55,9 @@ export default function CommentScreen({ route, navigation }) {
         <BackButton goBack={navigation.goBack} />
         <Text style={styles.title}>Bình luận</Text>
       </View>
+      
       <View style={styles.body}>
-        {!noData ? (
+        { data.length != 0 ? (
           <FlatList
             // ref={"flatList"}
             refreshing={true}
@@ -137,14 +134,14 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
   noComment: {
-    fontFamily: "",
+    // fontFamily: "",
     textAlign: "center",
     fontWeight: "600",
     fontSize: 28,
   },
   noCommentAdd: {
     marginTop: 5,
-    fontFamily: "",
+    // fontFamily: "",
     textAlign: "center",
     fontWeight: "400",
     color: "#787A91",

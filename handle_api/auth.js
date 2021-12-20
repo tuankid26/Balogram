@@ -57,5 +57,17 @@ const edit = async (data) => {
     })
 }
 
-export { login, register, changePassword, edit };
+const getUser = async (token, ID) => {
+    const info = await api({
+        method: 'GET',
+        url: `/users/show/${ID}`,
+        headers: {
+            'Authorization': `Bearer ${token}`
+        }
+    })
+
+    return info
+}
+
+export { login, register, changePassword, edit, getUser };
 

@@ -9,31 +9,17 @@ import { search } from '../handle_api/search';
 import { BackButton } from '../components';
 import { useSelector, useDispatch } from 'react-redux';
 export default function SearchScreen({ navigation }) {
+
     const dispatch = useDispatch()
     const [text, setText] = useState();
     const [strange, setStrange] = useState([]);
-    const [showRecent, setShowRecent] = useState(true)
     const [friends, setFriends] = useState([]);
+    const [showRecent, setShowRecent] = useState(true)
     const recentData = useSelector(state => state.searchReducer.arr)
     const token = useSelector(state => state.authReducer.token);
-    const data = [
-        {
-            id: 1,
-            name: 'Hà Thúy An',
-            avatar: require('../images/avatar/1.jpg')
-        },
-        {
-            id: 2,
-            name: 'Nguyễn Anh Thi',
-            avatar: require('../images/avatar/2.jpg')
-        }
-        ,
-        {
-            id: 23,
-            name: 'Nguyễn Anh Thi',
-            avatar: require('../images/avatar/2.jpg')
-        }
-    ];
+    const userId = useSelector(state => state.infoReducer.userId);
+    // const st = useSelector(state => state)
+    // console.log(st)
     const onSubmit = () => {
         setShowRecent(false)
         search(token, text)
@@ -58,9 +44,9 @@ export default function SearchScreen({ navigation }) {
         )
     }
     const onPressUser = (item) => {
-        dispatch({ type: 'ADD_ITEM', payload: item })
+        recentData.includes(item) ? null : dispatch({ type: 'ADD_ITEM', payload: item })
+        navigation.navigate("FriendProfileScreen", { item });
     }
-
     return (
         <View style={styles.outline}>
             <View style={styles.header}>
@@ -102,7 +88,7 @@ export default function SearchScreen({ navigation }) {
                         <View style={styles.card}>
                             {
                                 friends
-                                    .filter((l, i) => (i <= 1))
+                                    .filter((l, i) => (i <= 1 && l._id != userId))
                                     .map((l, i) => (
                                         <ListItem key={i} bottomDivider >
                                             <TouchableOpacity>
@@ -129,7 +115,7 @@ export default function SearchScreen({ navigation }) {
                         <View style={styles.card}>
                             {
                                 strange
-                                    .filter((l, i) => (i <= 1))
+                                    .filter((l, i) => (i <= 1 && l._id != userId))
                                     .map((l, i) => (
                                         <ListItem key={i} bottomDivider >
                                             <TouchableOpacity onPress={() => onPressUser(l)}>

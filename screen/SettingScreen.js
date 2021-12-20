@@ -20,6 +20,7 @@ export default function SettingScreen({ navigation }) {
         dispatch({ type: 'REMOVE_TOKEN' })
         navigation.navigate("LoginScreen")
     }
+    
     return (
         <View style={styles.wrapper}>
             <View style={styles.header}>
