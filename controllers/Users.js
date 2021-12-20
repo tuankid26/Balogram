@@ -373,7 +373,7 @@ usersController.searchUser = async (req, res, next) => {
             code: 200,
             message: "Tìm kiếm thành công",
             friends: friends,
-            strange: strange
+            strange: strange,
         });
 
     } catch (e) {
