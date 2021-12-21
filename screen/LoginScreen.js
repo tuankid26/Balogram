@@ -20,13 +20,14 @@ export default function LoginScreen({ navigation }) {
     const data = {
       // phonenumber: phonenumber,
       // password: password
-      phonenumber: "000002",
+      phonenumber: "000001",
       password: "123123123"
     }
 
     auth.login(data)
       .then(res => {
         const token = res.data.token;
+        console.log(res.data.data);
         const info = {
           gender: res.data.data.gender,
           birthday: res.data.data.birthday,

@@ -3,15 +3,23 @@ import { View, Text, Image } from "react-native";
 import { StyleSheet, Dimensions } from "react-native";
 import { theme } from "../components/core/theme";
 const { width } = Dimensions.get("window");
-const avatar = require("../images/avatar/4.jpg");
+import {ipServer} from "../handle_api/ipAddressServer";
+import DefaultAvatar from '../images/avatar/default-avatar-480.png';
 class ItemComment extends Component {
   render() {
     const { item } = this.props;
-    // console.log(item)
+    const avatar = item.user.avatar;
+
     return (
       <View style={styles.container}>
         <View style={styles.bgAvatar}>
-          <Image source={avatar} style={styles.avatar} />
+          { avatar?
+              <Image source={{uri: `${ipServer}${avatar.fileName}`}} style={styles.avatar} />
+            :
+            <Image source={DefaultAvatar} style={styles.avatar} />
+
+          }
+          
         </View>
         <View style={styles.info}>
           <View style={styles.inner}>

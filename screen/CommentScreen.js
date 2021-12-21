@@ -35,9 +35,10 @@ export default function CommentScreen({ route, navigation }) {
     comment.listComment(token, postId)
       .then((res) => {
         setData(res.data.data);
+        // console.log(res.data.data);
       })
       .catch((error) => console.log(error));
-      console.log(res.data.data);
+      
   }, [content])
 
   const onSend = () => {

@@ -23,8 +23,13 @@ const { width, height } = Dimensions.get("screen");
 import { theme } from "../components/core/theme";
 import { useSelector } from 'react-redux';
 import { post } from "../handle_api";
+import {profile} from "../handle_api";
+import {ipServer} from "../handle_api/ipAddressServer";
+import DefaultAvatar from '../images/avatar/default-avatar-480.png';
+import DefaultCoverImage from "../images/default-cover-6.jpg";
 export default function Profile({ navigation }) {
   const [datapost, setDatapost] = useState("");
+  const [infoUser, setInfoUser] = useState("");
   const [refreshing, setRefreshing] = useState(false);
   const username = useSelector(state => state.infoReducer.username);
   const token = useSelector(state => state.authReducer.token)
@@ -58,23 +63,43 @@ export default function Profile({ navigation }) {
     navigation.navigate("EditPostScreen", { toggleItem });
   }
   const Profile = () => {
+    const info = infoUser;
+    // console.log(info);
     return (
       <View style={styles.container}>
         <View>
-          <Image
+          {info?
+            <Image
             style={styles.background}
             source={{
-              uri: "https://img.nhandan.com.vn/Files/Images/2020/07/26/nhat_cay-1595747664059.jpg",
+              uri: `${ipServer}${infoUser.cover_image.fileName}`,
             }}
-          />
+            />
+            :
+            <Image
+            style={styles.background}
+            source={DefaultCoverImage}
+            />
+
+          }
+          
           <View style={styles.avatar}>
-            <Avatar.Image
+            { info? <Avatar.Image
               size={120}
               source={{
-                uri: "https://cdn.nguyenkimmall.com/images/detailed/555/may-anh-cho-nguoi-moi.jpg",
+                uri: `${ipServer}${infoUser.avatar.fileName}`,
               }}
               style={{ position: "absolute" }}
             />
+            :
+            <Avatar.Image
+            size={120}
+            source={DefaultAvatar}
+            style={{ position: "absolute" }}
+            />
+
+            }
+            
           </View>
         </View>
         <View style={styles.containerInfo}>
@@ -97,16 +122,38 @@ export default function Profile({ navigation }) {
       </View>
     )
   }
+  const fetchPosts = async () => {
+    try {
+        const dataFeed = await post.getListPost_newfeed(token, userId);
+        setDatapost(dataFeed.data.data.reverse());
+    } catch (err) {
+        console.log(err);
+    }
+  };
+
+  const fetchUserInfo = async () => {
+    const data = {
+      token: token
+    }
+
+    try {
+      
+        const info = await profile.showInfoUser(data);
+        setInfoUser(info.data.data);
+        // console.log(info.data.data);
+    } catch (err) {
+        console.log(err);
+    }
+  };
 
   useEffect(() => {
-    post.getListPost_newfeed(token, userId)
-      .then(res => {
-        setDatapost(res.data.data.reverse());
-      })
-      .catch(error => {
-        console.log("Failed")
-      })
+    fetchPosts();
+    fetchUserInfo();
+    
   }, []);
+
+
+
   const splitDateTime = (raw_date) => {
     // 2021-11-14T17:16:51.653Z
     const list_text = raw_date.split(":");
@@ -119,13 +166,8 @@ export default function Profile({ navigation }) {
   const onRefresh = useCallback(() => {
     setRefreshing(true);
 
-    post.getListPost_newfeed(token, userId)
-      .then(res => {
-        setDatapost(res.data.data.reverse());
-      })
-      .catch(error => {
-        console.log("Failed")
-      })
+    fetchPosts();
+    fetchUserInfo();
     wait(500).then(() => setRefreshing(false)
     );
   }, []);
@@ -180,12 +222,12 @@ export default function Profile({ navigation }) {
       <View style={styles.containerPost}>
         <View style={styles.containerPostHeader}>
           <View style={styles.containerUser}>
-            {/* <Avatar
+            <Avatar.Image
               size={40}
               rounded
-              source={'../images/Store_local_image/bmt.jpg'}
+              source={{uri: `${ipServer}${infoUser.avatar.fileName}`}}
               containerStyle={{ marginLeft: 5, marginTop: 5 }}
-            /> */}
+            />
             <View style={{
               flexDirection: 'column'
             }}>
@@ -450,6 +492,8 @@ const styles = StyleSheet.create({
   },
   containerUser: {
     flex: 1,
+    marginLeft: 5,
+    // marginTop: 5,
     backgroundColor: theme.colors.white,
     flexDirection: 'row',
   },

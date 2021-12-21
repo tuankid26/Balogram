@@ -24,7 +24,8 @@ import {
     AvatarPicker,
     InfoUserScreen,
     ChangePasswordScreen,
-    FriendProfileScreen
+    FriendProfileScreen,
+    CoverImagePicker
 } from './screen'
 import NewPostScreen from './screen/NewPostScreen';
 
@@ -69,6 +70,7 @@ const App = () => {
                     <Stack.Screen name="InfoUserScreen" options={{ headerShown: false }} component={InfoUserScreen} />
                     <Stack.Screen name="ChangePasswordScreen" options={{ headerShown: false }} component={ChangePasswordScreen} />
                     <Stack.Screen name="FriendProfileScreen" options={{ headerShown: false }} component={FriendProfileScreen} />
+                    <Stack.Screen name="CoverImagePicker" options={{ headerShown: false }} component={CoverImagePicker} />
                 </Stack.Navigator>
             </NavigationContainer>
         </SafeAreaProvider>

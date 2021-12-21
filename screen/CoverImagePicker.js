@@ -95,7 +95,7 @@ const Content = props => {
   )
 };
 
-const AvatarPicker = ({ navigation }) => {
+const CoverImagePicker = ({ navigation }) => {
   const albumNames = ['Camera', 'Screenshots', 'Instagram', 'Zalo', 'Facebook'];
   const [selectedAlbum, setSelectedAlbum] = useState(albumNames[0]);
   const [albumAssets, setAlbumAssets] = useState([]);
@@ -138,11 +138,11 @@ const AvatarPicker = ({ navigation }) => {
     const base64Avatar = convertAvatarAssets[0];
     const data = {
       token: token,
-      avatar: base64Avatar
+      coverImage: base64Avatar
     }
 
     try {
-      const res = await profile.setAvatarUser(data);
+      const res = await profile.setCoverImageUser(data);
     } catch (err) {
       const errMsg = err.response ? err.response.message : "Error occured!";
     }
@@ -243,8 +243,8 @@ const styles = StyleSheet.create({
 });
 
 
-AvatarPicker.propTypes = {
+CoverImagePicker.propTypes = {
 
 };
 
-export default AvatarPicker;
+export default CoverImagePicker;

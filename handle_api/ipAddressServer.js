@@ -1,0 +1,1 @@
+export const ipServer = "http://192.168.1.19:8000/public/"

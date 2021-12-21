@@ -10,7 +10,7 @@ import {
 import { BackButton } from "../components";
 import { theme } from "../components/core/theme";
 import { Icon, Divider } from "react-native-elements";
-import { MaterialCommunityIcons, FontAwesome } from "react-native-vector-icons";
+import { MaterialCommunityIcons,MaterialIcons, FontAwesome } from "react-native-vector-icons";
 import { useSelector, useDispatch } from 'react-redux';
 const { width } = Dimensions.get("window");
 
@@ -23,6 +23,9 @@ export default function AccountAndSecurity({ navigation }) {
 
     const setAvatar = () =>{
         navigation.navigate("AvatarPicker");
+    }
+    const setCoverImage = () =>{
+        navigation.navigate("CoverImagePicker");
     }
 
     return (
@@ -38,10 +41,10 @@ export default function AccountAndSecurity({ navigation }) {
             </View>
             <TouchableOpacity onPress={setAvatar} >
                 <View style={styles.container}>
-                    <MaterialCommunityIcons
-                        name="shield-account"
+                    <MaterialIcons
+                        name="face"
                         style={styles.icon}
-                        color='green'
+                        color='#CCFFFF'
                     />
                     <View style={styles.info}>
                         <Text style={styles.name}>Đặt ảnh đại diện</Text>
@@ -50,7 +53,7 @@ export default function AccountAndSecurity({ navigation }) {
                 <Divider style={{ margintop: 10, marginLeft: 45 }} />
             </TouchableOpacity>
 
-            {/* <TouchableOpacity>
+            <TouchableOpacity onPress={setCoverImage}>
                 <View style={styles.container}>
                     <MaterialCommunityIcons
                         name="monitor-screenshot"
@@ -59,13 +62,13 @@ export default function AccountAndSecurity({ navigation }) {
                     // onPress={() => navigation.navigate("SearchScreen")}
                     />
                     <View style={styles.info}>
-                        <Text style={styles.name}>Giao diện</Text>
+                        <Text style={styles.name}>Đặt ảnh bìa</Text>
                     </View>
                 </View>
                 <Divider style={{ margintop: 10, marginLeft: 45 }} />
             </TouchableOpacity>
 
-            <TouchableOpacity>
+            {/* <TouchableOpacity>
                 <View style={styles.container}>
                     <MaterialCommunityIcons
                         name="bell-outline"
