@@ -299,6 +299,11 @@ postsController.list = async (req, res, next) => {
                 }
 
             }
+            if (postItem.author.avatar){
+                const fileNameAvatar = postItem.author.avatar.fileName;
+                const base64 = uploadFile.loadFile(fileNameAvatar);
+                postItem.author.avatar.base64 = base64;
+            }
             postItem.userCall = userId;
             postItem.isLike = postItemLike.includes(userId);
             postWithIsLike.push(postItem);

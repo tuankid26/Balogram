@@ -51,9 +51,28 @@ postCommentController.list = async (req, res, next) => {
         // console.log(req.params.postId);
         let postComments = await PostCommentModel.find({
             post: req.params.postId
-        }).populate('user', [
-            'username', 'phonenumber'
-        ]);
+        }).populate({
+            path: 'user',
+            select: '_id username phonenumber avatar',
+            model: 'Users',
+            populate: {
+                path: 'avatar',
+                select: '_id fileName',
+                model: 'Documents',
+            },
+        });
+        // console.log(postComments)
+
+        // if (postComments.length > 0) {
+        //     for (let indexComment = 0; indexComment < postComments.length; indexComment++) {
+        //         console.log(postComments[indexComment].user.avatar);
+        //         // const fileName = postComments[indexComment].avatar.fileName;
+        //         // console.log(fileName);
+                
+        //     }
+
+        // }
+
         return res.status(httpStatus.OK).json({
             data: postComments
         });

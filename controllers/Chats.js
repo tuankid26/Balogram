@@ -102,7 +102,8 @@ chatController.listChat = async (req, res, next) => {
 
       let userId;
       chatItem.member[0] == req.userId ? userId = chatItem.member[1] : userId = chatItem.member[0];
-      let user = await UserModel.findById(userId);
+      // let user = await UserModel.findById(userId).populate('avatar');
+      let user = await UserModel.findById(userId).select('username avatar').populate('avatar');
       listItem.push(user);
 
       let chatId = chatItem._id;
