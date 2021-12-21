@@ -3,26 +3,18 @@ import {
   StyleSheet,
   View,
   Text,
-  Image,
   FlatList,
   StatusBar,
   Dimensions,
-  Button,
   Pressable,
   RefreshControl,
-  TouchableWithoutFeedback,
 } from "react-native";
 
 import FeedImage from "../images/Store_local_image/anhquan.jpg";
-import { format } from "date-fns";
+import { format,formatDistance, subDays} from "date-fns";
 import { Avatar } from "react-native-elements";
-import {
-  MaterialCommunityIcons,
-  Ionicons,
-  Octicons,
-} from "react-native-vector-icons";
+import { MaterialCommunityIcons } from "react-native-vector-icons";
 import { theme } from "../components/core/theme";
-import Modal from "react-native-modal";
 import { post } from "../handle_api";
 import { useSelector, useDispatch } from "react-redux";
 import { uploadActions } from "../redux/actions";
@@ -34,13 +26,12 @@ const wait = (timeout) => {
 };
 
 import { LinePartition, Comment, Slider } from "../components";
-import { NavigationContainer } from "@react-navigation/native";
 import HeaderMain from "../components/header/HeaderMain";
 import ModalFeed from "../components/modal/modalFeed";
+import Post from "../components/Post";
 
 export default function NewFeedScreen({ navigation }) {
   const [datapost, setDatapost] = useState("");
-  const [imagePath, setImagePath] = useState("");
   const [refreshing, setRefreshing] = useState(false);
   const [toggleItem, setToggleItem] = useState("");
   const [doubleTouch, setDoubleTouch] = useState(0);
@@ -51,7 +42,6 @@ export default function NewFeedScreen({ navigation }) {
   });
 
   const dispatch = useDispatch();
-
   const onLikePress = (userId, postId) => {
     // const convertDatapost = PostsHelper.SetLike(userId, postId, datapost);
     // setDatapost(convertDatapost);
@@ -78,7 +68,6 @@ export default function NewFeedScreen({ navigation }) {
         } else return object;
       })
     );
-
     const data = {
       postId: postId,
       token: token,
@@ -159,8 +148,8 @@ export default function NewFeedScreen({ navigation }) {
     const date = l_date_hour[0];
     const hour_minute = l_date_hour[1] + ":" + list_text[1];
     const new_text = date + " lúc " + hour_minute;
-    // const time = format (raw_date, "MMMM do, yyyy H:mma")
-    return new_text;
+    const time = formatDistance( (new Date(raw_date)).getTime(), new Date() ,{ addSuffix: true })
+    return time;
   };
 
   const onAddPost = () => {
@@ -189,20 +178,18 @@ export default function NewFeedScreen({ navigation }) {
         <View style={styles.containerPostHeader}>
           <View style={styles.containerUser}>
             <Avatar
-              size={40}
+              size={45}
               rounded
               source={FeedImage}
-              containerStyle={{ marginLeft: 5, marginTop: 5 }}
+              containerStyle={{ marginLeft: 5, marginTop: 5, }}
             />
             <View
-              style={{
-                flexDirection: "column",
-              }}
+              style={styles.containerInfo}
             >
               <Text style={styles.containerUserName}>
                 {item.author.username}
               </Text>
-              <Text style={styles.containerHour}>{date_time}</Text>
+              <Text style={styles.containerHour}> {date_time} </Text>
             </View>
           </View>
           <View style={styles.optionDot}>
@@ -215,7 +202,7 @@ export default function NewFeedScreen({ navigation }) {
         </View>
 
         <View style={styles.containerFeed}>
-        <Text style={styles.described}>{item.described}</Text>
+          {item.described == ''?<View/> : <Text style={styles.described}>{item.described}</Text> } 
           <View style={styles.containerImage}>
             <Slider item={item.images} index={0} />
           </View>
@@ -236,11 +223,15 @@ export default function NewFeedScreen({ navigation }) {
                 onPress={() => onComment(item._id, item.author._id)}
               />
             </View>
-            <Text style={styles.numberReact}>{num_like == 0 ? "Hãy là người đầu tiên thích bài viết này " : text_like}</Text>
-
-            <Text style={styles.comment} onPress={() => onComment(item._id)}>
-              View All Comments
+            <Text style={styles.numberReact}>
+              {num_like == 0
+                ? "Hãy là người đầu tiên thích bài viết này "
+                : text_like}
             </Text>
+
+            {/* <Text style={styles.comment} onPress={() => onComment(item._id)}>
+              View All Comments
+            </Text> */}
             <Comment postID={item._id} />
           </View>
         </View>
@@ -251,55 +242,18 @@ export default function NewFeedScreen({ navigation }) {
   return (
     <View style={{ flex: 1 }}>
       <StatusBar backgroundColor={theme.colors.white} barStyle="dark-content" />
-      <HeaderMain onAddPost = {onAddPost} onSearchPress = {onSearchPress}/>
+      <HeaderMain onAddPost={onAddPost} onSearchPress={onSearchPress} />
       <View style={{ flex: 1 }}>
-        <Modal
-          isVisible={isModalVisible}
-          animationIn="slideInUp"
-          style={styles.modal}
-        >
-          <View>
-            <Pressable style={styles.button} onPress={toggleEditPost}>
-              <Text style={styles.text}>Chỉnh sửa bài đăng</Text>
-            </Pressable>
-            <LinePartition color={theme.colors.silver} />
-            <Pressable style={styles.button} onPress={toggleDeletePost}>
-              <Text style={styles.text}>Xóa bài đăng</Text>
-            </Pressable>
-            <LinePartition color={theme.colors.silver} />
-            <Pressable style={styles.button} onPress={toggleReportModal}>
-              <Text style={styles.text}>Báo xấu</Text>
-            </Pressable>
-          </View>
-        </Modal>
-        <Modal
-          isVisible={isModalReportVisible}
-          animationIn="slideInUp"
-          style={styles.modal}
-        >
-          <View>
-            <Text title="Lý do báo xấu"></Text>
-            <Pressable style={styles.button} onPress={toggleReportModal}>
-              <Text style={styles.text}>Nội dung nhạy cảm</Text>
-            </Pressable>
-            <LinePartition color={theme.colors.silver} />
-            <Pressable style={styles.button} onPress={toggleReportModal}>
-              <Text style={styles.text}>Làm phiền</Text>
-            </Pressable>
-            <LinePartition color={theme.colors.silver} />
-            <Pressable style={styles.button} onPress={toggleReportModal}>
-              <Text style={styles.text}>Lừa đảo</Text>
-            </Pressable>
-            <LinePartition color={theme.colors.silver} />
-            <Pressable style={styles.button} onPress={toggleReportModal}>
-              <Text style={styles.text}>Nhập lý do khác</Text>
-            </Pressable>
-          </View>
-        </Modal>
-        {/* <ModalFeed isModalVisible={isModalVisible} isModalReportVisible={isModalReportVisible} toggleEditPost={toggleEditPost} toggleDeletePost={toggleDeletePost} toggleReportModal={toggleReportModal} /> */}
+        <ModalFeed
+          isModalVisible={isModalVisible}
+          isModalReportVisible={isModalReportVisible}
+          toggleEditPost={toggleEditPost}
+          toggleDeletePost={toggleDeletePost}
+          toggleReportModal={toggleReportModal}
+        />
         <FlatList
           // numColumns={1}
-          // horizontal={false} 
+          // horizontal={false}
           refreshControl={
             <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
           }
@@ -317,9 +271,7 @@ const styles = StyleSheet.create({
   described: {
     fontSize: 16,
     marginLeft: 10,
-    marginBottom : 7 ,
-    // fontFamily: 'San Francisco',
-    // fontWeight: 'bold',
+    marginBottom: 7,
   },
   backgroundVideo: {
     position: "absolute",
@@ -330,7 +282,7 @@ const styles = StyleSheet.create({
   },
   numberReact: {
     marginLeft: 10,
-    marginBottom : 5,
+    marginBottom: 5,
     fontSize: 16,
     fontWeight: "500",
   },
@@ -366,18 +318,17 @@ const styles = StyleSheet.create({
   },
   optionDot: {
     backgroundColor: theme.colors.white,
-    flex: 2 / 3,
     justifyContent: "flex-end",
     alignItems: "center",
     flexDirection: "row",
   },
   containerImage: {
-    height: 468,
+    flex : 1,
     // borderColor: 'red',
     // borderWidth: 2,
   },
   containerReact: {
-    flex: 2,
+    flex : 1,
     // borderColor: 'red',
     // borderWidth: 2,
     paddingBottom: 15,
@@ -408,7 +359,8 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   containerInfo: {
-    margin: 20,
+    flexDirection : 'row',
+    alignItems : 'center',
   },
   containerUser: {
     flex: 1,
@@ -420,15 +372,16 @@ const styles = StyleSheet.create({
   },
   containerUserName: {
     color: theme.colors.black,
-    fontSize: 16,
+    fontSize: 17,
     marginLeft: 10,
     marginTop: 5,
-    fontWeight: "600",
+    fontWeight: "700",
   },
   containerHour: {
     color: "#838383",
     fontSize: 14,
-    marginLeft: 5,
+    marginLeft: 10,
+    marginTop: 5,
   },
   containerFeed: {
     justifyContent: "flex-start",

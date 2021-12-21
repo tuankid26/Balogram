@@ -83,7 +83,7 @@ export default function CommentScreen({ route, navigation }) {
           defaultValue={content}
           onChangeText={(text) => setContent(text)}
           multiline={true}
-          numberOfLines={1}
+          numberOfLines={2}
         />
         <TouchableOpacity onPress={onSend}>
           <MaterialCommunityIcons name="send" style={styles.icon} size={30} />
@@ -148,20 +148,22 @@ const styles = StyleSheet.create({
   },
 
   inputForm: {
-    flex: 1,
+    // flex: 1,
     flexDirection: "row",
-    justifyContent: "center",
+    // justifyContent: "center",
     alignItems: "center",
+    height : 50,
     paddingLeft: 10,
     paddingBottom: 15,
     borderTopWidth: 1,
-    paddingTop: 12,
+    borderColor : "#6998AB",
+    paddingTop: 5,
   },
   input: {
     flex: 1,
-    paddingTop: 3,
+    // paddingTop: 3,
     paddingRight: 10,
-    paddingBottom: 3,
+    // paddingBottom: 3,
     paddingLeft: 10,
     color: "#424242",
     borderStyle: null,
