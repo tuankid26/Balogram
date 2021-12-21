@@ -29,7 +29,7 @@ export default function Comment(params) {
                         <Text style={styles.username}>
                             {item.user.username}
                         </Text>
-                        <Text>: {item.content}</Text>
+                        <Text style = {{fontSize : 16}}>: {item.content}</Text>
                     </View>
                 )}
                 keyExtractor={(item) => item._id.toString()}
@@ -40,12 +40,14 @@ export default function Comment(params) {
 
 const styles = StyleSheet.create({
     comment: {
+        marginTop :  5,
         marginLeft: 10
     },
     viewText: {
         flexDirection: 'row'
     },
     username: {
-        fontWeight: 'bold'
+        fontWeight: 'bold',
+        fontSize : 16
     }
 })

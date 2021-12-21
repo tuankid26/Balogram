@@ -44,7 +44,7 @@ export default function SettingScreen({ navigation }) {
                         color='green'
                     />
                     <View style={styles.info}>
-                        <Text style={styles.name}>Tài khoản và bảo mật</Text>
+                        <Text style={styles.name}>Thông tin tài khoản</Text>
                     </View>
                 </View>
                 <Divider style={{ margintop: 10, marginLeft: 45 }} />
@@ -80,16 +80,16 @@ export default function SettingScreen({ navigation }) {
                 <Divider style={{ margintop: 10, marginLeft: 45 }} />
             </TouchableOpacity>
 
-            <TouchableOpacity>
+            <TouchableOpacity onPress={() => navigation.navigate("ChangePasswordScreen")}>
                 <View style={styles.container}>
                     <MaterialCommunityIcons
                         name="cog-outline"
                         style={styles.icon}
                         color='#468548'
-                    // onPress={() => navigation.navigate("SearchScreen")}
+
                     />
                     <View style={styles.info}>
-                        <Text style={styles.name}>Cài đặt ứng dụng</Text>
+                        <Text style={styles.name}>Đổi mật khẩu</Text>
                     </View>
                 </View>
                 <Divider style={{ margintop: 10, marginLeft: 45 }} />
@@ -140,7 +140,7 @@ const styles = StyleSheet.create({
         fontSize: 24,
         fontWeight: "bold",
         color: "black",
-        padding: 20,
+        padding: 15,
         alignContent: "center",
     },
     container: {

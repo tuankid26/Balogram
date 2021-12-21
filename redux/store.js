@@ -1,5 +1,12 @@
 import { createStore, combineReducers, applyMiddleware } from "redux";
-import { mediaReducer, modalReducer, uploadReducer, authReducer } from "./reducers";
+import {
+    mediaReducer,
+    modalReducer,
+    uploadReducer,
+    authReducer,
+    infoReducer,
+    searchReducer
+} from "./reducers";
 
 
 
@@ -8,6 +15,8 @@ const reducers = combineReducers({
     media: mediaReducer,
     upload: uploadReducer,
     authReducer: authReducer,
+    infoReducer: infoReducer,
+    searchReducer: searchReducer
 });
 
 const store = createStore(reducers);
