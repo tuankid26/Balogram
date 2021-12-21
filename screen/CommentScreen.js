@@ -37,6 +37,7 @@ export default function CommentScreen({ route, navigation }) {
         setData(res.data.data);
       })
       .catch((error) => console.log(error));
+      console.log(res.data.data);
   }, [content])
 
   const onSend = () => {

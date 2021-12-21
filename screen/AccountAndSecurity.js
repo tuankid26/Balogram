@@ -14,14 +14,15 @@ import { MaterialCommunityIcons, FontAwesome } from "react-native-vector-icons";
 import { useSelector, useDispatch } from 'react-redux';
 const { width } = Dimensions.get("window");
 
-export default function SettingScreen({ navigation }) {
+export default function AccountAndSecurity({ navigation }) {
     const dispatch = useDispatch();
     const logout = () => {
         dispatch({ type: 'REMOVE_TOKEN' })
         navigation.navigate("LoginScreen")
     }
-    const setAccount = () => {
-        navigation.navigate("AccountAndSecurity");
+
+    const setAvatar = () =>{
+        navigation.navigate("AvatarPicker");
     }
 
     return (
@@ -32,11 +33,10 @@ export default function SettingScreen({ navigation }) {
                     <BackButton goBack={navigation.goBack} />
                     
                 </View>
-                <Text style={styles.title}>Cài đặt</Text>
+                <Text style={styles.title}>Tài khoản và bảo mật</Text>
                 
             </View>
-
-            <TouchableOpacity onPress={setAccount} >
+            <TouchableOpacity onPress={setAvatar} >
                 <View style={styles.container}>
                     <MaterialCommunityIcons
                         name="shield-account"
@@ -44,13 +44,13 @@ export default function SettingScreen({ navigation }) {
                         color='green'
                     />
                     <View style={styles.info}>
-                        <Text style={styles.name}>Tài khoản và bảo mật</Text>
+                        <Text style={styles.name}>Đặt ảnh đại diện</Text>
                     </View>
                 </View>
                 <Divider style={{ margintop: 10, marginLeft: 45 }} />
             </TouchableOpacity>
 
-            <TouchableOpacity>
+            {/* <TouchableOpacity>
                 <View style={styles.container}>
                     <MaterialCommunityIcons
                         name="monitor-screenshot"
@@ -107,7 +107,7 @@ export default function SettingScreen({ navigation }) {
                     </View>
                 </View>
                 <Divider style={{ margintop: 10, marginLeft: 45 }} />
-            </TouchableOpacity>
+            </TouchableOpacity> */}
         </View>
     );
 }
@@ -125,7 +125,7 @@ const styles = StyleSheet.create({
     },
     headerLeft: {
         marginLeft: 10,
-        flex: 0.1,
+        flex: 0.25,
     },
     search: {
         flex: 1,

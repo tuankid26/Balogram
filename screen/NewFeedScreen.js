@@ -6,7 +6,7 @@ import {
     TouchableWithoutFeedback
 } from 'react-native'
 
-import FeedImage from '../images/Store_local_image/anhquan.jpg';
+import DefaultAvatar from '../images/avatar/default-avatar-480.png';
 
 import { Avatar } from 'react-native-elements';
 import { MaterialCommunityIcons, Ionicons, Octicons } from 'react-native-vector-icons';
@@ -130,7 +130,7 @@ export default function NewFeedScreen({ navigation }) {
         try {
           const dataFeed = await post.getListPost_newfeed(token);
           setDatapost(dataFeed.data.data.reverse());
-          console.log("refrssssh");
+          console.log(dataFeed.data.data);
         } catch (err) {
           console.log(err);
         }
@@ -198,16 +198,32 @@ export default function NewFeedScreen({ navigation }) {
         const num_like = item.like.length;
         const text_like = num_like + " lượt thích";
         const itemIsLike = item.isLike;
+        let avatar = item.author.avatar;
+        // if (avatar){
+        //     base6 =  `data:image/jpeg;base64,${avatar.base64}`;
+        // }
+        // else{
+        //     avatar = 
+        // }
         return (
             <View style={styles.containerPost}>
                 <View style={styles.containerPostHeader}>
                     <View style={styles.containerUser}>
-                        <Avatar
-                            size={40}
-                            rounded
-                            source={FeedImage}
-                            containerStyle={{ marginLeft: 5, marginTop: 5 }}
-                        />
+                        
+                        { avatar
+                            ? <Avatar
+                                size={40}
+                                rounded
+                                source={{uri: `data:image/jpeg;base64,${avatar.base64}`}}
+                                containerStyle={{ marginLeft: 5, marginTop: 5 }}
+                                />
+                            : <Avatar
+                                size={40}
+                                rounded
+                                source={DefaultAvatar}
+                                containerStyle={{ marginLeft: 5, marginTop: 5 }}
+                                />
+                        }
                         <View style={{
                             flexDirection: 'column'
                         }}>

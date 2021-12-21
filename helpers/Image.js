@@ -80,11 +80,11 @@ const askMediaLibraryPermission = async () => {
     
     return granted;
 }
-const resizeImage = async (image) => {
+const resizeImage = async (image, width) => {
     // console.log(image);
     const manipResult = await ImageManipulator.manipulateAsync(
         image.uri,
-      [{ resize: { width: 720} }],
+      [{ resize: { width: width} }],
       { compress: 0.5, format: ImageManipulator.SaveFormat.JPEG }
     ); 
     return manipResult;
