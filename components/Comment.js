@@ -12,7 +12,7 @@ export default function Comment(params) {
                 setComment(res.data.data);
             })
             .catch((error) => console.log(error));
-    }, [])
+    }, [comments])
 
     const short_list_cmt = comments.filter((_, index) => {
         return index < 2

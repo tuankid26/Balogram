@@ -4,7 +4,6 @@ import { theme } from "../core/theme";
 import {
     MaterialCommunityIcons,
     Ionicons,
-    Octicons,
   } from "react-native-vector-icons";
 export default function HeaderMain(params) {
     

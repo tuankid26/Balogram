@@ -1,3 +1,4 @@
+import formatDistance from "date-fns/formatDistance";
 import React, { Component } from "react";
 import { View, Text, Image } from "react-native";
 import { StyleSheet, Dimensions } from "react-native";
@@ -23,7 +24,17 @@ class ItemComment extends Component {
         </View>
         <View style={styles.info}>
           <View style={styles.inner}>
-            <Text style={styles.name}>{item.user.username}</Text>
+            <View style={{ flexDirection: "row" }}>
+              <Text style={styles.name}>{item.user.username}</Text>
+              <Text style={styles.containerHour}>
+                {" "}
+                {formatDistance(
+                  new Date(item.updatedAt).getTime(),
+                  new Date(),
+                  { addSuffix: true }
+                )}{" "}
+              </Text>
+            </View>
             <Text style={styles.comment}>{item.content}</Text>
           </View>
         </View>
@@ -32,6 +43,13 @@ class ItemComment extends Component {
   }
 }
 const styles = StyleSheet.create({
+  containerHour: {
+    color: "#838383",
+    fontSize: 12,
+    marginLeft: 10,
+    marginTop: 4,
+    alignItems: "center",
+  },
   container: {
     flex: 1,
     flexDirection: "row",
@@ -45,8 +63,7 @@ const styles = StyleSheet.create({
     paddingBottom: 5,
     paddingRight: 13,
     borderRadius: 20,
-    backgroundColor: '#EEEEEE',
-
+    backgroundColor: "#EEEEEE",
   },
   bgAvatar: {
     flex: 2,
@@ -69,7 +86,7 @@ const styles = StyleSheet.create({
     fontWeight: "600",
     fontSize: 18,
     paddingBottom: 3,
-    fontWeight: 'bold'
+    fontWeight: "bold",
   },
   comment: {
     color: "black",

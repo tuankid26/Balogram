@@ -8,65 +8,28 @@ import { Avatar } from "react-native-elements";
 import { MaterialCommunityIcons, Octicons } from "react-native-vector-icons";
 import { Slider } from "./Slider";
 import { Comment } from "./Comment";
-import { post } from "../handle_api";
 
-const splitDateTime = (raw_date) => {
+export default function Post(params) {
+  console.log(params)
+
+  const item = params.item
+  const splitDateTime = (raw_date) => {
     // 2021-11-14T17:16:51.653Z
     const list_text = raw_date.split(":");
     const l_date_hour = list_text[0].split("T");
     const date = l_date_hour[0];
     const hour_minute = l_date_hour[1] + ":" + list_text[1];
     const new_text = date + " lúc " + hour_minute;
+    // const time = format (raw_date, "MMMM do, yyyy H:mma")
     return new_text;
   };
-
-  
-export default function Post({item}) {
   const date_time =  splitDateTime(item.updatedAt);
   const num_like = item.like.length;
   const text_like = num_like + " lượt thích";
   const itemIsLike = item.isLike;
 
-  const onLikePress = (userId,postId) => {
-    // const convertDatapost = PostsHelper.SetLike(userId, postId, datapost);
-    // setDatapost(convertDatapost);
-    setDatapost([...datapost].map(object => {
-        const isLikeTmp = object.isLike;
-        // Handle list like and status liked
-        if(object._id === postId) {
-
-            let arrLike = object.like;
-            let arrLikeNotContainCurrentUser = arrLike.filter((item) => {
-                return item != userId
-            });
-            if (arrLikeNotContainCurrentUser.length === arrLike.length) {
-                arrLike.push(userId);
-            } else {
-                arrLike = arrLikeNotContainCurrentUser;
-            }
-
-          return {
-            
-            ...object,
-            "isLike": !isLikeTmp,
-            "like": arrLike
-          }
-        }
-        else return object;
-    }));
-
-    const data = {
-        "postId": postId,
-        "token": token
-    }
-    post.actionLikePost(data)
-        .then(res => {
-        })
-        .catch(error => {
-            console.log("Failed");
-            console.log(error.response.data);
-        })  
-}
+  const onLikePress = params.onLikePress
+  const toggleModal = params.toggleModal
   return (
     <View style={styles.containerPost}>
       <View style={styles.containerPostHeader}>
