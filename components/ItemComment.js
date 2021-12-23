@@ -16,13 +16,18 @@ class ItemComment extends Component {
         </View>
         <View style={styles.info}>
           <View style={styles.inner}>
-            <View style = {{flexDirection : 'row'}}>
-            <Text style={styles.name}>{item.user.username}</Text>
-            <Text style={styles.containerHour}> {formatDistance( (new Date(item.updatedAt)).getTime(), new Date() ,{ addSuffix: true })} </Text>
+            <View style={{ flexDirection: "row" }}>
+              <Text style={styles.name}>{item.user.username}</Text>
+              <Text style={styles.containerHour}>
+                {" "}
+                {formatDistance(
+                  new Date(item.updatedAt).getTime(),
+                  new Date(),
+                  { addSuffix: true }
+                )}{" "}
+              </Text>
             </View>
-            
             <Text style={styles.comment}>{item.content}</Text>
-            
           </View>
         </View>
       </View>
@@ -35,7 +40,7 @@ const styles = StyleSheet.create({
     fontSize: 12,
     marginLeft: 10,
     marginTop: 4,
-    alignItems :'center'
+    alignItems: "center",
   },
   container: {
     flex: 1,
@@ -50,8 +55,7 @@ const styles = StyleSheet.create({
     paddingBottom: 5,
     paddingRight: 13,
     borderRadius: 20,
-    backgroundColor: '#EEEEEE',
-
+    backgroundColor: "#EEEEEE",
   },
   bgAvatar: {
     flex: 2,
@@ -74,7 +78,7 @@ const styles = StyleSheet.create({
     fontWeight: "600",
     fontSize: 18,
     paddingBottom: 3,
-    fontWeight: 'bold'
+    fontWeight: "bold",
   },
   comment: {
     color: "black",

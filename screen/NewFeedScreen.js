@@ -11,7 +11,7 @@ import {
 } from "react-native";
 
 import FeedImage from "../images/Store_local_image/anhquan.jpg";
-import { format,formatDistance, subDays} from "date-fns";
+import { format, formatDistance, subDays } from "date-fns";
 import { Avatar } from "react-native-elements";
 import { MaterialCommunityIcons } from "react-native-vector-icons";
 import { theme } from "../components/core/theme";
@@ -148,7 +148,9 @@ export default function NewFeedScreen({ navigation }) {
     const date = l_date_hour[0];
     const hour_minute = l_date_hour[1] + ":" + list_text[1];
     const new_text = date + " lúc " + hour_minute;
-    const time = formatDistance( (new Date(raw_date)).getTime(), new Date() ,{ addSuffix: true })
+    const time = formatDistance(new Date(raw_date).getTime(), new Date(), {
+      addSuffix: true,
+    });
     return time;
   };
 
@@ -181,11 +183,9 @@ export default function NewFeedScreen({ navigation }) {
               size={45}
               rounded
               source={FeedImage}
-              containerStyle={{ marginLeft: 5, marginTop: 5, }}
+              containerStyle={{ marginLeft: 5, marginTop: 5 }}
             />
-            <View
-              style={styles.containerInfo}
-            >
+            <View style={styles.containerInfo}>
               <Text style={styles.containerUserName}>
                 {item.author.username}
               </Text>
@@ -202,7 +202,11 @@ export default function NewFeedScreen({ navigation }) {
         </View>
 
         <View style={styles.containerFeed}>
-          {item.described == ''?<View/> : <Text style={styles.described}>{item.described}</Text> } 
+          {item.described == "" ? (
+            <View />
+          ) : (
+            <Text style={styles.described}>{item.described}</Text>
+          )}
           <View style={styles.containerImage}>
             <Slider item={item.images} index={0} />
           </View>
@@ -323,12 +327,12 @@ const styles = StyleSheet.create({
     flexDirection: "row",
   },
   containerImage: {
-    flex : 1,
+    flex: 1,
     // borderColor: 'red',
     // borderWidth: 2,
   },
   containerReact: {
-    flex : 1,
+    flex: 1,
     // borderColor: 'red',
     // borderWidth: 2,
     paddingBottom: 15,
@@ -359,8 +363,8 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   containerInfo: {
-    flexDirection : 'row',
-    alignItems : 'center',
+    flexDirection: "row",
+    alignItems: "center",
   },
   containerUser: {
     flex: 1,

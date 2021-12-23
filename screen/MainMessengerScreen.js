@@ -1,4 +1,4 @@
-import React, { Component, useState, useEffect } from "react";
+import React, { Component, useState, useEffect,useRef } from "react";
 import {
   View,
   FlatList,
@@ -13,9 +13,12 @@ import { LinePartition } from "../components";
 import { theme } from "../components/core/theme";
 import { useSelector } from 'react-redux';
 import { chat } from "../handle_api";
+import { SOCKET_URL } from '../handle_api';
+import {io} from 'socket.io-client';
 
 export default function MainMessengerScreen({ navigation }) {
   const [chats, setChats] = useState([]);
+  const socket = useRef();
   const token = useSelector(state => state.authReducer.token);
   useEffect(() => {
     const initialize = async () => {
@@ -34,6 +37,7 @@ export default function MainMessengerScreen({ navigation }) {
           }))
           .reverse()
       );
+      socket.current = io(SOCKET_URL);
     };
     initialize();
   }, []);
@@ -46,6 +50,21 @@ export default function MainMessengerScreen({ navigation }) {
       console.log(err);
     }
   };
+  useEffect(() => {
+    socket.current?.on('refreshLatestMessage', (data) =>{
+      // console.log(data)
+      setChats(chats.map(chat => {
+        if(chat.id !== data.chatId){
+          return chat;
+        }
+        return{
+          ...chat,
+          text: data.content,
+        }
+      }))
+    })
+    
+  }, [socket])
 
   const renderItem = (item) => {
     return (

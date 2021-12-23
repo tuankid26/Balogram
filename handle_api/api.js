@@ -9,5 +9,5 @@ const axiosClient = axios.create({
     timeout: 10 * 1000,
 });
 
-
+const SOCKET_URL = "http://duongcheckerviet.tk:3000/api/v1";
 export default axiosClient;
