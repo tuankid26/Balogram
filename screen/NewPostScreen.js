@@ -38,7 +38,7 @@ export default function NewPostScreen({ navigation }) {
 
     post.addPost(data)
       .then(res => {
-        console.log(res.data);
+        // console.log(res.data);
       })
       .catch(error => {
         console.log("Failed");

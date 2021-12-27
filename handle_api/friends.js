@@ -1,8 +1,6 @@
 import api from './api';
 
-
-
-const getListFriend = async(token) => {
+const getListFriend = async (token) => {
     const url = '/friends/list';
     const listFriend = await api({
         method: 'POST',
@@ -12,7 +10,7 @@ const getListFriend = async(token) => {
     return listFriend;
 }
 
-const setRequestFriend = async(data) => {
+const setRequestFriend = async (data) => {
     const token = data.token;
     const user_id = data.user_id;
     const setRequest = await api({
@@ -26,7 +24,7 @@ const setRequestFriend = async(data) => {
     return setRequest;
 }
 
-const getRequestFriend = async(token) => {
+const getRequestFriend = async (token) => {
     const getRequest = await api({
         method: 'POST',
         url: '/friends/get-requested-friend',
