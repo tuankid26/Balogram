@@ -1,6 +1,6 @@
 import React from "react";
 import { useState, useEffect } from 'react'
-import { View, FlatList, Text, StyleSheet, Dimensions } from "react-native";
+import { View, FlatList, Text, StyleSheet, Dimensions ,TouchableOpacity} from "react-native";
 import {
     FriendActive,
     LinePartition
@@ -10,7 +10,6 @@ import { useIsFocused } from '@react-navigation/native';
 import {  Ionicons } from "react-native-vector-icons";
 const { width } = Dimensions.get("window");
 import {friend} from "../handle_api";
-import { post } from "../handle_api";
 import { useSelector } from 'react-redux';
 export default function FriendScreen({ navigation }) {
     const [datafriend, setDataFriend] = useState([]);
@@ -31,6 +30,31 @@ export default function FriendScreen({ navigation }) {
     const onSearchPress = () => {
         navigation.navigate("SearchScreen")
     }
+
+    const noFriend = () => {
+        if (datafriend.length == 0)
+        return (
+            <View style={styles.noF}>
+                <View >
+                    <Text style={styles.textNoF}>Chưa có người bạn nào!</Text>
+                </View>
+                <View style={{  width: width/2, padding:10}}>
+                <TouchableOpacity style={styles.buttonNoF} onPress={onSearchPress}>
+                    <Text style={styles.textNoF2}>Tìm bạn mới</Text>
+                </TouchableOpacity>
+                </View>
+            </View>
+        );
+        else {
+            return (
+            <FlatList 
+                data={datafriend}
+                renderItem={({ item }) => <FriendActive item={item} />}
+                keyExtractor={(item) => item._id.toString()}
+            />);
+        }
+    }
+
     return (
         <View style={styles.wrapper}>
             <View style={styles.headerBar}>
@@ -43,11 +67,9 @@ export default function FriendScreen({ navigation }) {
                 </View>
             </View>
             <LinePartition color={theme.colors.silver} />
-            <FlatList
-                data={datafriend}
-                renderItem={({ item }) => <FriendActive item={item} />}
-                keyExtractor={(item) => item._id.toString()}
-            />
+            <View >{noFriend()}</View>
+            
+            
         </View>
     );
 }
@@ -91,4 +113,27 @@ const styles = StyleSheet.create({
         color: theme.colors.logo,
         padding: 20,
     },
+    textNoF: {
+        fontSize: 24,
+        color: theme.colors.logo,
+        
+    },
+    textNoF2: {
+        fontSize: 26,
+        color: theme.colors.logo,
+        
+    },
+    buttonNoF: {
+        backgroundColor: '#CDF2CA',
+        height:width/9,
+        alignItems: "center",
+        borderRadius:10,
+    },
+    noF: {
+        flexDirection: 'column',
+        alignItems: "center",
+        paddingTop: width/2,
+        
+    },
+    
 });
