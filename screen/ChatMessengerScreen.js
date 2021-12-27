@@ -8,11 +8,13 @@ import { useSelector, useDispatch } from 'react-redux';
 import {ipServer} from "../handle_api/ipAddressServer";
 import DefaultAvatar from '../images/avatar/default-avatar-480.png';
 
-const SOCKET_URL = "http://192.168.0.102:3000";
+// const SOCKET_URL = "http://192.168.0.102:3000";
+import {SOCKET_URL} from "../handle_api" 
 
 export default function ChatMessengerScreen({ route, navigation }) {
   const socket = useRef();
   const { item } = route.params;
+  const [show, setShow] = useState(false);
   const [messages, setMessages] = useState([]);
   const [arrivalMessage, setArrivalMessage] = useState(null);
   const chatId = item._id;

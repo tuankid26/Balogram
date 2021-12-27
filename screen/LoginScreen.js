@@ -27,7 +27,7 @@ export default function LoginScreen({ navigation }) {
     auth.login(data)
       .then(res => {
         const token = res.data.token;
-        console.log(res.data.data);
+        // console.log(res.data.data);
         const info = {
           gender: res.data.data.gender,
           birthday: res.data.data.birthday,
