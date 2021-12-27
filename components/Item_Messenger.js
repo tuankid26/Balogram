@@ -14,6 +14,7 @@ class Item_Messenger extends Component {
         const { item } = this.props
         
         const avatar = item.avatar;
+        // console.log(`${ipServer}${avatar.fileName}`);
 
         return (
             <View style={styles.container}>
