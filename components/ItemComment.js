@@ -6,16 +6,45 @@ import { theme } from "../components/core/theme";
 const { width } = Dimensions.get("window");
 import {ipServer} from "../handle_api/ipAddressServer";
 import DefaultAvatar from '../images/avatar/default-avatar-480.png';
-class ItemComment extends Component {
+import { useSelector } from 'react-redux';
+// const login_useravatar = useSelector(state => state.infoReducer.avatar);
+export default class ItemComment extends Component{
+
+  constructor(props) {
+    super(props)
+    this.state = {
+        item: props.item,
+        user:  props.item.user,
+        avatar: props.item.user.avatar
+    }
+    
+  }
+  // const mapStateToProps = state => ({
+  //   counter: state.counter
+  // });
+
+  componentDidUpdate(prevProps){ 
+
+    if (this.state.avatar != prevProps.item.user.avatar){
+        this.setState({user: prevProps.item.user})
+        this.setState({avatar: prevProps.item.user.avatar})
+        // this.setState({activeSlide: prevProps.index})
+    }
+  }
+
+
   render() {
-    const { item } = this.props;
-    const avatar = item.user.avatar;
+    // console.log(this.state.user);
+    // const { item } = this.props;
+   
+    const avatar_bool = this.state.avatar;
+    // console.log(avatar);
 
     return (
       <View style={styles.container}>
         <View style={styles.bgAvatar}>
-          { avatar?
-              <Image source={{uri: `${ipServer}${avatar.fileName}`}} style={styles.avatar} />
+          { avatar_bool?
+              <Image source={{uri: `${ipServer}${this.state.avatar.fileName}`}} style={styles.avatar} />
             :
             <Image source={DefaultAvatar} style={styles.avatar} />
 
@@ -25,17 +54,17 @@ class ItemComment extends Component {
         <View style={styles.info}>
           <View style={styles.inner}>
             <View style={{ flexDirection: "row" }}>
-              <Text style={styles.name}>{item.user.username}</Text>
+              <Text style={styles.name}>{this.state.user.username}</Text>
               <Text style={styles.containerHour}>
                 {" "}
                 {formatDistance(
-                  new Date(item.updatedAt).getTime(),
+                  new Date(this.state.item.updatedAt).getTime(),
                   new Date(),
                   { addSuffix: true }
                 )}{" "}
               </Text>
             </View>
-            <Text style={styles.comment}>{item.content}</Text>
+            <Text style={styles.comment}>{this.state.item.content}</Text>
           </View>
         </View>
       </View>
@@ -104,4 +133,3 @@ const styles = StyleSheet.create({
     borderRadius: (width * 2.5) / 100,
   },
 });
-export default ItemComment;

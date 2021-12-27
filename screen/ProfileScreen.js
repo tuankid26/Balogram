@@ -63,12 +63,15 @@ export default function Profile({ navigation }) {
     navigation.navigate("EditPostScreen", { toggleItem });
   }
   const Profile = () => {
-    const info = infoUser;
+    const info_coverimage = infoUser.cover_image;
+    const info_avatar = infoUser.avatar;
+    // console.log(info_avatar);
     // console.log(info);
+    // console.log(`${ipServer}${infoUser.cover_image.fileName}`);
     return (
       <View style={styles.container}>
         <View>
-          {info?
+          {info_coverimage?
             <Image
             style={styles.background}
             source={{
@@ -84,7 +87,8 @@ export default function Profile({ navigation }) {
           }
           
           <View style={styles.avatar}>
-            { info? <Avatar.Image
+            { info_avatar? 
+            <Avatar.Image
               size={120}
               source={{
                 uri: `${ipServer}${infoUser.avatar.fileName}`,
@@ -94,7 +98,7 @@ export default function Profile({ navigation }) {
             :
             <Avatar.Image
             size={120}
-            source={DefaultAvatar}
+            source={{uri: 'https://i.stack.imgur.com/l60Hf.png'}}
             style={{ position: "absolute" }}
             />
 
