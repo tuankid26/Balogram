@@ -346,15 +346,6 @@ const styles = StyleSheet.create({
     height: 250,
     position: "relative",
   },
-  title: {
-    fontSize: 25,
-    marginLeft: 10,
-    color: theme.colors.logo,
-  },
-  icon: {
-    fontSize: 25,
-    marginRight: 15,
-  },
   iconImage: {
     fontSize: 30,
     padding: 6,
@@ -380,21 +371,7 @@ const styles = StyleSheet.create({
     flex: 1,
     aspectRatio: 1 / 1,
   },
-  headerBar: {
-    height: 40,
-    flexDirection: "row",
-    alignItems: "center",
-    backgroundColor: theme.colors.white,
-  },
-
-  headerLeft: {
-    flex: 1,
-  },
-  headerRight: {
-    flex: 1,
-    justifyContent: "flex-end",
-    flexDirection: "row",
-  },
+ 
   status: {
     marginTop: 5,
     fontSize: 22,
@@ -535,17 +512,40 @@ const styles = StyleSheet.create({
     color: theme.colors.logo,
     padding: 20,
   },
-  icon: {
-    fontSize: 25,
-    marginRight: 15
-  },
+
   reactIconBox: {
     flexDirection: 'row',
   },
   reactIcon: {
     fontSize: 30,
     margin: 10
-  }
+  },
+
+  headerBar: {
+    height: 40,
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: theme.colors.white,
+    height : 40,
+  },
+
+  headerLeft: {
+    flex: 1,
+  },
+  headerRight: {
+    flex: 1,
+    justifyContent: "flex-end",
+    flexDirection: "row",
+  },
+  title: {
+    fontSize: 30,
+    color: theme.colors.logo,
+    padding: 20,
+  },
+  icon: {
+    fontSize: 25,
+    marginRight: 15,
+  },
 });
 
 

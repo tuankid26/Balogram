@@ -107,17 +107,12 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "white",
   },
-  title: {
-    fontSize: 24,
-    // fontWeight: 'bold',
-    color: theme.colors.logo,
-    padding: 20,
-  },
   headerBar: {
     height: 40,
     flexDirection: "row",
     alignItems: "center",
     backgroundColor: theme.colors.white,
+    height : 40,
   },
 
   headerLeft: {
@@ -127,6 +122,11 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "flex-end",
     flexDirection: "row",
+  },
+  title: {
+    fontSize: 30,
+    color: theme.colors.logo,
+    padding: 20,
   },
   icon: {
     fontSize: 25,

@@ -12,7 +12,7 @@ const { width } = Dimensions.get("window");
 import { friend } from "../handle_api";
 import { useSelector } from 'react-redux';
 export default function FriendScreen({ navigation }) {
-    const [datafriend, setDataFriend] = useState([]);
+    const [dataFriend, setDataFriend] = useState([]);
     const token = useSelector(state => state.authReducer.token);
     const isFocused = useIsFocused();
     useEffect(() => {
@@ -43,7 +43,7 @@ export default function FriendScreen({ navigation }) {
             </View>
             <LinePartition color={theme.colors.silver} />
             <FlatList
-                data={datafriend}
+                data={dataFriend}
                 renderItem={({ item }) => <FriendActive item={item} />}
                 keyExtractor={(item) => item._id.toString()}
             />
@@ -52,42 +52,41 @@ export default function FriendScreen({ navigation }) {
 }
 
 const styles = StyleSheet.create({
-    headerBar: {
-        height: 40,
-        flexDirection: 'row',
-        alignItems: 'center',
-        backgroundColor: theme.colors.white,
+   
+    wrapper: {
+        // flex: 1,
+        // backgroundColor: "white",
     },
 
-    headerLeft: {
-        flex: 1,
-    },
-    headerRight: {
-        flex: 1,
-        justifyContent: 'flex-end',
-        flexDirection: 'row',
-    },
-    wrapper: {
-        flex: 1,
-        backgroundColor: "white",
-    },
-    header: {
-        alignItems: "center",
-        flexDirection: "row",
-        backgroundColor: theme.colors.header,
-    },
     addFriend: {
         flex: 1,
         justifyContent: "flex-end",
         flexDirection: "row",
     },
-    icon: {
-        fontSize: 25,
-        marginRight: 15,
-    },
-    title: {
-        fontSize: 24,
+    headerBar: {
+        height: 40,
+        flexDirection: "row",
+        alignItems: "center",
+        backgroundColor: theme.colors.white,
+        height : 40,
+      },
+    
+      headerLeft: {
+        flex: 1,
+      },
+      headerRight: {
+        flex: 1,
+        justifyContent: "flex-end",
+        flexDirection: "row",
+      },
+      title: {
+        fontSize: 30,
         color: theme.colors.logo,
         padding: 20,
-    },
+      },
+      icon: {
+        fontSize: 25,
+        marginRight: 15,
+      },
+    
 });

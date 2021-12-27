@@ -22,7 +22,7 @@ class FriendActive extends Component {
                         {/* <Divider style = {{marginTop : 12}}/> */}
                     </View>
                     <View>
-                        <MaterialCommunityIcons name='message-processing-outline' style={styles.icon} />
+                        <MaterialCommunityIcons name='message-outline' style={styles.icon}  />
                     </View>
                 </View>
                 <Divider style={{ margintop: 10, marginLeft: 65 }} />
