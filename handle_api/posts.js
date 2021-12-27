@@ -12,8 +12,8 @@ import api from './api';
 //     return createResult;
 // }
 
-const getListPost_newfeed = async(token) => {
-    const url = '/posts/list';
+const getListPost_newfeed = async (token, userId = null) => {
+    const url = userId ? `/posts/list?userId=${userId}` : '/posts/list';
     const listPost = await api({
         method: 'GET',
         url: url,
@@ -22,7 +22,8 @@ const getListPost_newfeed = async(token) => {
     return listPost;
 }
 
-const addPost = async(data) => {
+
+const addPost = async (data) => {
     const token = data.token;
     const described = data.described;
     const images = data.images;
@@ -42,7 +43,7 @@ const addPost = async(data) => {
 
 }
 
-const editPost = async(data) => {
+const editPost = async (data) => {
     const token = data.token;
     const described = data.described;
     const images = data.images;
@@ -51,7 +52,7 @@ const editPost = async(data) => {
     const editInfo = await api({
         method: 'POST',
         url: `/posts/edit/${postId}`,
-        data:{
+        data: {
             "described": described,
             "images": images,
             "videos": videos
@@ -60,7 +61,7 @@ const editPost = async(data) => {
     });
     return editInfo;
 }
-const deletePost = async(data)=> {
+const deletePost = async (data) => {
     const token = data.token;
     const postId = data.postId;
     const deleteInfo = await api({
@@ -71,6 +72,17 @@ const deletePost = async(data)=> {
     return deleteInfo;
 }
 
+const actionLikePost = async (data) => {
+    const token = data.token;
+    const postId = data.postId;
+    const likeInfo = await api({
+        method: "POST",
+        url: `/postLike/action/${postId}`,
+        headers: { Authorization: `Bearer ${token}` }
+    });
+    return likeInfo;
+}
 
 
-export {addPost, getListPost_newfeed, editPost, deletePost};
+
+export { addPost, getListPost_newfeed, editPost, deletePost, actionLikePost };

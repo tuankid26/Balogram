@@ -38,7 +38,7 @@ const getAlbum = async (albumName) => {
  */
 const getAssetsInAlbum = async (album) => {
     const options = {
-        first: album.assetCount,
+        first: 50 ,
         album: album,
         sortBy: ['creationTime'],
         mediaType: ['photo', 'video']
@@ -84,7 +84,7 @@ const resizeImage = async (image) => {
     // console.log(image);
     const manipResult = await ImageManipulator.manipulateAsync(
         image.uri,
-      [{ resize: { width: 480} }],
+      [{ resize: { width: 720} }],
       { compress: 0.7, format: ImageManipulator.SaveFormat.JPEG }
     ); 
     return manipResult;

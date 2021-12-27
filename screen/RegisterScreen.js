@@ -14,7 +14,7 @@ export default function RegisterScreen({ navigation }) {
   const [phonenumber, setPhonenumber] = useState("");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  
+
 
   const onRegisterPressed = () => {
     const data = {
