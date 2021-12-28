@@ -8,6 +8,7 @@ import { StyleSheet, Dimensions } from 'react-native'
 const { width } = Dimensions.get('window')
 import {ipServer} from "../handle_api/ipAddressServer";
 import DefaultAvatar from '../images/avatar/default-avatar-480.png';
+
 class Item_Messenger extends Component {
 
     render() {
