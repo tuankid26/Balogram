@@ -10,7 +10,7 @@ import {
   RefreshControl,
 } from "react-native";
 
-import FeedImage from "../images/Store_local_image/anhquan.jpg";
+import DefaultAvatar from '../images/avatar/default-avatar-480.png';
 import { format, formatDistance, subDays } from "date-fns";
 import { Avatar } from "react-native-elements";
 import { MaterialCommunityIcons } from "react-native-vector-icons";
@@ -175,16 +175,25 @@ export default function NewFeedScreen({ navigation }) {
     const num_like = item.like.length;
     const text_like = num_like + " lượt thích";
     const itemIsLike = item.isLike;
+    let avatar = item.author.avatar;
     return (
       <View style={styles.containerPost}>
         <View style={styles.containerPostHeader}>
           <View style={styles.containerUser}>
-            <Avatar
-              size={45}
-              rounded
-              source={FeedImage}
-              containerStyle={{ marginLeft: 5, marginTop: 5 }}
-            />
+          { avatar
+            ? <Avatar
+                size={40}
+                rounded
+                source={{uri: `data:image/jpeg;base64,${avatar.base64}`}}
+                containerStyle={{ marginLeft: 5, marginTop: 5 }}
+                />
+            : <Avatar
+                size={40}
+                rounded
+                source={DefaultAvatar}
+                containerStyle={{ marginLeft: 5, marginTop: 5 }}
+                />
+            }
             <View style={styles.containerInfo}>
               <Text style={styles.containerUserName}>
                 {item.author.username}
