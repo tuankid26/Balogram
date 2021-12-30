@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Text, View } from 'react-native';
+import { Text, View,Alert  } from 'react-native';
 import { SearchBar, Button, ListItem, Avatar, Icon } from 'react-native-elements';
 import { StyleSheet, Image, FlatList, StatusBar, TouchableOpacity } from 'react-native';
 import {
@@ -7,8 +7,16 @@ import {
 } from 'react-native-vector-icons'
 import { search } from '../handle_api/search';
 import { BackButton } from '../components';
+import {friend} from "../handle_api";
 import { useSelector, useDispatch } from 'react-redux';
 export default function SearchScreen({ navigation }) {
+
+    // setTimeout(() => {
+    //     Alert.alert(
+    //       'Error',
+    //       'Please Check Email and Password'
+    //     );
+    //   }, 100);
 
     const dispatch = useDispatch()
     const [text, setText] = useState();
@@ -20,6 +28,24 @@ export default function SearchScreen({ navigation }) {
     const userId = useSelector(state => state.infoReducer.userId);
     // const st = useSelector(state => state)
     // console.log(st)
+    const setRequestFriend = (userID) => {
+        const dataRequest = {
+            "user_id": userID,
+            "token": token,
+        }
+        friend.setRequestFriend(dataRequest)
+            .then(res => {
+                Alert.alert(
+                    res.data.message
+                  );
+            })
+            .catch(error => {
+                console.log("Failed");
+                console.log(error.response.data);
+            })
+
+    }
+
     const onSubmit = () => {
         setShowRecent(false)
         search(token, text)
@@ -124,7 +150,7 @@ export default function SearchScreen({ navigation }) {
                                             <ListItem.Content>
                                                 <ListItem.Title>{l.username}</ListItem.Title>
                                             </ListItem.Content>
-                                            <TouchableOpacity>
+                                            <TouchableOpacity onPress={() => setRequestFriend(l._id)}>
                                                 <Ionicons name='md-person-add-outline' style={styles.icon} />
                                             </TouchableOpacity>
                                         </ListItem>
