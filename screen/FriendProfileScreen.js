@@ -303,24 +303,7 @@ export default function FriendProfile({ route, navigation }) {
         <View
             style={{ flex: 1 }}
         >
-            {/* <Modal
-                visible={isModalVisible}
-                animationIn='slideInUp'
-                transparent={true}
-            >
-                <View style={styles.modal}>
-                     <View >
-                        <Pressable style={styles.button} onPress={toggleEditPost}>
-                            <Text style={styles.text}>Chỉnh sửa bài đăng</Text>
-                        </Pressable>
-                        <LinePartition color={theme.colors.silver} />
-                        <Pressable style={styles.button} onPress={toggleDeletePost}>
-                            <Text style={styles.text}>Xóa bài đăng</Text>
-                        </Pressable>
-                        <LinePartition color={theme.colors.silver} />
-                    </View> 
-                </View>
-            </Modal > */}
+            
             <ProfileModal />
             <SafeAreaView style={{ flex: 1 }}>
                 <FlatList

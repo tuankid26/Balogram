@@ -13,7 +13,7 @@ import {
 import DefaultAvatar from '../images/avatar/default-avatar-480.png';
 import { format, formatDistance, subDays } from "date-fns";
 import { Avatar } from "react-native-elements";
-import { MaterialCommunityIcons } from "react-native-vector-icons";
+import { MaterialCommunityIcons,EvilIcons } from "react-native-vector-icons";
 import { theme } from "../components/core/theme";
 import { post } from "../handle_api";
 import { useSelector, useDispatch } from "react-redux";
@@ -164,6 +164,7 @@ export default function NewFeedScreen({ navigation }) {
     const now = Date.now();
     const DOUBLE_PRESS_DELAY = 300;
     if (doubleTouch && now - doubleTouch < DOUBLE_PRESS_DELAY) {
+       mm,
       console.log("Hey");
     } else {
       setDoubleTouch(now);

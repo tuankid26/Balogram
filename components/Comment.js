@@ -29,7 +29,7 @@ export default function Comment(params) {
                         <Text style={styles.username}>
                             {item.user.username}
                         </Text>
-                        <Text style = {{fontSize : 16}}>: {item.content}</Text>
+                        <Text style = {{fontSize : 16}}> {item.content}</Text>
                     </View>
                 )}
                 keyExtractor={(item) => item._id.toString()}
