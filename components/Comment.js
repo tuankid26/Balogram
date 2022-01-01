@@ -12,7 +12,7 @@ export default function Comment(params) {
                 setComment(res.data.data);
             })
             .catch((error) => console.log(error));
-    }, [])
+    }, [comments])
 
     const short_list_cmt = comments.filter((_, index) => {
         return index < 2
@@ -29,7 +29,7 @@ export default function Comment(params) {
                         <Text style={styles.username}>
                             {item.user.username}
                         </Text>
-                        <Text style = {{fontSize : 16}}>: {item.content}</Text>
+                        <Text style = {{fontSize : 16}}> {item.content}</Text>
                     </View>
                 )}
                 keyExtractor={(item) => item._id.toString()}

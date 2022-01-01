@@ -5,14 +5,23 @@ import { Avatar, Icon } from "react-native-elements";
 import { io } from "socket.io-client";
 import { chat, message } from "../handle_api";
 import { useSelector, useDispatch } from 'react-redux';
-const SOCKET_URL = "http://192.168.0.102:3000";
+import {ipServer} from "../handle_api/ipAddressServer";
+import DefaultAvatar from '../images/avatar/default-avatar-480.png';
+
+// const SOCKET_URL = "http://192.168.0.102:3000";
+import {SOCKET_URL} from "../handle_api" 
 
 export default function ChatMessengerScreen({ route, navigation }) {
   const socket = useRef();
   const { item } = route.params;
+  const [show, setShow] = useState(false);
   const [messages, setMessages] = useState([]);
   const [arrivalMessage, setArrivalMessage] = useState(null);
   const chatId = item._id;
+  let avatar = item.avatar;
+  if (avatar) {
+    avatar = item.avatar.fileName;
+  }
   const token = useSelector(state => state.authReducer.token);
   const receiverId = item.receivedId
   const senderId = item.sendId[0]
@@ -44,6 +53,7 @@ export default function ChatMessengerScreen({ route, navigation }) {
           user: {
             _id: msg.user._id,
             name: msg.user.username,
+            avatar: `${ipServer}${avatar}`
           },
         }))
           .reverse()
@@ -141,7 +151,8 @@ export default function ChatMessengerScreen({ route, navigation }) {
       messages={messages}
       onSend={(messages) => onSend(messages)}
       user={{
-        _id: senderId,
+        _id: senderId
+       
       }}
       onLongPress={onLongPress}
     />

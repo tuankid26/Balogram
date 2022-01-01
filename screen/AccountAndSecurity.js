@@ -10,18 +10,22 @@ import {
 import { BackButton } from "../components";
 import { theme } from "../components/core/theme";
 import { Icon, Divider } from "react-native-elements";
-import { MaterialCommunityIcons, FontAwesome } from "react-native-vector-icons";
+import { MaterialCommunityIcons,MaterialIcons, FontAwesome } from "react-native-vector-icons";
 import { useSelector, useDispatch } from 'react-redux';
 const { width } = Dimensions.get("window");
 
-export default function SettingScreen({ navigation }) {
+export default function AccountAndSecurity({ navigation }) {
     const dispatch = useDispatch();
     const logout = () => {
         dispatch({ type: 'REMOVE_TOKEN' })
         navigation.navigate("LoginScreen")
     }
-    const setAccount = () => {
-        navigation.navigate("AccountAndSecurity");
+
+    const setAvatar = () =>{
+        navigation.navigate("AvatarPicker");
+    }
+    const setCoverImage = () =>{
+        navigation.navigate("CoverImagePicker");
     }
 
     return (
@@ -32,25 +36,24 @@ export default function SettingScreen({ navigation }) {
                     <BackButton goBack={navigation.goBack} />
                     
                 </View>
-                <Text style={styles.title}>Cài đặt</Text>
+                <Text style={styles.title}>Tài khoản và bảo mật</Text>
                 
             </View>
-
-            <TouchableOpacity onPress={setAccount} >
+            <TouchableOpacity onPress={setAvatar} >
                 <View style={styles.container}>
-                    <MaterialCommunityIcons
-                        name="shield-account"
+                    <MaterialIcons
+                        name="face"
                         style={styles.icon}
-                        color='green'
+                        color='#CCFFFF'
                     />
                     <View style={styles.info}>
-                        <Text style={styles.name}>Tài khoản và bảo mật</Text>
+                        <Text style={styles.name}>Đặt ảnh đại diện</Text>
                     </View>
                 </View>
                 <Divider style={{ margintop: 10, marginLeft: 45 }} />
             </TouchableOpacity>
 
-            <TouchableOpacity>
+            <TouchableOpacity onPress={setCoverImage}>
                 <View style={styles.container}>
                     <MaterialCommunityIcons
                         name="monitor-screenshot"
@@ -59,13 +62,13 @@ export default function SettingScreen({ navigation }) {
                     // onPress={() => navigation.navigate("SearchScreen")}
                     />
                     <View style={styles.info}>
-                        <Text style={styles.name}>Giao diện</Text>
+                        <Text style={styles.name}>Đặt ảnh bìa</Text>
                     </View>
                 </View>
                 <Divider style={{ margintop: 10, marginLeft: 45 }} />
             </TouchableOpacity>
 
-            <TouchableOpacity>
+            {/* <TouchableOpacity>
                 <View style={styles.container}>
                     <MaterialCommunityIcons
                         name="bell-outline"
@@ -80,16 +83,16 @@ export default function SettingScreen({ navigation }) {
                 <Divider style={{ margintop: 10, marginLeft: 45 }} />
             </TouchableOpacity>
 
-            <TouchableOpacity onPress={() => navigation.navigate("ChangePasswordScreen")}>
+            <TouchableOpacity>
                 <View style={styles.container}>
                     <MaterialCommunityIcons
                         name="cog-outline"
                         style={styles.icon}
                         color='#468548'
-
+                    // onPress={() => navigation.navigate("SearchScreen")}
                     />
                     <View style={styles.info}>
-                        <Text style={styles.name}>Đổi mật khẩu</Text>
+                        <Text style={styles.name}>Cài đặt ứng dụng</Text>
                     </View>
                 </View>
                 <Divider style={{ margintop: 10, marginLeft: 45 }} />
@@ -107,7 +110,7 @@ export default function SettingScreen({ navigation }) {
                     </View>
                 </View>
                 <Divider style={{ margintop: 10, marginLeft: 45 }} />
-            </TouchableOpacity>
+            </TouchableOpacity> */}
         </View>
     );
 }
@@ -125,7 +128,7 @@ const styles = StyleSheet.create({
     },
     headerLeft: {
         marginLeft: 10,
-        flex: 0.1,
+        flex: 0.25,
     },
     search: {
         flex: 1,
@@ -140,7 +143,7 @@ const styles = StyleSheet.create({
         fontSize: 24,
         fontWeight: "bold",
         color: "black",
-        padding: 15,
+        padding: 20,
         alignContent: "center",
     },
     container: {

@@ -20,20 +20,23 @@ export default function LoginScreen({ navigation }) {
     const data = {
       // phonenumber: phonenumber,
       // password: password
-      phonenumber: "00000011",
-      password: "123456"
+      phonenumber: "000002",
+      password: "123123123"
     }
 
     auth.login(data)
       .then(res => {
         const token = res.data.token;
+        console.log(res.data.data);
         const info = {
           gender: res.data.data.gender,
           birthday: res.data.data.birthday,
           address: res.data.data.address,
           description: res.data.data.description,
           username: res.data.data.username,
-          userId: res.data.data._id
+          userId: res.data.data._id,
+          avatar: res.data.data.avatar,
+          coverimage: res.data.data.coverimage
         }
         // call dispatch to store token
         dispatch({ type: 'STORE_TOKEN', payload: token })

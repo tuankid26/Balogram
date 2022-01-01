@@ -89,15 +89,15 @@ export default class MyCarousel extends Component {
 const styles = StyleSheet.create({
     
     imageContainer: {
-        borderRadius: 8,
+        // borderRadius: 1,
         // borderWidth: 1
     },
     image: {
         width: screenWidth,
-        height: screenHeight + 100,
+        height: screenHeight ,
     },
     container: {
-        height: 400,
-        width: 400
+        height: 550,
+        // width: 400
     }
 })

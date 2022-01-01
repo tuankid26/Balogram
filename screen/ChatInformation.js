@@ -18,7 +18,6 @@ const { width } = Dimensions.get("window");
 export default function ChatInformation({ route, navigation }) {
     const token = useSelector(state => state.authReducer.token);
     const { item } = route.params;
-    console.log(item)
     const onDeleteChat = async () => {
         try {
             const deleteChat = await chat.deleteChat(item._id, token);

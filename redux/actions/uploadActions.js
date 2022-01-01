@@ -1,12 +1,13 @@
 const uploading = () => {
     return {
-        type: 'UPLOADING'
+        type: 'UPLOADING',
     };
 };
 
-const uploadSuccess = () => {
+const uploadSuccess = (data) => {
     return {
-        type: 'UPLOAD_SUCCESS'
+        type: 'UPLOAD_SUCCESS',
+        payload: data
     };
 };
 

@@ -3,25 +3,28 @@ import { View, Text, TouchableOpacity } from 'react-native'
 import { StyleSheet, Dimensions } from 'react-native'
 import { Avatar, Divider } from 'react-native-paper'
 import { MaterialCommunityIcons } from 'react-native-vector-icons';
+import { ipServer } from "../handle_api/ipAddressServer";
 const { width } = Dimensions.get('window')
 class FriendActive extends Component {
     render() {
         const { item } = this.props
-
+        
         return (
             <TouchableOpacity>
                 <View style={styles.container}>
                     <View style={styles.bgAvatar}>
                         <Avatar.Image
                             size={45}
-                            source={{uri:'../images/Store_local_image/anh2.jpg'}}
+                            source={{
+                                uri: `${ipServer}${item.avatar.fileName}`,
+                              }}
                         />
                     </View>
                     <View style={styles.info}>
                         <Text style={styles.name}>{item.username}</Text>
                     </View>
                     <View>
-                        <MaterialCommunityIcons name='message-processing-outline' style={styles.icon} />
+                        <MaterialCommunityIcons name='message-outline' style={styles.icon}  />
                     </View>
                 </View>
                 <Divider style={{ margintop: 10, marginLeft: 65 }} />

@@ -4,19 +4,38 @@ import { View, Text, Image, TouchableOpacity } from 'react-native'
 // import Swipeout from 'react-native-swipeout'
 // import Icon from 'react-native-vector-icons/FontAwesome5'
 import { StyleSheet, Dimensions } from 'react-native'
-import avt from '../images/Store_local_image/bmt.jpg'
+// import avt from '../images/Store_local_image/bmt.jpg'
 const { width } = Dimensions.get('window')
+import {ipServer} from "../handle_api/ipAddressServer";
+import DefaultAvatar from '../images/avatar/default-avatar-480.png';
+
 class Item_Messenger extends Component {
 
     render() {
         const { item } = this.props
+        
+        const avatar = item.avatar;
+        // console.log(`${ipServer}${avatar.fileName}`);
+
         return (
             <View style={styles.container}>
                 <View style={styles.bgAvatar}>
-                    <Image
-                        source={avt}
-                        style={styles.avatar}
-                    />
+                    {
+                        avatar
+                        ?
+                            <Image
+                            source={{uri: `${ipServer}${avatar.fileName}`}}
+                            style={styles.avatar}
+                            />
+                        :
+                            <Image
+                            source={DefaultAvatar}
+                            style={styles.avatar}
+                            />
+
+
+                    }
+                    
                 </View>
                 <View style={styles.info}>
                     <Text style={styles.name}>{item.name}</Text>

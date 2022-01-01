@@ -2,14 +2,13 @@ import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { FlatList, StyleSheet, TouchableOpacity, View, Dimensions } from 'react-native';
 import { Button, Text, Image, Icon } from 'react-native-elements';
-import { useDispatch } from 'react-redux';
-import { mediaActions } from '../redux/actions';
 import { ImageHelper } from '../helpers';
-import { useSelector } from 'react-redux';
 import { Picker } from '@react-native-picker/picker';
 import { StatusBar } from 'react-native';
 const { width } = Dimensions.get('window')
-
+import * as FileSystem from 'expo-file-system';
+import { useSelector, useDispatch } from 'react-redux';
+import {profile} from '../handle_api';
 const Header = props => {
 
   const Item = Picker.Item;
@@ -42,125 +41,25 @@ const Header = props => {
         </Picker>
       </View>
 
-      {
-        props.selectedAssets.length > 0 ?
-          <Button
-            title='Next'
-            containerStyle={{ marginRight: 20 }}
-            style={{ marginRight: 20 }}
-            onPress={props.handleSend}
-          />
-          :
-          <Icon
+      <Icon
             type='antdesign'
             name='camera'
             size={28}
             iconStyle={{ marginRight: 20 }}
             onPress={props.handleLaunchCamera}
           />
-      }
     </View>
   );
 };
 
 
-
-// const MediaItem = props => {
-//   const selectedAssets = props.selectedAssets;
-//   const item = props.item;
-
-//   const isInSelectedAssets = () => {
-//     return selectedAssets.filter(asset => asset.uri === item.uri).length > 0;
-//   }
-
-//   const getIndexInSelectedAssets = () => {
-//     return selectedAssets.findIndex(asset => asset.uri === item.uri);
-//   }
-
-//   return (
-
-//     <TouchableOpacity
-//       style={{ position: 'relative' }}
-//       onPress={() => props.handleItemSelected(item)}
-//     >
-//       <Image
-//         source={{
-//           uri: item.uri,
-//         }}
-//         style={styles.image}
-//       />
-
-//       <View
-//         style={[
-//           styles.selectedImage,
-//           {
-//             backgroundColor: isInSelectedAssets()
-//               ? 'rgba(255,255,255,0.40);'
-//               : 'transparent',
-//           },
-//         ]}
-//       />
-
-//       <View
-//         style={[
-//           styles.selected,
-//           {
-//             backgroundColor:
-//               isInSelectedAssets()
-//                 ? '#0275d8'
-//                 : '#292b2c',
-//             borderColor: 'white',
-//             borderWidth: 2,
-//           },
-//         ]}
-//       >
-//         <Text style={styles.text}>
-//           {isInSelectedAssets()
-//             ? getIndexInSelectedAssets() + 1
-//             : ''}
-//         </Text>
-//       </View>
-
-//     </TouchableOpacity>
-
-//   )
-// };
-
-
-
-const areEqual = (prevProps, nextProps) => {
-  const { item, selectedAssets } = nextProps;
-  const { item: prevItem, selectedAssets: prevSelectedAssets } = prevProps;
-
-  if (item !== prevItem) {
-    return false;
-  }
-
-  const selectedIndex = selectedAssets.findIndex(
-    (asset) => asset.uri === item.uri
-  );
-  const prevSelectedIndex = prevSelectedAssets.findIndex(
-    (asset) => asset.uri === item.uri
-  );
-
-  return selectedIndex === prevSelectedIndex;
-};
-
-const MediaItem = React.memo((props) => {
-  const selectedAssets = props.selectedAssets;
+const MediaItem = props => {
   const item = props.item;
 
-  const isInSelectedAssets = () => {
-    return selectedAssets.filter((asset) => asset.uri === item.uri).length > 0;
-  };
-
-  const getIndexInSelectedAssets = () => {
-    return selectedAssets.findIndex((asset) => asset.uri === item.uri);
-  };
-
   return (
+
     <TouchableOpacity
-      style={{ position: "relative" }}
+      style={{ position: 'relative' }}
       onPress={() => props.handleItemSelected(item)}
     >
       <Image
@@ -169,35 +68,10 @@ const MediaItem = React.memo((props) => {
         }}
         style={styles.image}
       />
-
-      <View
-        style={[
-          styles.selectedImage,
-          {
-            backgroundColor: isInSelectedAssets()
-              ? "rgba(255,255,255,0.40);"
-              : "transparent",
-          },
-        ]}
-      />
-
-      <View
-        style={[
-          styles.selected,
-          {
-            backgroundColor: isInSelectedAssets() ? "#0275d8" : "#292b2c",
-            borderColor: "white",
-            borderWidth: 2,
-          },
-        ]}
-      >
-        <Text style={styles.text}>
-          {isInSelectedAssets() ? getIndexInSelectedAssets() + 1 : ""}
-        </Text>
-      </View>
     </TouchableOpacity>
-  );
-}, areEqual);
+
+  )
+};
 
 
 const Content = props => {
@@ -212,7 +86,6 @@ const Content = props => {
       renderItem={({ item }) =>
         <MediaItem
           item={item}
-          selectedAssets={props.selectedAssets}
           handleItemSelected={props.handleItemSelected}
         />
       }
@@ -222,14 +95,11 @@ const Content = props => {
   )
 };
 
-const MediaPicker = ({ navigation }) => {
+const CoverImagePicker = ({ navigation }) => {
   const albumNames = ['Camera', 'Screenshots', 'Instagram', 'Zalo', 'Facebook'];
-  const dispatch = useDispatch();
   const [selectedAlbum, setSelectedAlbum] = useState(albumNames[0]);
   const [albumAssets, setAlbumAssets] = useState([]);
-
-  const selectedAssets = useSelector(state => state.media.selectedAssets);
-
+  const token = useSelector(state => state.authReducer.token);
   useEffect(() => {
     const fetchAlbumAssets = async (albumName) => {
       const albumAssets = await fetchAllAssetsInAlbum(albumName);
@@ -254,23 +124,31 @@ const MediaPicker = ({ navigation }) => {
 
 
   const handleBack = () => {
-    // const listItem = useSelector();
-    // console.log(listItem);
-    dispatch(mediaActions.resetState());
     navigation.goBack();
   }
 
   const handleAlbumSelected = (album) => setSelectedAlbum(album);
 
   const handleItemSelected = async (item) => {
-    const result = await ImageHelper.resizeImage(item, 1080);
+    const result = await ImageHelper.resizeImage(item, 480);
     item.uri = result.uri;
-    // console.log(item);
-    if (selectedAssets.indexOf(item) >= 0) {
-      dispatch(mediaActions.removeAsset(item))
-    } else {
-      dispatch(mediaActions.addAsset(item));
+    item.mediaType = "photo";
+    const items = [item];
+    const convertAvatarAssets = await convertToBase64(items);
+    const base64Avatar = convertAvatarAssets[0];
+    const data = {
+      token: token,
+      coverImage: base64Avatar
     }
+
+    try {
+      const res = await profile.setCoverImageUser(data);
+    } catch (err) {
+      const errMsg = err.response ? err.response.message : "Error occured!";
+    }
+    navigation.navigate("MainScreen");
+    
+    
   };
 
   const handleSend = () => {
@@ -287,12 +165,34 @@ const MediaPicker = ({ navigation }) => {
     // }
   }
 
+  const convertToBase64 = async (assets) => {
+    const mimeTypes = assets.map(asset => {
+      const fileName = asset.filename;
+      const mediaType = asset.mediaType === 'photo' ? 'image' : 'video';
+      let extension = fileName.split('.')[1];
+      if (extension === 'jpg') {
+        extension = 'jpeg';
+      }
+
+      return `${mediaType}/${extension}`;
+    });
+
+    const assetPromises = assets.map(asset => FileSystem.readAsStringAsync(asset.uri, { encoding: FileSystem.EncodingType.Base64 }));
+    const convertedAssets = await Promise.all(assetPromises);
+
+    const base64Assets = convertedAssets.map((asset, idx) => formatIntoBase64String(asset, mimeTypes[idx]));
+    return base64Assets;
+  }
+
+  const formatIntoBase64String = (data, mediaType) => {
+    return `data:${mediaType};base64,${data}`;
+  }
+
 
   return (
     <View style={styles.container}>
       <Header
         albumNames={albumNames}
-        selectedAssets={selectedAssets}
         selectedAlbum={selectedAlbum}
         handleBack={handleBack}
         handleSend={handleSend}
@@ -302,7 +202,6 @@ const MediaPicker = ({ navigation }) => {
 
       <Content
         albumAssets={albumAssets}
-        selectedAssets={selectedAssets}
         handleItemSelected={handleItemSelected}
       />
     </View>
@@ -344,8 +243,8 @@ const styles = StyleSheet.create({
 });
 
 
-MediaPicker.propTypes = {
+CoverImagePicker.propTypes = {
 
 };
 
-export default MediaPicker;
+export default CoverImagePicker;

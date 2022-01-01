@@ -4,9 +4,9 @@ import { Text } from 'react-native-paper'
 import { theme } from '../components/core/theme'
 import { Icon } from 'react-native-elements'
 import { useSelector, useDispatch } from 'react-redux';
-import { mediaActions } from '../redux/actions';
+import { mediaActions, uploadActions } from '../redux/actions';
 import * as FileSystem from 'expo-file-system';
-
+import {MaterialDesignIcons} from 'react-native-vector-icons'
 
 import {
   BackButton,
@@ -22,7 +22,7 @@ export default function NewPostScreen({ navigation }) {
   const dispatch = useDispatch();
   const token = useSelector(state => state.authReducer.token);
   const upLoad = async () => {
-
+    dispatch(uploadActions.uploading());
     const imageAssets = selectedAssets.filter(asset => asset.mediaType === 'photo');
     const videoAssets = selectedAssets.filter(asset => asset.mediaType === 'video');
 
@@ -36,14 +36,13 @@ export default function NewPostScreen({ navigation }) {
       videos: convertedVideoAssets
     }
 
-    post.addPost(data)
-      .then(res => {
-        // console.log(res.data);
-      })
-      .catch(error => {
-        console.log("Failed");
-        console.log(error.response.data);
-      })
+    try {
+      const res = await post.addPost(data);
+      dispatch(uploadActions.uploadSuccess(res.data.data));
+    } catch (err) {
+      const errMsg = err.response ? err.response.message : "Error occured!";
+      dispatch(uploadActions.uploadFailure(errMsg));
+    }
     dispatch(mediaActions.resetState());
 
     navigation.navigate("MainScreen");
@@ -88,7 +87,7 @@ export default function NewPostScreen({ navigation }) {
   }
 
   return (
-    <View style={{ flex: 1 }}>
+    <View style={{ flex: 1,backgroundColor:'white' }}>
       <View style={styles.headerBar}>
         <View style={styles.headerLeft}>
           <BackButton goBack={goBack} />
@@ -100,18 +99,27 @@ export default function NewPostScreen({ navigation }) {
           />
         </View>
       </View>
-      <Text style={styles.tus}>Bạn đang nghĩ gì?</Text>
+      {/* <Text style={styles.tus}>Bạn đang nghĩ gì?</Text> */}
       <TextInput style={styles.status}
-        placeholder="Trạng thái của bạn"
+        placeholder="Bạn đang nghĩ gì ?"
         returnKeyType="next"
         // value={status}
         onChangeText={setStatus}
         multiline={true}
         numberOfLines={5}
       />
-      <Icon name="image" type="MaterialIcons" size={40} color={theme.colors.button} onPress={addImage} />
-      {/* Render Image from Gallery */}
+      <View style = {{flexDirection: 'row', marginLeft : 10, alignItems : 'center'}}>
+        <Icon name="filter"   type="MaterialIcons" size={35} onPress={addImage} />
+        <Text style = {{fontSize : 20, marginLeft :10,}}>Thêm ảnh </Text>
+      </View>
 
+      <View style = {{flexDirection: 'row', marginLeft : 10, alignItems : 'center', marginTop : 5}}>
+        <Icon name="videocam"   type="MaterialIcons" size={35} color={'#406882'} onPress={addImage} />
+        <Text style = {{fontSize : 20, marginLeft :10}}>Thêm Video </Text>
+      </View>
+      
+      {/* Render Image from Gallery */}
+     
       <View style={{ flex: 1 }}>
         <FlatList
           numColumns={3}
@@ -150,11 +158,14 @@ const styles = StyleSheet.create({
     fontSize: 25,
     paddingTop: 17,
     textAlign: "center",
+    // backgroundColor:'white'
   },
   status: {
-    margin: 7,
+    // margin: 7,
     fontSize: 20,
-    borderRadius: 6,
+    // borderRadius: 6,
+    height : 200,
+    backgroundColor:'white'
   },
   button: {
     backgroundColor: theme.colors.button
