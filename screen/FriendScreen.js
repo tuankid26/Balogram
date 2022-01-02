@@ -14,11 +14,15 @@ import { useIsFocused } from "@react-navigation/native";
 import { Ionicons } from "react-native-vector-icons";
 const { width } = Dimensions.get("window");
 import { friend } from "../handle_api";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 export default function FriendScreen({ navigation }) {
   const [dataFriend, setDataFriend] = useState([]);
   const token = useSelector((state) => state.authReducer.token);
+
+  const dispatch = useDispatch();
+  const recentData = useSelector((state) => state.searchReducer.arr);
   const isFocused = useIsFocused();
+
   useEffect(() => {
     friend
       .getListFriend(token)
@@ -34,6 +38,16 @@ export default function FriendScreen({ navigation }) {
 
   const onSearchPress = () => {
     navigation.navigate("SearchScreen");
+  };
+
+  // const onPressUser = (item) => {
+  //   recentData.includes(item)
+  //     ? null
+  //     : dispatch({ type: "ADD_ITEM", payload: item });
+  //   navigation.navigate("FriendProfileScreen", { item });
+  // };
+  const onPressUser = (item) => {
+    navigation.navigate("FriendProfileScreen", { item });
   };
 
   const noFriend = () => {
@@ -54,7 +68,9 @@ export default function FriendScreen({ navigation }) {
       return (
         <FlatList
           data={dataFriend}
-          renderItem={({ item }) => <FriendActive item={item} />}
+          renderItem={({ item }) => (
+            <FriendActive item={item} onPressUser={onPressUser}/>
+          )}
           keyExtractor={(item) => item._id.toString()}
         />
       );
