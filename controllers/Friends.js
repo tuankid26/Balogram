@@ -32,7 +32,7 @@ friendsController.setRequest = async (req, res, next) => {
 
         let isFriend = await FriendModel.findOne({ sender: sender, receiver: receiver });
         if(isFriend != null){
-            if (isFriend.status == '1') {
+            if (isFriend.status == '0') {
                 return res.status(200).json({
                     code: 200,
                     success: false,
@@ -40,11 +40,11 @@ friendsController.setRequest = async (req, res, next) => {
                 });
             }
 
-            isFriend.status = '0';
+            isFriend.status = '1';
             isFriend.save();
             res.status(200).json({
                 code: 200,
-                message: "Gửi lời mời kết bạn thành công",
+                message: "Đối phương đã là bạn",
             });
 
         }else{
@@ -145,13 +145,16 @@ friendsController.setRemoveFriend = async (req, res, next) => {
         } else {
             final = friendRc1;
         }
-        if (final.status != '1') {
-            res.status(200).json({
-                code: 200,
-                success: false,
-                message: "Khong thể thao tác",
-            });
-        }
+        // if (final.status != '1') {
+        //     return res.status(200).json({
+        //         code: 200,
+        //         success: false,
+        //         message: "Khong thể thao tác",
+        //         final: final,
+        //         friend1: friendRc1,
+        //         friend2: friendRc2,
+        //     });
+        // }
 
         final.status = '3';
         final.save();
