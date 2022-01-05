@@ -51,6 +51,15 @@ export default function FriendProfile({ route, navigation }) {
     fetchSearch();
     fetchPosts();
   }, []);
+ 
+  const fetchChats = async () => {
+    try {
+      const res = await chat.listChat(token);
+      return res.data.data;
+    } catch (err) {
+      console.log(err);
+    }
+  };
   const fetchSearch = async () => {
     try {
       const dataFeed = await search.search(token, phonenumber);

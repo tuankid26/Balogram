@@ -16,7 +16,7 @@ export default function ChatMessengerScreen({ route, navigation }) {
   const { item } = route.params;
   const [show, setShow] = useState(false);
   const [messages, setMessages] = useState([]);
-  const [arrivalMessage, setArrivalMessage] = useState(null);
+  // const [arrivalMessage, setArrivalMessage] = useState(null);
   const chatId = item._id;
   let avatar = item.avatar;
   if (avatar) {
@@ -24,7 +24,7 @@ export default function ChatMessengerScreen({ route, navigation }) {
   }
   const token = useSelector(state => state.authReducer.token);
   const receiverId = item.receivedId
-  const senderId = item.sendId[0]
+  const senderId =  useSelector(state => state.authReducer.userId);
   const onBack = () => {
     navigation.navigate("MainScreen");
   };
@@ -152,7 +152,6 @@ export default function ChatMessengerScreen({ route, navigation }) {
       onSend={(messages) => onSend(messages)}
       user={{
         _id: senderId
-       
       }}
       onLongPress={onLongPress}
     />

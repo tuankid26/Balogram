@@ -46,6 +46,7 @@ export default function FriendScreen({ navigation }) {
   //     : dispatch({ type: "ADD_ITEM", payload: item });
   //   navigation.navigate("FriendProfileScreen", { item });
   // };
+
   const onPressUser = (item) => {
     navigation.navigate("FriendProfileScreen", { item });
   };
@@ -69,7 +70,7 @@ export default function FriendScreen({ navigation }) {
         <FlatList
           data={dataFriend}
           renderItem={({ item }) => (
-            <FriendActive item={item} onPressUser={onPressUser}/>
+            <FriendActive item={item} onPressUser={onPressUser} />
           )}
           keyExtractor={(item) => item._id.toString()}
         />
@@ -97,6 +98,7 @@ export default function FriendScreen({ navigation }) {
         </View>
       </View>
       <LinePartition color={theme.colors.silver} />
+      <Text style ={{fontSize : 24, backgroundColor : 'white', marginLeft : 15}}>Danh sách bạn bè</Text>
       <View>{noFriend()}</View>
 
       {/* <FlatList

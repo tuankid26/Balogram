@@ -338,6 +338,7 @@ const styles = StyleSheet.create({
   },
   containerImage: {
     flex: 1,
+    // height : 468
     // borderColor: 'red',
     // borderWidth: 2,
   },

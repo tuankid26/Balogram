@@ -10,11 +10,9 @@ const { width } = Dimensions.get("window");
 export default function FriendActive({ item, onPressUser }) {
 //   const item = route.params.item;
 
-  
   const onPressFriend = () => {
     onPressUser(item)
-  }
-  
+  } 
   return (
     <TouchableOpacity onPress={onPressFriend}>
       <View style={styles.container}>
@@ -30,9 +28,9 @@ export default function FriendActive({ item, onPressUser }) {
         <View style={styles.info}>
           <Text style={styles.name}>{item.username}</Text>
         </View>
-        <View>
+        {/* <View >
           <MaterialCommunityIcons name="message-outline" style={styles.icon} />
-        </View>
+        </View> */}
       </View>
       <Divider style={{ margintop: 10, marginLeft: 65 }} />
     </TouchableOpacity>
@@ -49,6 +47,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     paddingVertical: 5,
     marginTop: 8,
+    backgroundColor :'white'
   },
   bgAvatar: {
     flex: 2,
