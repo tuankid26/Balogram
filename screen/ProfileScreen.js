@@ -94,7 +94,7 @@ export default function Profile({ navigation }) {
             ) : (
               <Avatar.Image
                 size={120}
-                source={{ uri: "https://i.stack.imgur.com/l60Hf.png" }}
+                source={require("../images/avatar/default-avatar-480.png")}
                 style={{ position: "absolute" }}
               />
             )}
@@ -143,7 +143,7 @@ export default function Profile({ navigation }) {
   };
   const fetchPosts = async () => {
     try {
-      const dataFeed = await post.getListPost_newfeed(token, userId);
+      const dataFeed = await post.getListPost(token, userId);
       setDatapost(dataFeed.data.data.reverse());
     } catch (err) {
       console.log(err);

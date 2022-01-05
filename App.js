@@ -5,6 +5,9 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { theme } from './components/core/theme';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import store from './redux/store';
+// import { LogBox } from 'react-native';
+// LogBox.ignoreLogs(['Warning: ...']); // Ignore log notification by message
+// LogBox.ignoreAllLogs();//Ignore all log notifications
 
 import {
     LoginScreen,

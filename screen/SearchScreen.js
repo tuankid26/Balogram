@@ -59,15 +59,28 @@ export default function SearchScreen({ navigation }) {
       });
   };
   const renderRecent = (item) => {
+    let recent_avatar = item.avatar;
     return (
       <View>
         <TouchableOpacity style={styles.recentContainer}>
           <View style={styles.recentWrapper}>
-            <Avatar
-              source={require("../images/avatar/1.jpg")}
+            { recent_avatar ?
+            (
+              <Avatar
+              source={{
+                uri: `${ipServer}${item.avatar.fileName}`,
+              }}
               size={60}
               rounded
             />
+            ) : (
+              <Avatar
+              source={require("../images/avatar/default-avatar-480.png")}
+              size={60}
+              rounded
+            />
+
+          )}
             <Text>{item.username}</Text>
           </View>
         </TouchableOpacity>
@@ -132,7 +145,7 @@ export default function SearchScreen({ navigation }) {
                   <ListItem key={i} bottomDivider>
                     <TouchableOpacity>
                       <Avatar
-                        source={require("../images/avatar/1.jpg")}
+                        source={require("../images/avatar/default-avatar-480.png")}
                         size={60}
                         rounded
                       />
@@ -160,6 +173,7 @@ export default function SearchScreen({ navigation }) {
                 .map((l, i) => (
                   <ListItem key={i} bottomDivider>
                     <TouchableOpacity onPress={() => onPressUser(l)}>
+                    {l.avatar ? (
                       <Avatar
                         source={{
                           uri: `${ipServer}${l.avatar.fileName}`,
@@ -167,6 +181,13 @@ export default function SearchScreen({ navigation }) {
                         size={60}
                         rounded
                       />
+                    ) : (
+                      <Avatar
+                      source={require("../images/avatar/default-avatar-480.png")}
+                      size={60}
+                      rounded
+                    />
+                    )}
                     </TouchableOpacity>
                     <ListItem.Content>
                       <ListItem.Title>{l.username}</ListItem.Title>

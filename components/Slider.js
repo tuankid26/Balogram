@@ -6,6 +6,7 @@ import {
 } from 'react-native';
 
 import { theme } from './core/theme';
+import { ScreenHeight } from 'react-native-elements/dist/helpers';
 
 const { width: screenWidth } = Dimensions.get('window')
 const { height: screenHeight } = Dimensions.get('window')
@@ -89,15 +90,18 @@ export default class MyCarousel extends Component {
 const styles = StyleSheet.create({
     
     imageContainer: {
-        // borderRadius: 8,
+        borderRadius: 8,
         // borderWidth: 1
     },
     image: {
-        width: screenWidth,
-        height: screenHeight + 100,
+        // width: screenWidth ,
+        // height: screenHeight ,
+        flex: 1,
+        resizeMode: 'center'
     },
     container: {
-        height: 550,
-        width: 400
+        // flex : 1,
+        height: ScreenHeight - 200,
+        // width: 400
     }
 })
