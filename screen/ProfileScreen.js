@@ -143,7 +143,7 @@ export default function Profile({ navigation }) {
   };
   const fetchPosts = async () => {
     try {
-      const dataFeed = await post.getListPost_newfeed(token, userId);
+      const dataFeed = await post.getListPost(token, userId);
       setDatapost(dataFeed.data.data.reverse());
     } catch (err) {
       console.log(err);

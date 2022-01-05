@@ -71,7 +71,7 @@ export default function FriendProfile({ route, navigation }) {
   };
   const fetchPosts = async () => {
     try {
-      const dataFeed = await post.getListPost_newfeed(token, Friend_ID);
+      const dataFeed = await post.getListPost(token, Friend_ID);
       setDatapost(dataFeed.data.data.reverse());
     } catch (err) {
       console.log(err);
