@@ -162,7 +162,7 @@ export default function SearchScreen({ navigation }) {
                     <TouchableOpacity onPress={() => onPressUser(l)}>
                       <Avatar
                         source={{
-                          uri: `${ipServer}${l.avatar.fileName}`,
+                          uri: `${ipServer}${'../images/placeholder.png'}`,
                         }}
                         size={60}
                         rounded

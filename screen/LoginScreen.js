@@ -20,8 +20,8 @@ export default function LoginScreen({ navigation }) {
     const data = {
       // phonenumber: phonenumber,
       // password: password
-      phonenumber: "000002",
-      password: "123123123"
+      phonenumber: "00000011",
+      password: "123456"
     }
 
     auth.login(data)

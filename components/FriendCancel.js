@@ -1,13 +1,13 @@
 import React, { Component } from "react";
 import { View, Text, TouchableOpacity } from "react-native";
-import { StyleSheet, Dimensions } from "react-native";
+import { StyleSheet, Dimensions, Modal } from "react-native";
 import { Avatar, Divider } from "react-native-paper";
 import { MaterialCommunityIcons } from "react-native-vector-icons";
 import { ipServer } from "../handle_api/ipAddressServer";
 import { useSelector, useDispatch } from "react-redux";
 import FriendProfile from "../screen/FriendProfileScreen";
 const { width } = Dimensions.get("window");
-export default function FriendActive({ item, onPressUser }) {
+export default function FriendCancel() {
 //   const item = route.params.item;
 
   
