@@ -6,7 +6,7 @@ import { Icon } from 'react-native-elements'
 import { useSelector, useDispatch } from 'react-redux';
 import { mediaActions, uploadActions } from '../redux/actions';
 import * as FileSystem from 'expo-file-system';
-
+import {MaterialDesignIcons} from 'react-native-vector-icons'
 
 import {
   BackButton,
@@ -87,7 +87,7 @@ export default function NewPostScreen({ navigation }) {
   }
 
   return (
-    <View style={{ flex: 1 }}>
+    <View style={{ flex: 1,backgroundColor:'white' }}>
       <View style={styles.headerBar}>
         <View style={styles.headerLeft}>
           <BackButton goBack={goBack} />
@@ -99,18 +99,27 @@ export default function NewPostScreen({ navigation }) {
           />
         </View>
       </View>
-      <Text style={styles.tus}>Bạn đang nghĩ gì?</Text>
+      {/* <Text style={styles.tus}>Bạn đang nghĩ gì?</Text> */}
       <TextInput style={styles.status}
-        placeholder="Trạng thái của bạn"
+        placeholder="Bạn đang nghĩ gì ?"
         returnKeyType="next"
         // value={status}
         onChangeText={setStatus}
         multiline={true}
         numberOfLines={5}
       />
-      <Icon name="image" type="MaterialIcons" size={40} color={theme.colors.button} onPress={addImage} />
-      {/* Render Image from Gallery */}
+      <View style = {{flexDirection: 'row', marginLeft : 10, alignItems : 'center'}}>
+        <Icon name="filter"   type="MaterialIcons" size={35} onPress={addImage} />
+        <Text style = {{fontSize : 20, marginLeft :10,}}>Thêm ảnh </Text>
+      </View>
 
+      <View style = {{flexDirection: 'row', marginLeft : 10, alignItems : 'center', marginTop : 5}}>
+        <Icon name="videocam"   type="MaterialIcons" size={35} color={'#406882'} onPress={addImage} />
+        <Text style = {{fontSize : 20, marginLeft :10}}>Thêm Video </Text>
+      </View>
+      
+      {/* Render Image from Gallery */}
+     
       <View style={{ flex: 1 }}>
         <FlatList
           numColumns={3}
@@ -149,11 +158,14 @@ const styles = StyleSheet.create({
     fontSize: 25,
     paddingTop: 17,
     textAlign: "center",
+    // backgroundColor:'white'
   },
   status: {
-    margin: 7,
+    // margin: 7,
     fontSize: 20,
-    borderRadius: 6,
+    // borderRadius: 6,
+    height : 200,
+    backgroundColor:'white'
   },
   button: {
     backgroundColor: theme.colors.button

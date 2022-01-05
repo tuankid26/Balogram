@@ -27,7 +27,6 @@ export default function LoginScreen({ navigation }) {
     auth.login(data)
       .then(res => {
         const token = res.data.token;
-        console.log(res.data.data);
         const info = {
           gender: res.data.data.gender,
           birthday: res.data.data.birthday,
@@ -51,6 +50,7 @@ export default function LoginScreen({ navigation }) {
         })
       })
       .catch(error => {
+        
         Toast.show({
           type: 'error',
           text1: 'Tài khoản hoặc mật khẩu không chính xác'

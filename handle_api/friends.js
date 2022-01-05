@@ -26,7 +26,7 @@ const setRequestFriend = async (data) => {
 
 const getRequestFriend = async (token) => {
     // const url1 = ;
-    console.log("datafriend.length111");
+    // console.log("datafriend.length111");
     const getRequest = await api({
         method: 'POST',
         url: '/friends/get-requested-friend',
@@ -34,12 +34,12 @@ const getRequestFriend = async (token) => {
             Authorization: `Bearer ${token}`
         }
     });
-    console.log("datafriend.length2222");
+    // console.log("datafriend.length2222");
     return getRequest;
 }
 
 
-const setAcceptFriend = async (data) => {
+const setAcceptFriend = async(data) => {
     const token = data.token;
     const user_id = data.user_id;
     const is_accept = data.is_accept;
@@ -57,7 +57,7 @@ const setAcceptFriend = async (data) => {
 
 }
 
-const setRemoveFriend = async (data) => {
+const setRemoveFriend = async(data) => {
     const token = data.token;
     const user_id = data.user_id;
     const setRemove = await api({
@@ -72,4 +72,8 @@ const setRemoveFriend = async (data) => {
 
 }
 
-export { setAcceptFriend, setRemoveFriend, setRequestFriend, getListFriend, getRequestFriend };
+
+
+
+
+export {setAcceptFriend, setRemoveFriend, setRequestFriend, getListFriend,getRequestFriend};
