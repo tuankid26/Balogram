@@ -9,7 +9,7 @@ import FriendProfile from "../screen/FriendProfileScreen";
 const { width } = Dimensions.get("window");
 export default function FriendCancel() {
 //   const item = route.params.item;
-
+const [show, setshow] = useState('false');
   
   const onPressFriend = () => {
     onPressUser(item)

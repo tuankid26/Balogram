@@ -154,7 +154,7 @@ export default function FriendProfile({ route, navigation }) {
           <View
             style={{ position: "absolute", zIndex: 999, flexDirection: "row" }}
           >
-            <View>
+            <View style={styles.backbutton}>
               <TouchableOpacity onPress={navigation.goBack}>
                 <Ionicons name="arrow-back" size={30} color="#F0ECE3" />
               </TouchableOpacity>
@@ -193,7 +193,7 @@ export default function FriendProfile({ route, navigation }) {
             ) : (
               <Avatar.Image
                 size={120}
-                source={{ uri: "https://i.stack.imgur.com/l60Hf.png" }}
+                source={require("../images/avatar/default-avatar-480.png")}
                 style={{ position: "absolute" }}
               />
             )}
@@ -460,6 +460,9 @@ const styles = StyleSheet.create({
     padding: 22,
     borderRadius: 4,
     borderColor: "rgba(0, 0, 0, 0.1)",
+  },
+  backbutton:{
+marginLeft: 5
   },
   container: {
     flex: 1,

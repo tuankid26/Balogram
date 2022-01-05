@@ -94,7 +94,7 @@ export default function Profile({ navigation }) {
             ) : (
               <Avatar.Image
                 size={120}
-                source={{ uri: "https://i.stack.imgur.com/l60Hf.png" }}
+                source={require("../images/avatar/default-avatar-480.png")}
                 style={{ position: "absolute" }}
               />
             )}

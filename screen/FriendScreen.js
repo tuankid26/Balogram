@@ -40,17 +40,18 @@ export default function FriendScreen({ navigation }) {
     navigation.navigate("SearchScreen");
   };
 
-  // const onPressUser = (item) => {
-  //   recentData.includes(item)
-  //     ? null
-  //     : dispatch({ type: "ADD_ITEM", payload: item });
-  //   navigation.navigate("FriendProfileScreen", { item });
-  // };
   const onPressUser = (item) => {
+    recentData.includes(item)
+      ? null
+      : dispatch({ type: "ADD_ITEM", payload: item });
     navigation.navigate("FriendProfileScreen", { item });
   };
+  // const onPressUser = (item) => {
+  //   navigation.navigate("FriendProfileScreen", { item });
+  // };
 
   const noFriend = () => {
+    
     if (dataFriend.length == 0)
       return (
         <View style={styles.noF}>
@@ -65,6 +66,7 @@ export default function FriendScreen({ navigation }) {
         </View>
       );
     else {
+      console.log(dataFriend.length);
       return (
         <FlatList
           data={dataFriend}
@@ -99,11 +101,11 @@ export default function FriendScreen({ navigation }) {
       <LinePartition color={theme.colors.silver} />
       <View>{noFriend()}</View>
 
-      {/* <FlatList
+      <FlatList
         data={dataFriend}
         renderItem={({ item }) => <FriendActive item={item} />}
         keyExtractor={(item) => item._id.toString()}
-      /> */}
+      />
     </View>
   );
 }

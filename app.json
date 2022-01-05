@@ -1,7 +1,6 @@
 {
   "expo": {
     "plugins": [
-    
       [
         "expo-image-picker",
         {
@@ -9,13 +8,13 @@
         }
       ]
     ],
-    "name": "CheckerViet",
-    "slug": "CheckerViet",
+    "name": "BaloGram",
+    "slug": "BaloGram",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/Icon_Balogram.png",
     "splash": {
-      "image": "./assets/splash.png",
+      "image": "./assets/Icon_Balogram.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
@@ -26,17 +25,28 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "infoPlist": {
+        "NSPhotoLibraryUsageDescription": "The app accesses your photos to let you share them with your friends.",
+        "NSCameraUsageDescription": "Allow $(PRODUCT_NAME) to access your camera",
+        "NSMicrophoneUsageDescription": "Allow $(PRODUCT_NAME) to access your microphone"
+      }
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
+        "foregroundImage": "./assets/Icon_Balogram.png",
         "backgroundColor": "#FFFFFF"
-      }
+      },
+      "permissions": [
+        "android.permission.CAMERA",
+        "android.permission.READ_EXTERNAL_STORAGE",
+        "android.permission.WRITE_EXTERNAL_STORAGE",
+        "android.permission.RECORD_AUDIO"
+      ],
+      "package": "com.Balogram.Balogram"
     },
     "web": {
-      "favicon": "./assets/favicon.png"
+      "favicon": "./assets/Icon_Balogram.png"
     }
   }
 }
-
