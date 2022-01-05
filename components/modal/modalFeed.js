@@ -14,9 +14,12 @@ const { width } = Dimensions.get("window");
 export default function ModalFeed(params) {
   const isModalVisible = params.isModalVisible;
   const isModalReportVisible = params.isModalReportVisible;
+  const isOtherPostVisible = params.isOtherPostVisible;
   const toggleEditPost = params.toggleEditPost;
   const toggleDeletePost = params.toggleDeletePost;
   const toggleReportModal = params.toggleReportModal;
+  const toggleCancelModal = params.toggleCancelModal;
+  const toggleOtherPostModal = params.toggleOtherPostModal;
   return (
     <View>
       <Modal
@@ -32,11 +35,28 @@ export default function ModalFeed(params) {
             <Text style={styles.text}>Xóa bài đăng</Text>
           </Pressable>
 
-          <Pressable style={styles.button} onPress={toggleReportModal}>
-            <Text style={styles.text}>Báo xấu</Text>
+          <Pressable style={styles.button} onPress={toggleCancelModal}>
+            <Text style={styles.text}>Huỷ bỏ</Text>
           </Pressable>
         </View>
       </Modal>
+
+      <Modal
+        isVisible={isOtherPostVisible}
+        animationIn="slideInUp"
+        style={styles.modal}
+      >
+        <View>
+          <Pressable style={styles.button} onPress={toggleOtherPostModal}>
+            <Text style={styles.text}>Báo cáo</Text>
+          </Pressable>
+
+          <Pressable style={styles.button} onPress={toggleCancelModal}>
+            <Text style={styles.text}>Huỷ bỏ</Text>
+          </Pressable>
+        </View>
+      </Modal>
+
       <Modal
         isVisible={isModalReportVisible}
         animationIn="slideInUp"
@@ -58,6 +78,9 @@ export default function ModalFeed(params) {
 
           <Pressable style={styles.button} onPress={toggleReportModal}>
             <Text style={styles.text}>Nhập lý do khác</Text>
+          </Pressable>
+          <Pressable style={styles.button} onPress={toggleCancelModal}>
+            <Text style={styles.text}>Huỷ bỏ</Text>
           </Pressable>
         </View>
       </Modal>

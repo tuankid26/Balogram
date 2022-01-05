@@ -162,9 +162,10 @@ const styles = StyleSheet.create({
   },
   status: {
     // margin: 7,
+    // paddingTop: 7,
     fontSize: 20,
     // borderRadius: 6,
-    height : 200,
+    // height : 250,
     backgroundColor:'white'
   },
   button: {

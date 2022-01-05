@@ -28,7 +28,6 @@ const wait = (timeout) => {
 import { LinePartition, Comment, Slider } from "../components";
 import HeaderMain from "../components/header/HeaderMain";
 import ModalFeed from "../components/modal/modalFeed";
-import Post from "../components/Post";
 
 export default function NewFeedScreen({ navigation }) {
   const [datapost, setDatapost] = useState("");
@@ -36,7 +35,7 @@ export default function NewFeedScreen({ navigation }) {
   const [toggleItem, setToggleItem] = useState("");
   const [doubleTouch, setDoubleTouch] = useState(0);
   const token = useSelector((state) => state.authReducer.token);
-
+  const userId = useSelector((state) => state.infoReducer.userId);
   const uploadStatus = useSelector((state) => {
     return state.upload;
   });
@@ -82,9 +81,17 @@ export default function NewFeedScreen({ navigation }) {
   };
   const [isModalVisible, setModalVisible] = useState(false);
   const [isModalReportVisible, setModalReportVisible] = useState(false);
+  const [isOtherPostVisible, setOtherPostVisible] = useState(false);
   const toggleModal = (item) => {
+    if (item.author._id === userId){
     setModalVisible(!isModalVisible);
     setToggleItem(item);
+    }
+    else{
+      // setModalReportVisible(!isModalReportVisible);
+      setOtherPostVisible(!isOtherPostVisible);
+      // setToggleItem(item);
+    }
   };
 
   const toggleEditPost = () => {
@@ -109,6 +116,15 @@ export default function NewFeedScreen({ navigation }) {
     setModalReportVisible(!isModalReportVisible);
     setModalVisible(false);
   };
+  const toggleOtherPostModal = () => {
+    setOtherPostVisible(!isOtherPostVisible);
+    setModalReportVisible(!isModalReportVisible);
+  }
+  const toggleCancelModal = () => {
+    setModalVisible(false);
+    setModalReportVisible(false);
+    setOtherPostVisible(false);
+  }
   const onSearchPress = () => {
     navigation.navigate("SearchScreen");
   };
@@ -261,9 +277,12 @@ export default function NewFeedScreen({ navigation }) {
         <ModalFeed
           isModalVisible={isModalVisible}
           isModalReportVisible={isModalReportVisible}
+          isOtherPostVisible={isOtherPostVisible}
           toggleEditPost={toggleEditPost}
           toggleDeletePost={toggleDeletePost}
           toggleReportModal={toggleReportModal}
+          toggleCancelModal={toggleCancelModal}
+          toggleOtherPostModal={toggleOtherPostModal}
         />
         <FlatList
           // numColumns={1}

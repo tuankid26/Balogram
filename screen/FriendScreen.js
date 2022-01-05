@@ -51,6 +51,7 @@ export default function FriendScreen({ navigation }) {
   };
 
   const noFriend = () => {
+    
     if (dataFriend.length == 0)
       return (
         <View style={styles.noF}>
@@ -65,15 +66,16 @@ export default function FriendScreen({ navigation }) {
         </View>
       );
     else {
-      return (
-        <FlatList
-          data={dataFriend}
-          renderItem={({ item }) => (
-            <FriendActive item={item} onPressUser={onPressUser}/>
-          )}
-          keyExtractor={(item) => item._id.toString()}
-        />
-      );
+      console.log(dataFriend.length);
+      // return (
+      //   <FlatList
+      //     data={dataFriend}
+      //     renderItem={({ item }) => (
+      //       <FriendActive item={item} onPressUser={onPressUser}/>
+      //     )}
+      //     keyExtractor={(item) => item._id.toString()}
+      //   />
+      // );
     }
   };
 
