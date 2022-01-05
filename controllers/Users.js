@@ -29,7 +29,6 @@ usersController.register = async (req, res, next) => {
         const salt = await bcrypt.genSalt(10);
         const hashedPassword = await bcrypt.hash(password, salt);
         let avatar = await DocumentModel.findById("619f0fde9d14e73c140b7e3d");
-        console.log(avatar)
         let coverImage = await DocumentModel.findById("60c39eb8f0b2c4268eb53366");
         user = new UserModel({
             phonenumber: phonenumber,
@@ -77,7 +76,10 @@ usersController.login = async (req, res, next) => {
         } = req.body;
         const user = await UserModel.findOne({
             phonenumber: phonenumber
-        })
+        }).populate('avatar').populate('cover_image')
+        // const user = await UserModel.findOne({
+        //     phonenumber: phonenumber
+        // }).select('phonenumber username gender birthday description address avatar cover_image blocked_inbox blocked_diary').populate('avatar').populate('cover_image');
         if (!user) {
             return res.status(httpStatus.BAD_REQUEST).json({
                 message: 'Username or password incorrect'

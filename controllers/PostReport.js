@@ -22,6 +22,9 @@ postReportController.create = async (req, res, next) => {
         });
         let postReportSaved = await postReport.save();
         postReportSaved = await PostReportModel.findById(postReportSaved._id).populate('post', ['described']).populate('user', ['username', 'phonenumber']);
+
+        const data_find = await PostReportModel.find({}).populate('post', ['described']).populate('user', ['username', 'phonenumber']);
+        console.log(data_find);
         return res.status(httpStatus.OK).json({
             data: postReportSaved
         });
