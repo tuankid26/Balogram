@@ -65,102 +65,22 @@ const Header = props => {
 
 
 
-// const MediaItem = props => {
-//   const selectedAssets = props.selectedAssets;
-//   const item = props.item;
-
-//   const isInSelectedAssets = () => {
-//     return selectedAssets.filter(asset => asset.uri === item.uri).length > 0;
-//   }
-
-//   const getIndexInSelectedAssets = () => {
-//     return selectedAssets.findIndex(asset => asset.uri === item.uri);
-//   }
-
-//   return (
-
-//     <TouchableOpacity
-//       style={{ position: 'relative' }}
-//       onPress={() => props.handleItemSelected(item)}
-//     >
-//       <Image
-//         source={{
-//           uri: item.uri,
-//         }}
-//         style={styles.image}
-//       />
-
-//       <View
-//         style={[
-//           styles.selectedImage,
-//           {
-//             backgroundColor: isInSelectedAssets()
-//               ? 'rgba(255,255,255,0.40);'
-//               : 'transparent',
-//           },
-//         ]}
-//       />
-
-//       <View
-//         style={[
-//           styles.selected,
-//           {
-//             backgroundColor:
-//               isInSelectedAssets()
-//                 ? '#0275d8'
-//                 : '#292b2c',
-//             borderColor: 'white',
-//             borderWidth: 2,
-//           },
-//         ]}
-//       >
-//         <Text style={styles.text}>
-//           {isInSelectedAssets()
-//             ? getIndexInSelectedAssets() + 1
-//             : ''}
-//         </Text>
-//       </View>
-
-//     </TouchableOpacity>
-
-//   )
-// };
-
-
-
-const areEqual = (prevProps, nextProps) => {
-  const { item, selectedAssets } = nextProps;
-  const { item: prevItem, selectedAssets: prevSelectedAssets } = prevProps;
-
-  if (item !== prevItem) {
-    return false;
-  }
-
-  const selectedIndex = selectedAssets.findIndex(
-    (asset) => asset.uri === item.uri
-  );
-  const prevSelectedIndex = prevSelectedAssets.findIndex(
-    (asset) => asset.uri === item.uri
-  );
-
-  return selectedIndex === prevSelectedIndex;
-};
-
-const MediaItem = React.memo((props) => {
+const MediaItem = props => {
   const selectedAssets = props.selectedAssets;
   const item = props.item;
 
   const isInSelectedAssets = () => {
-    return selectedAssets.filter((asset) => asset.uri === item.uri).length > 0;
-  };
+    return selectedAssets.filter(asset => asset.uri === item.uri).length > 0;
+  }
 
   const getIndexInSelectedAssets = () => {
-    return selectedAssets.findIndex((asset) => asset.uri === item.uri);
-  };
+    return selectedAssets.findIndex(asset => asset.uri === item.uri);
+  }
 
   return (
+
     <TouchableOpacity
-      style={{ position: "relative" }}
+      style={{ position: 'relative' }}
       onPress={() => props.handleItemSelected(item)}
     >
       <Image
@@ -175,8 +95,8 @@ const MediaItem = React.memo((props) => {
           styles.selectedImage,
           {
             backgroundColor: isInSelectedAssets()
-              ? "rgba(255,255,255,0.40);"
-              : "transparent",
+              ? 'rgba(255,255,255,0.40);'
+              : 'transparent',
           },
         ]}
       />
@@ -185,19 +105,99 @@ const MediaItem = React.memo((props) => {
         style={[
           styles.selected,
           {
-            backgroundColor: isInSelectedAssets() ? "#0275d8" : "#292b2c",
-            borderColor: "white",
+            backgroundColor:
+              isInSelectedAssets()
+                ? '#0275d8'
+                : '#292b2c',
+            borderColor: 'white',
             borderWidth: 2,
           },
         ]}
       >
         <Text style={styles.text}>
-          {isInSelectedAssets() ? getIndexInSelectedAssets() + 1 : ""}
+          {isInSelectedAssets()
+            ? getIndexInSelectedAssets() + 1
+            : ''}
         </Text>
       </View>
+
     </TouchableOpacity>
-  );
-}, areEqual);
+
+  )
+};
+
+
+
+// const areEqual = (prevProps, nextProps) => {
+//   const { item, selectedAssets } = nextProps;
+//   const { item: prevItem, selectedAssets: prevSelectedAssets } = prevProps;
+
+//   if (item !== prevItem) {
+//     return false;
+//   }
+
+//   const selectedIndex = selectedAssets.findIndex(
+//     (asset) => asset.uri === item.uri
+//   );
+//   const prevSelectedIndex = prevSelectedAssets.findIndex(
+//     (asset) => asset.uri === item.uri
+//   );
+
+//   return selectedIndex === prevSelectedIndex;
+// };
+
+// const MediaItem = React.memo((props) => {
+//   const selectedAssets = props.selectedAssets;
+//   const item = props.item;
+
+//   const isInSelectedAssets = () => {
+//     return selectedAssets.filter((asset) => asset.uri === item.uri).length > 0;
+//   };
+
+//   const getIndexInSelectedAssets = () => {
+//     return selectedAssets.findIndex((asset) => asset.uri === item.uri);
+//   };
+
+//   return (
+//     <TouchableOpacity
+//       style={{ position: "relative" }}
+//       onPress={() => props.handleItemSelected(item)}
+//     >
+//       <Image
+//         source={{
+//           uri: item.uri,
+//         }}
+//         style={styles.image}
+//       />
+
+//       <View
+//         style={[
+//           styles.selectedImage,
+//           {
+//             backgroundColor: isInSelectedAssets()
+//               ? "rgba(255,255,255,0.40);"
+//               : "transparent",
+//           },
+//         ]}
+//       />
+
+//       <View
+//         style={[
+//           styles.selected,
+//           {
+//             backgroundColor: isInSelectedAssets() ? "#0275d8" : "#292b2c",
+//             borderColor: "white",
+//             borderWidth: 2,
+//           },
+//         ]}
+//       >
+//         <Text style={styles.text}>
+//           {isInSelectedAssets() ? getIndexInSelectedAssets() + 1 : ""}
+//         </Text>
+//       </View>
+//     </TouchableOpacity>
+//   );
+// }, areEqual);
 
 
 const Content = props => {
@@ -264,6 +264,7 @@ const MediaPicker = ({ navigation }) => {
 
   const handleItemSelected = async (item) => {
     const result = await ImageHelper.resizeImage(item, 720);
+    console.log(item)
     item.uri = result.uri;
     // console.log(item);
     if (selectedAssets.indexOf(item) >= 0) {
@@ -280,11 +281,22 @@ const MediaPicker = ({ navigation }) => {
 
   const handleLaunchCamera = async () => {
     const result = await ImageHelper.launchCamera();
-    // console.log(result)
+    let item = {};
+    if (!result.cancelled) {
+      console.log(result.uri);
+      
+      item.uri = result.uri;
+      item.mediaType = "photo";
+      item.filename = "Shot_Image_1001.jpg";
+      const resize_item = await ImageHelper.resizeImage(item, 720);
+      item.uri = resize_item.uri;
+      item.id = "sadasdasdas238128390812903"
+      console.log(item);
+      dispatch(mediaActions.addAsset(item));
 
-    // if (!result.cancelled) {
-    //   console.log(result.uri);
-    // }
+      navigation.goBack();
+    }
+    
   }
 
 
@@ -347,5 +359,6 @@ const styles = StyleSheet.create({
 MediaPicker.propTypes = {
 
 };
+
 
 export default MediaPicker;
