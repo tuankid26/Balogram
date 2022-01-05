@@ -6,8 +6,8 @@ const DocumentModel = require("../models/Documents");
 var url = require('url');
 const httpStatus = require("../utils/httpStatus");
 const bcrypt = require("bcrypt");
-const {JWT_SECRET} = require("../constants/constants");
-const {ROLE_CUSTOMER} = require("../constants/constants");
+const { JWT_SECRET } = require("../constants/constants");
+const { ROLE_CUSTOMER } = require("../constants/constants");
 const uploadFile = require('../functions/uploadFile');
 
 const postsController = {};
@@ -92,10 +92,10 @@ postsController.edit = async (req, res, next) => {
         let postId = req.params.id;
         let postFind = await PostModel.findById(postId);
         if (postFind == null) {
-            return res.status(httpStatus.NOT_FOUND).json({message: "Can not find post"});
+            return res.status(httpStatus.NOT_FOUND).json({ message: "Can not find post" });
         }
         if (postFind.author.toString() !== userId) {
-            return res.status(httpStatus.FORBIDDEN).json({message: "Can not edit this post"});
+            return res.status(httpStatus.FORBIDDEN).json({ message: "Can not edit this post" });
         }
 
         const {
@@ -104,6 +104,9 @@ postsController.edit = async (req, res, next) => {
             videos,
         } = req.body;
         let dataImages = [];
+        console.log("Edit post");
+        console.log(described);
+        console.log(images.length);
         if (Array.isArray(images)) {
             for (const image of images) {
                 // check is old file
@@ -195,27 +198,27 @@ postsController.show = async (req, res, next) => {
             },
         });
         if (post == null) {
-            return res.status(httpStatus.NOT_FOUND).json({message: "Can not find post"});
+            return res.status(httpStatus.NOT_FOUND).json({ message: "Can not find post" });
         }
         post.isLike = post.like.includes(req.userId);
         return res.status(httpStatus.OK).json({
             data: post,
         });
     } catch (error) {
-        return res.status(httpStatus.INTERNAL_SERVER_ERROR).json({message: error.message});
+        return res.status(httpStatus.INTERNAL_SERVER_ERROR).json({ message: error.message });
     }
 }
 postsController.delete = async (req, res, next) => {
     try {
         let post = await PostModel.findByIdAndDelete(req.params.id);
         if (post == null) {
-            return res.status(httpStatus.NOT_FOUND).json({message: "Can not find post"});
+            return res.status(httpStatus.NOT_FOUND).json({ message: "Can not find post" });
         }
         return res.status(httpStatus.OK).json({
             message: 'Delete post done',
         });
     } catch (error) {
-        return res.status(httpStatus.INTERNAL_SERVER_ERROR).json({message: error.message});
+        return res.status(httpStatus.INTERNAL_SERVER_ERROR).json({ message: error.message });
     }
 }
 
@@ -223,8 +226,10 @@ postsController.list = async (req, res, next) => {
     try {
         let posts = [];
         let userId = req.userId;
+
         if (req.query.userId) {
             // get Post of one user
+            console.log('aaaaaaaaaaaaaaaaaaa')
             posts = await PostModel.find({
                 author: req.query.userId
             }).populate('images', ['fileName']).populate('videos', ['fileName']).populate({
@@ -275,11 +280,18 @@ postsController.list = async (req, res, next) => {
             });
         }
         let postWithIsLike = [];
-        for (let i = 0; i < posts.length; i ++) {
+        for (let i = 0; i < posts.length; i++) {
             let postItem = posts[i].toObject();
+            let postItemLike = [];
+
+            for (let indexIdLike = 0; indexIdLike < postItem.like.length; indexIdLike++){
+                const userLikeId = String(postItem.like[indexIdLike]);
+                postItemLike.push(userLikeId);
+            }
+
             let postBase64 = []
-            if (postItem.images.length > 0){
-                for (let indexImage = 0; indexImage < postItem.images.length; indexImage++){
+            if (postItem.images.length > 0) {
+                for (let indexImage = 0; indexImage < postItem.images.length; indexImage++) {
                     const base64 = uploadFile.loadFile(postItem.images[indexImage].fileName);
                     // postBase64.push(base64);
                     postItem.images[indexImage]["base64"] = base64;
@@ -287,15 +299,22 @@ postsController.list = async (req, res, next) => {
                 }
 
             }
-            postItem.isLike = postItem.like.includes(req.userId);
+            if (postItem.author.avatar){
+                const fileNameAvatar = postItem.author.avatar.fileName;
+                const base64 = uploadFile.loadFile(fileNameAvatar);
+                postItem.author.avatar.base64 = base64;
+            }
+            postItem.userCall = userId;
+            postItem.isLike = postItemLike.includes(userId);
             postWithIsLike.push(postItem);
         }
         console.log("CAll API POSt list");
         return res.status(httpStatus.OK).json({
-            data: postWithIsLike
+            data: postWithIsLike,
+            userID: req.query.userId
         });
     } catch (error) {
-        return res.status(httpStatus.INTERNAL_SERVER_ERROR).json({message: error.message});
+        return res.status(httpStatus.INTERNAL_SERVER_ERROR).json({ message: error.message });
     }
 }
 

@@ -55,7 +55,6 @@ uploadFile.uploadFile = (fileBase64) => {
 
 uploadFile.loadFile = (fileName) => {
     try {
-
         var bitmap = fs.readFileSync("./files/" + fileName);
         var base64 = new Buffer(bitmap).toString('base64');
         // console.log(base64);

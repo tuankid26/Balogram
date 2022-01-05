@@ -7,6 +7,7 @@ const {PORT} = require("./constants/constants");
 const {MONGO_URI} = require("./constants/constants");
 const bodyParser = require('body-parser');
 const io = require('socket.io')(3000)
+const path = require('path');
 const MessageModel = require("./models/Messages");
 
 // connect to mongodb
@@ -31,7 +32,7 @@ app.use(bodyParser.json({limit: "50mb"}));
 app.use(bodyParser.urlencoded({limit: "50mb", extended: true, parameterLimit:50000}));
 // route middleware
 app.use("/", mainRouter);
-
+app.use("/public/", express.static(path.join(__dirname, "files")));
 app.get('/settings', function (req, res) {
     res.send('Settings Page');
 });
