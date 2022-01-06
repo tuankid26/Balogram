@@ -14,55 +14,63 @@ const friendsController = {};
 
 friendsController.setRequest = async (req, res, next) => {
     try {
-        let sender = req.userId;
-        let receiver = req.body.user_id;
-        let checkBack = await FriendModel.findOne({ sender: receiver, receiver: sender });
-        if (checkBack != null) {
-            if (checkBack.status == '0' || checkBack.status == '1') {
-                return res.status(200).json({
-                    code: 200,
-                    status: 'error',
-                    success: false,
-                    message: "Đối phương đã gửi lời mời kết bạn hoặc đã là bạn",
-                });
-            }
-            checkBack.status = '0';
-
+      let sender = req.userId;
+      let receiver = req.body.user_id;
+      let checkBack = await FriendModel.findOne({
+        sender: receiver,
+        receiver: sender,
+      });
+      if (checkBack != null) {
+        if (checkBack.status == "0" || checkBack.status == "1") {
+          return res.status(200).json({
+            code: 200,
+            status: "error",
+            success: false,
+            message: "Đối phương đã gửi lời mời kết bạn hoặc đã là bạn",
+          });
         }
-
-        let isFriend = await FriendModel.findOne({ sender: sender, receiver: receiver });
-        if(isFriend != null){
-            if (isFriend.status == '0') {
-                return res.status(200).json({
-                    code: 200,
-                    success: false,
-                    message: "Đã gửi lời mời kết bạn trước đó",
-                });
-            }
-
-            isFriend.status = '1';
-            isFriend.save();
-            res.status(200).json({
-                code: 200,
-                message: "Đối phương đã là bạn",
-            });
-
-        }else{
-            let status = 0;
-            const makeFriend = new FriendModel({ sender: sender, receiver: receiver, status: status });
-            makeFriend.save();
-            res.status(200).json({
-                code: 200,
-                message: "Gửi lời mời kết bạn thành công",
-                data: makeFriend
-            });
+        checkBack.status = "0";
+      }
+  
+      let isFriend = await FriendModel.findOne({
+        sender: sender,
+        receiver: receiver,
+      });
+      if (isFriend != null) {
+        if (isFriend.status == "1") {
+          return res.status(200).json({
+            code: 200,
+            success: false,
+            message: "Đã gửi lời mời kết bạn trước đó",
+          });
         }
-    } catch (e) {
-        return res.status(httpStatus.INTERNAL_SERVER_ERROR).json({
-            message: e.message
+  
+        isFriend.status = "0";
+        isFriend.save();
+        res.status(200).json({
+          code: 200,
+          message: "Gửi lời mời kết bạn thành công",
         });
+      } else {
+        let status = "0";
+        const makeFriend = new FriendModel({
+          sender: sender,
+          receiver: receiver,
+          status: status,
+        });
+        makeFriend.save();
+        res.status(200).json({
+          code: 200,
+          message: "Gửi lời mời kết bạn thành công",
+          data: makeFriend,
+        });
+      }
+    } catch (e) {
+      return res.status(httpStatus.INTERNAL_SERVER_ERROR).json({
+        message: e.message,
+      });
     }
-}
+  };
 
 friendsController.getRequest = async (req, res, next) => {
     try {
