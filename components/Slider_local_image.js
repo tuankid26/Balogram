@@ -97,14 +97,14 @@ const styles = StyleSheet.create({
         // borderWidth: 1
     },
     image: {
-        // width: screenWidth ,
-        // height: screenHeight ,
+        width: screenWidth ,
+        height: screenHeight + 100 ,
         flex: 1,
-        resizeMode: 'center'
+        resizeMode: 'contain'
     },
     container: {
         // flex : 1,
-        height: ScreenHeight - 200,
+        height: ScreenHeight -200,
         // width: 400
     }
 })

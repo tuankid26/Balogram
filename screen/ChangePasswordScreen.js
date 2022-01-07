@@ -30,6 +30,7 @@ export default function InfoUserScreen({ navigation }) {
     }
     const onPress = () => {
         console.log("dsds");
+        console.log
         auth.changePassword(data)
             .then(res => {
                 console.log(res)

@@ -27,7 +27,7 @@ import { BackButton } from "../components";
 const wait = (timeout) => {
   return new Promise((resolve) => setTimeout(resolve, timeout));
 };
-
+import { ipServer } from "../handle_api/ipAddressServer";
 import { LinePartition, Comment, Slider_local_image } from "../components";
 
 export default function ShowPostScreen({ route, navigation }) {
@@ -84,10 +84,11 @@ export default function ShowPostScreen({ route, navigation }) {
   };
   let avatar = ""
   let date_time = "";
-  
+
   if (item.author){
     date_time = splitDateTime(item.updatedAt);
     avatar = item.author.avatar;
+    // console.log(item.author);
     return (
         <View>
         <StatusBar backgroundColor={theme.colors.white} barStyle="dark-content" />
@@ -99,7 +100,7 @@ export default function ShowPostScreen({ route, navigation }) {
                 ? <Avatar
                     size={40}
                     rounded
-                    source={{uri: `data:image/jpeg;base64,${avatar.base64}`}}
+                    source={{uri: `${ipServer}${avatar.fileName}`}}
                     containerStyle={{ marginLeft: 5, marginTop: 5 }}
                     />
                 : <Avatar
@@ -128,14 +129,8 @@ export default function ShowPostScreen({ route, navigation }) {
                 <Text style={styles.described}>{item.described}</Text>
             
             
-            <View style={styles.containerImage}>
               <Slider_local_image item={item.images} index={0} />
-                {/* <Image
-                size={120}
-                source={require("../images/avatar/default-avatar-480.png")}
-                style={{ position: "absolute" }}
-                /> */}
-            </View>
+                
             </View>
             
 
@@ -271,9 +266,9 @@ const styles = StyleSheet.create({
       },
       containerFeed: {
         justifyContent: "flex-start",
-        alignItems: "flex-start",
+        // alignItems: "flex-start",
         backgroundColor: theme.colors.white,
-        flex: 1,
+        // flex: 1,
       },
       image: {
         flex: 1,
