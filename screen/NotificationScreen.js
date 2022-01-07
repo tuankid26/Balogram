@@ -12,24 +12,24 @@ export default function NotificationScreen({ navigation }) {
     const data = [
         {
             id: 1,
-            name: 'Crush 1',
-            avatar: require('../images/avatar/4.jpg'),
+            name: 'Hoàng Huy Quân',
+            avatar: require('../images/Store_local_image/anhquan.jpg'),
             action: "đã bình luận về bài viết của bạn",
-            datetime: "12:35, 01/11/2021"
+            datetime: "35 phút trước"
         },
         {
             id: 2,
-            name: 'Crush 2',
-            avatar: require('../images/avatar/5.jpg'),
-            action: "đã like ảnh của bạn",
-            datetime: "01:05, 24/10/2021"
+            name: 'Hoàng Huy Quân',
+            avatar: require('../images/Store_local_image/anhquan.jpg'),
+            action: "đã thích bài viết của bạn",
+            datetime: "36 phút trước"
         },
         {
             id: 3,
-            name: 'Crush 3',
-            avatar: require('../images/avatar/6.jpg'),
-            action: "đã bình luận về bài viết của bạn",
-            datetime: "06:32, 02/11/2021"
+            name: 'Vũ Tuấn Trường',
+            avatar: require('../images/Store_local_image/AnhTruong.jpg'),
+            action: "đã thêm một bài viết mới",
+            datetime: "12h35 06/01/2022"
         }
     ];
 

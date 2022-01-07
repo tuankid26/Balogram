@@ -20,7 +20,7 @@ export default function LoginScreen({ navigation }) {
     const data = {
       phonenumber: phonenumber,
       password: password
-      // phonenumber: "000002",
+      // phonenumber: "03565184741",
       // password: "123123123"
     }
 
@@ -44,10 +44,18 @@ export default function LoginScreen({ navigation }) {
           type: 'success',
           text1: 'Đăng nhập thành công'
         });
+        if (res.data.data.username == "Admin"){
+          navigation.reset({
+            index: 0,
+            routes: [{ name: 'AdminMainScreen' }],
+          })
+        }
+        else{
         navigation.reset({
           index: 0,
           routes: [{ name: 'MainScreen' }],
         })
+        }
       })
       .catch(error => {
         

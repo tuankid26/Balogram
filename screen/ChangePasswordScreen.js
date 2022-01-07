@@ -29,6 +29,7 @@ export default function InfoUserScreen({ navigation }) {
         repeatNewPassword: repeatNewPassword
     }
     const onPress = () => {
+        console.log("dsds");
         auth.changePassword(data)
             .then(res => {
                 console.log(res)

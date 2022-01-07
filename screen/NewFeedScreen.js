@@ -20,6 +20,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { uploadActions } from "../redux/actions";
 import { PostsHelper } from "../helpers";
 const { width } = Dimensions.get("window");
+import Toast from 'react-native-toast-message';
 
 const wait = (timeout) => {
   return new Promise((resolve) => setTimeout(resolve, timeout));
@@ -92,7 +93,7 @@ export default function NewFeedScreen({ navigation }) {
     else{
       // setModalReportVisible(!isModalReportVisible);
       setOtherPostVisible(!isOtherPostVisible);
-      // setToggleItem(item);
+      setToggleItem(item);
     }
   };
 
@@ -114,7 +115,17 @@ export default function NewFeedScreen({ navigation }) {
       console.log(err);
     }
   };
-  const toggleReportModal = () => {
+  const toggleReportModal = async() => {
+    const data = {
+      postId: toggleItem._id,
+      token: token,
+    };
+    try {
+      const res = await post.reportPost(data);
+      fetchPosts();
+    } catch (err) {
+      console.log(err);
+    }
     setModalReportVisible(!isModalReportVisible);
     setModalVisible(false);
   };
@@ -301,8 +312,10 @@ export default function NewFeedScreen({ navigation }) {
 
   return (
     <View style={{ flex: 1 }}>
+      <Toast position="bottom" />
       <StatusBar backgroundColor={theme.colors.white} barStyle="dark-content" />
       <HeaderMain onAddPost={onAddPost} onSearchPress={onSearchPress} />
+      
       <View style={{ flex: 1 }}>
         <ModalFeed
           isModalVisible={isModalVisible}

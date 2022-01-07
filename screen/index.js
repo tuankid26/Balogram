@@ -21,3 +21,6 @@ export { default as InfoUserScreen } from './InfoUserScreen'
 export { default as ChangePasswordScreen } from './ChangePasswordScreen'
 export { default as FriendProfileScreen } from './FriendProfileScreen'
 export {default as CoverImagePicker} from "./CoverImagePicker"
+export {default as ShowPostScreen} from "./ShowPost"
+export {default as AdminScreen} from "./AdminScreen"
+export {default as AdminMainScreen} from "./AdminMainScreen"
