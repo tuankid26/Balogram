@@ -28,7 +28,7 @@ const wait = (timeout) => {
   return new Promise((resolve) => setTimeout(resolve, timeout));
 };
 import { ipServer } from "../handle_api/ipAddressServer";
-import { LinePartition, Comment, Slider_local_image } from "../components";
+import { LinePartition, Comment, Slider } from "../components";
 
 export default function ShowPostScreen({ route, navigation }) {
   const { itemReport } = route.params;
@@ -129,7 +129,7 @@ export default function ShowPostScreen({ route, navigation }) {
                 <Text style={styles.described}>{item.described}</Text>
             
             
-              <Slider_local_image item={item.images} index={0} />
+              <Slider item={item.images} index={0} />
                 
             </View>
             
