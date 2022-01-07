@@ -126,9 +126,10 @@ export default function ShowPostScreen({ route, navigation }) {
 
             <View style={styles.containerFeed}>
                 <Text style={styles.described}>{item.described}</Text>
-
+            
+            
             <View style={styles.containerImage}>
-                <Slider_local_image item={item.images} index={0} />
+              <Slider_local_image item={item.images} index={0} />
                 {/* <Image
                 size={120}
                 source={require("../images/avatar/default-avatar-480.png")}
@@ -136,6 +137,7 @@ export default function ShowPostScreen({ route, navigation }) {
                 /> */}
             </View>
             </View>
+            
 
         </View>
     );
@@ -235,6 +237,7 @@ const styles = StyleSheet.create({
         borderRadius: 7,
         marginTop: 10,
         marginTop: 20,
+        
         
       },
       container: {

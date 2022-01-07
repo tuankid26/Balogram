@@ -40,6 +40,7 @@ export default class MyCarousel extends Component {
                     source={{
                         uri: `${ipServer}${item.fileName}`,
                     }}
+                    // source={require("../images/avatar/default-avatar-480.png")}
                     alt="Image Alt"
                     style={styles.image}
                 />
