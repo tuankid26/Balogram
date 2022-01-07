@@ -35,12 +35,12 @@ export default class MyCarousel extends Component {
     _renderItem({ item, index }) {
         // console.log(`${ipServer}${item.fileName}`);
         return (
-            <View key={index} style={styles.container}>
+            <View key={index} style={styles.imageContainer}>
                 <Image
-                    source={{
-                        uri: `${ipServer}${item.fileName}`,
-                    }}
-                    // source={require("../images/avatar/default-avatar-480.png")}
+                    // source={{
+                    //     uri: `${ipServer}${item.fileName}`,
+                    // }}
+                    source={require("../images/avatar/default-avatar-480.png")}
                     alt="Image Alt"
                     style={styles.image}
                 />
@@ -71,7 +71,7 @@ export default class MyCarousel extends Component {
         const sliderWidth = Dimensions.get('window').width;
         const itemHeight = Dimensions.get('window').height;
         return (
-            <View>
+            
                 <Carousel
                     layout='tinder'
                     sliderWidth={screenWidth}
@@ -83,8 +83,8 @@ export default class MyCarousel extends Component {
                     hasParallaxImages={true}
                     lockScrollWhileSnapping={true}
                 />
-                {this.pagination}
-            </View>
+                // {this.pagination}
+            
         );
 
     }
@@ -97,14 +97,14 @@ const styles = StyleSheet.create({
         // borderWidth: 1
     },
     image: {
-        // width: screenWidth ,
-        // height: screenHeight ,
+        width: screenWidth ,
+        height: screenHeight ,
         flex: 1,
         resizeMode: 'center'
     },
     container: {
         // flex : 1,
         height: ScreenHeight - 200,
-        // width: 400
+        width: 400
     }
 })

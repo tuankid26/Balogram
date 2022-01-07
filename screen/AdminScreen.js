@@ -25,7 +25,6 @@ export default function AdminScreen({ navigation }) {
         } catch (err) {
           console.log(err);
         }
-        console.log(datapost.length);
     };
     const splitDateTime = (raw_date) => {
         // 2021-11-14T17:16:51.653Z

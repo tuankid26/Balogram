@@ -84,7 +84,7 @@ export default function ShowPostScreen({ route, navigation }) {
   };
   let avatar = ""
   let date_time = "";
-  
+  // console.log(item)
   if (item.author){
     date_time = splitDateTime(item.updatedAt);
     avatar = item.author.avatar;
@@ -130,12 +130,8 @@ export default function ShowPostScreen({ route, navigation }) {
             
             <View style={styles.containerImage}>
               <Slider_local_image item={item.images} index={0} />
-                {/* <Image
-                size={120}
-                source={require("../images/avatar/default-avatar-480.png")}
-                style={{ position: "absolute" }}
-                /> */}
             </View>
+            
             </View>
             
 
