@@ -199,6 +199,17 @@ postsController.show = async (req, res, next) => {
         if (post == null) {
             return res.status(httpStatus.NOT_FOUND).json({ message: "Can not find post" });
         }
+        // post = post.toObject();
+        // if (post.images.length > 0) {
+        //     for (let indexImage = 0; indexImage < post.images.length; indexImage++) {
+        //         const base64 = uploadFile.loadFile(post.images[indexImage].fileName);
+        //         // postBase64.push(base64);
+        //         post.images[indexImage]["base64"] = base64;
+        //         // console.log(postItem.images[indexImage]);
+        //     }
+
+        // }
+        // console.log(post)
         post.isLike = post.like.includes(req.userId);
         return res.status(httpStatus.OK).json({
             data: post,
@@ -321,7 +332,6 @@ postsController.loadPage = async (req, res, next) => {
         let posts = [];
         let userId = req.userId;
         if (req.query.userId) {
-            console.log("user");
             posts = await PostModel.find({
                 author: req.query.userId
             }).populate('images', ['fileName']).populate('videos', ['fileName']).populate({
