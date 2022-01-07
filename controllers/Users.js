@@ -19,7 +19,7 @@ usersController.register = async (req, res, next) => {
             phonenumber: phonenumber
         })
 
-        if (!user) {
+        if (user) {
             return res.status(httpStatus.BAD_REQUEST).json({
                 message: 'Phone number already exists'
             });
@@ -73,9 +73,11 @@ usersController.login = async (req, res, next) => {
             phonenumber,
             password
         } = req.body;
+        // console.log(phonenumber)
         const user = await UserModel.findOne({
             phonenumber: phonenumber
         })
+        console.log(user) 
         if (!user) {
             return res.status(httpStatus.BAD_REQUEST).json({
                 message: 'Username or password incorrect'
