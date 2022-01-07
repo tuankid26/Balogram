@@ -25,7 +25,7 @@ import { Comment, Slider } from "../components";
 const { width, height } = Dimensions.get("screen");
 import { theme } from "../components/core/theme";
 import { useSelector } from "react-redux";
-import { post, auth, search } from "../handle_api";
+import { post, auth, search,friend } from "../handle_api";
 import { ipServer } from "../handle_api/ipAddressServer";
 import DefaultCoverImage from "../images/default-cover-6.jpg";
 export default function FriendProfile({ route, navigation }) {
@@ -37,6 +37,7 @@ export default function FriendProfile({ route, navigation }) {
 
   const token = useSelector((state) => state.authReducer.token);
   const [isModalVisible, setModalVisible] = useState(false);
+  const [modalVisible, setModalVisible2] = useState(false);
   const [isProfileModalVisible, setProFileModalVisible] = useState(false);
 
   const toggleModal = (item) => {
@@ -77,6 +78,46 @@ export default function FriendProfile({ route, navigation }) {
       console.log(err);
     }
   };
+
+  const setCancelFriend = () => {
+    const dataCancel = {
+        "user_id": Friend_ID,
+        "token": token,
+    }
+    friend.setCancelFriend(dataCancel)
+        .then(res => {
+          console.log("cancel thanh cong");
+          setIsFriend(false);
+        })
+        .catch(error => {
+            console.log("Failed");
+            console.log(error.response.data);
+        })
+
+}
+
+  const FriendModal = () => {
+    return (
+      <Modal
+        // animationType="fade"
+        transparent={true}
+        visible={modalVisible}
+        onRequestClose={() => {
+          Alert.alert("Modal has been closed.");
+          setModalVisible2(!modalVisible);
+        }}
+        onBackdropPress={() => setModalVisible2(false)}
+        style={styles.Fmodal}
+      >
+        <View style={styles.centeredView}>
+          <Pressable onPress={() => setCancelFriend()}>
+            <Text style={styles.modalText}>Hủy kết bạn</Text>
+            </Pressable>
+          </View>
+      </Modal>
+    );
+  }
+
   const ProfileModal = () => {
     return (
       <Modal
@@ -219,7 +260,10 @@ export default function FriendProfile({ route, navigation }) {
         {isFriend && isFriend == true ? (
           <View>
             <View style={styles.containerGallery}>
-              <View style={{ width: "50%", alignItems: "center", left: 20 }}>
+              <View style={{ width: "50%", alignItems: "center", left: 20 }} >
+              <Pressable
+        onPress={() => setModalVisible2(!modalVisible)}
+      >
                 <Text
                   style={{
                     fontSize: 20,
@@ -231,7 +275,7 @@ export default function FriendProfile({ route, navigation }) {
                   }}
                 >
                   Bạn bè
-                </Text>
+                </Text></Pressable>
               </View>
               <View style={{ alignItems: "center", width: "50%", right: 20 }}>
                 <Text
@@ -438,6 +482,7 @@ export default function FriendProfile({ route, navigation }) {
   return (
     <View style={{ flex: 1 }}>
       <ProfileModal />
+      <FriendModal/>
       <SafeAreaView style={{ flex: 1 }}>
         {isFriend && isFriend == true ? (
           <FlatList
@@ -685,5 +730,41 @@ marginLeft: 5
   reactIcon: {
     fontSize: 30,
     margin: 10,
+  },
+  Fmodal: {
+    width: "50%",
+     alignItems: "center",
+      // left: 5,
+      bottom: 8
+  },
+  centeredView: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 60
+  },
+  button: {
+    borderRadius: 20,
+    padding: 10,
+    elevation: 2
+  },
+  buttonOpen: {
+    backgroundColor: "#F194FF",
+  },
+  buttonClose: {
+    backgroundColor: "#2196F3",
+  },
+  textStyle: {
+    color: "white",
+    fontWeight: "bold",
+    textAlign: "center"
+  },
+  modalText: {
+  fontSize: 20,
+  borderWidth: 1,
+  borderColor: "red",
+  width: 120,
+  textAlign: "center",
+  borderRadius: 10,
   },
 });

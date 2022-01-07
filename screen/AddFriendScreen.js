@@ -86,7 +86,7 @@ export default function AddFriendScreen({ navigation }) {
                     </View>
                     <View style={styles.accept}>
                         <View style={{  width: width/4, padding:2}}>
-                            <TouchableOpacity style={styles.confirm} onPress={() => setRemoveFriend(item._id)}>
+                            <TouchableOpacity style={styles.confirm} onPress={() => setAcceptFriend(item._id)}>
                                 <Text style={styles.rejText}>Đồng ý</Text>
                             </TouchableOpacity></View>
                         <View style={{  width: width/4, padding:2}}>

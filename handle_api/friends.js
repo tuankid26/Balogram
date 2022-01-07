@@ -72,8 +72,23 @@ const setRemoveFriend = async(data) => {
 
 }
 
+const setCancelFriend = async(data) => {
+    const token = data.token;
+    const user_id = data.user_id;
+    const setRemove = await api({
+        method: 'POST',
+        url: '/friends/cancel-friend-request',
+        data: {
+            "user_id": user_id,
+        },
+        headers: { Authorization: `Bearer ${token}` }
+    });
+    return setRemove;
+
+}
 
 
 
 
-export {setAcceptFriend, setRemoveFriend, setRequestFriend, getListFriend,getRequestFriend};
+
+export {setAcceptFriend, setRemoveFriend, setRequestFriend, getListFriend,getRequestFriend,setCancelFriend};

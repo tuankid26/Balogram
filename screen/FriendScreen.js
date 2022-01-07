@@ -40,15 +40,15 @@ export default function FriendScreen({ navigation }) {
     navigation.navigate("SearchScreen");
   };
 
-  const onPressUser = (item) => {
-    recentData.includes(item)
-      ? null
-      : dispatch({ type: "ADD_ITEM", payload: item });
-    navigation.navigate("FriendProfileScreen", { item });
-  };
   // const onPressUser = (item) => {
+  //   recentData.includes(item)
+  //     ? null
+  //     : dispatch({ type: "ADD_ITEM", payload: item });
   //   navigation.navigate("FriendProfileScreen", { item });
   // };
+  const onPressUser = (item) => {
+    navigation.navigate("FriendProfileScreen", { item });
+  };
 
   const noFriend = () => {
     
@@ -67,15 +67,15 @@ export default function FriendScreen({ navigation }) {
       );
     else {
       console.log(dataFriend.length);
-      return (
-        <FlatList
-          data={dataFriend}
-          renderItem={({ item }) => (
-            <FriendActive item={item} onPressUser={onPressUser}/>
-          )}
-          keyExtractor={(item) => item._id.toString()}
-        />
-      );
+      // return (
+        // <FlatList
+        //   data={dataFriend}
+        //   renderItem={({ item }) => (
+        //     <FriendActive item={item} onPressUser={onPressUser}/> )}
+        //   // renderItem={({ item }) => <ItemComment item={item} />}
+        //   keyExtractor={(item) => item._id.toString()}
+        // />
+      // );
     }
   };
 
@@ -103,7 +103,7 @@ export default function FriendScreen({ navigation }) {
 
       <FlatList
         data={dataFriend}
-        renderItem={({ item }) => <FriendActive item={item} />}
+        renderItem={({ item }) => <FriendActive item={item}  onPressUser={onPressUser} />}
         keyExtractor={(item) => item._id.toString()}
       />
     </View>

@@ -18,7 +18,7 @@ export default function FriendActive({ item, onPressUser }) {
       <View style={styles.container}>
         <View style={styles.bgAvatar}>
           <Avatar.Image
-                onPress={onPressUser(item)}
+                onPress={onPressFriend}
               size={45}
               source={{
                 uri: `${ipServer}${'../images/placeholder.png'}`,
