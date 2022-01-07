@@ -34,6 +34,8 @@ export default function NewFeedScreen({ navigation }) {
   const [refreshing, setRefreshing] = useState(false);
   const [toggleItem, setToggleItem] = useState("");
   const [doubleTouch, setDoubleTouch] = useState(0);
+  const [curPage, setCurPage] = useState(1);
+  const [isFetchingNextPage, setFetchingNextPage] = useState(false);
   const token = useSelector((state) => state.authReducer.token);
   const userId = useSelector((state) => state.infoReducer.userId);
   const uploadStatus = useSelector((state) => {
@@ -131,16 +133,37 @@ export default function NewFeedScreen({ navigation }) {
 
   const fetchPosts = async () => {
     try {
-      const dataFeed = await post.getListPost_newfeed(token);
-      setDatapost(dataFeed.data.data.reverse());
-      console.log("refresh");
+      const dataFeed = await post.getPagePost(token);
+      console.log(dataFeed.data.data.length)
+      setDatapost(dataFeed.data.data);
     } catch (err) {
       console.log(err);
     }
   };
 
+  const fetchNextPage = () => {
+    post.getPagePost(token, null,curPage + 1)
+      .then((nextPage) => {
+        const newPosts = nextPage.data.data;
+        if (newPosts.length > 0) {
+          setDatapost(datapost.concat(newPosts));
+          setCurPage(curPage + 1);
+        }
+        setFetchingNextPage(false);
+      })
+      .catch((err) => console.log(err));
+  };
+
+
+  const handleEndReached = () => {
+    // setFetchingNextPage(true);
+    fetchNextPage();
+  };
+
+
   const onRefresh = useCallback(() => {
     setRefreshing(true);
+    setCurPage(1);
     fetchPosts();
     wait(1000).then(() => setRefreshing(false));
   }, []);
@@ -156,6 +179,13 @@ export default function NewFeedScreen({ navigation }) {
     } else if (uploadStatus.err) {
     }
   }, [uploadStatus]);
+
+  // useEffect(() => {
+  //   if (isFetchingNextPage) {
+  //     fetchNextPage();
+  //   }
+  // }, [isFetchingNextPage]);
+
 
   const splitDateTime = (raw_date) => {
     // 2021-11-14T17:16:51.653Z
@@ -294,6 +324,8 @@ export default function NewFeedScreen({ navigation }) {
           data={datapost}
           renderItem={({ item }) => renderItem(item)}
           keyExtractor={(item) => item._id.toString()}
+          onEndReachedThreshold={0.01}
+          onEndReached={handleEndReached}
         />
       </View>
     </View>
@@ -357,6 +389,7 @@ const styles = StyleSheet.create({
   },
   containerImage: {
     flex: 1,
+    // height : 468
     // borderColor: 'red',
     // borderWidth: 2,
   },

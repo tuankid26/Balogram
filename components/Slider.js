@@ -6,6 +6,7 @@ import {
 } from 'react-native';
 
 import { theme } from './core/theme';
+import { ScreenHeight } from 'react-native-elements/dist/helpers';
 
 const { width: screenWidth } = Dimensions.get('window')
 const { height: screenHeight } = Dimensions.get('window')
@@ -93,11 +94,14 @@ const styles = StyleSheet.create({
         // borderWidth: 1
     },
     image: {
-        width: screenWidth,
-        height: screenHeight + 100,
+        // width: screenWidth ,
+        // height: screenHeight ,
+        flex: 1,
+        resizeMode: 'contain'
     },
     container: {
-        height: 550,
+        // flex : 1,
+        height: ScreenHeight - 200,
         // width: 400
     }
 })

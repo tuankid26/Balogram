@@ -11,10 +11,11 @@ export default function FriendActive({ item, onPressUser }) {
 
   const onPressFriend = () => {
     onPressUser(item)
-  }
-  
+  } 
   return (
-    <TouchableOpacity onPress={onPressFriend}>
+    <TouchableOpacity 
+    onPress={onPressFriend}
+    >
       <View style={styles.container}>
         <View style={styles.bgAvatar}>
           <Avatar.Image
@@ -28,11 +29,11 @@ export default function FriendActive({ item, onPressUser }) {
         <View style={styles.info}>
           <Text style={styles.name}>{item.username}</Text>
         </View>
-        <View>
+         <View >
           <MaterialCommunityIcons name="message-outline" style={styles.icon} />
         </View>
       </View>
-      <Divider style={{ margintop: 10, marginLeft: 65 }} />
+      <Divider style={{ marginTop: 10, marginLeft: 65 }} />
     </TouchableOpacity>
   );
 }
@@ -47,6 +48,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     paddingVertical: 5,
     marginTop: 8,
+    backgroundColor :'white'
   },
   bgAvatar: {
     flex: 2,
