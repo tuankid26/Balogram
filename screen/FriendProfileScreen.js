@@ -88,11 +88,13 @@ export default function FriendProfile({ route, navigation }) {
         .then(res => {
           console.log("Remove thanh cong");
           setIsFriend(false);
+          setModalVisible2(false);
         })
         .catch(error => {
             console.log("Failed");
             console.log(error.response.data);
         })
+        navigation.navigate('MainScreen');
 
 }
 

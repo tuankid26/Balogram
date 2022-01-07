@@ -53,6 +53,7 @@ export default function SearchScreen({ navigation }) {
       .then((res) => {
         setFriends(res.data.friends);
         setStrange(res.data.strange);
+        console.log(res.data.strange);
       })
       .catch((error) => {
         console.log(error.response.data);
