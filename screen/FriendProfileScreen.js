@@ -86,6 +86,9 @@ export default function FriendProfile({ route, navigation }) {
       console.log(err);
     }
   };
+  const onMessage = () => {
+    navigation.navigate("NewChat")
+  }
   const ProfileModal = () => {
     return (
       <Modal
@@ -252,6 +255,7 @@ export default function FriendProfile({ route, navigation }) {
                     textAlign: "center",
                     borderRadius: 10,
                   }}
+                  // onPress={() => navigation.navigate('NewChat')}
                 >
                   Nhắn tin
                 </Text>

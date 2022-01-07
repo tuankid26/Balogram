@@ -67,16 +67,16 @@ export default function FriendScreen({ navigation }) {
         </View>
       );
     else {
-      console.log(dataFriend.length);
-      // return (
-      //   <FlatList
-      //     data={dataFriend}
-      //     renderItem={({ item }) => (
-      //       <FriendActive item={item} onPressUser={onPressUser}/>
-      //     )}
-      //     keyExtractor={(item) => item._id.toString()}
-      //   />
-      // );
+      // console.log(dataFriend)
+      return (
+        <FlatList
+          data={dataFriend}
+          renderItem={({ item }) => (
+            <FriendActive item={item}  onPressUser={onPressUser} />
+          )}
+          keyExtractor={(item) => item._id}
+        />
+      );
     }
   };
 
@@ -100,14 +100,9 @@ export default function FriendScreen({ navigation }) {
         </View>
       </View>
       <LinePartition color={theme.colors.silver} />
-      <Text style ={{fontSize : 24, backgroundColor : 'white', marginLeft : 15}}>Danh sách bạn bè</Text>
+      <Text style ={{fontSize : 30, backgroundColor : 'white', paddingLeft : 15}}>Danh sách bạn bè</Text>
       <View>{noFriend()}</View>
 
-      {/* <FlatList
-        data={dataFriend}
-        renderItem={({ item }) => <FriendActive item={item} />}
-        keyExtractor={(item) => item._id.toString()}
-      /> */}
     </View>
   );
 }

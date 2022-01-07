@@ -7,31 +7,33 @@ import { ipServer } from "../handle_api/ipAddressServer";
 import { useSelector, useDispatch } from "react-redux";
 import FriendProfile from "../screen/FriendProfileScreen";
 const { width } = Dimensions.get("window");
-export default function FriendActive({ item, onPressUser }) {
-
+export default function FriendActive({ item,onPressUser } ) {
+  
   const onPressFriend = () => {
     onPressUser(item)
   } 
   return (
-    <TouchableOpacity onPress={onPressFriend}>
+    <TouchableOpacity 
+    onPress={onPressFriend}
+    >
       <View style={styles.container}>
         <View style={styles.bgAvatar}>
-          {/* <Avatar.Image
+          <Avatar.Image
                 // onPress={onPressUser(item)}
               size={45}
               source={{
                 uri: `${ipServer}${item.avatar.fileName}`,
               }}
-            /> */}
+            />
         </View>
-        {/* <View style={styles.info}>
+        <View style={styles.info}>
           <Text style={styles.name}>{item.username}</Text>
         </View>
-        {/* <View >
+         <View >
           <MaterialCommunityIcons name="message-outline" style={styles.icon} />
-        </View> */}
+        </View>
       </View>
-      <Divider style={{ margintop: 10, marginLeft: 65 }} />
+      <Divider style={{ marginTop: 10, marginLeft: 65 }} />
     </TouchableOpacity>
   );
 }
