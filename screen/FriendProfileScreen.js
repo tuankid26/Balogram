@@ -28,6 +28,8 @@ import { useSelector } from "react-redux";
 import { post, auth, search } from "../handle_api";
 import { ipServer } from "../handle_api/ipAddressServer";
 import DefaultCoverImage from "../images/default-cover-6.jpg";
+// import { NewChat } from './NewChat'
+
 export default function FriendProfile({ route, navigation }) {
   const [datapost, setDatapost] = useState("");
   const [isFriend, setIsFriend] = useState();
@@ -255,7 +257,7 @@ export default function FriendProfile({ route, navigation }) {
                     textAlign: "center",
                     borderRadius: 10,
                   }}
-                  // onPress={() => navigation.navigate('NewChat')}
+                  onPress={() => navigation.navigate('NewChat')}
                 >
                   Nhắn tin
                 </Text>

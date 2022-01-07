@@ -20,5 +20,5 @@ export {default as AvatarPicker} from './AvatarPicker'
 export { default as InfoUserScreen } from './InfoUserScreen'
 export { default as ChangePasswordScreen } from './ChangePasswordScreen'
 export { default as FriendProfileScreen } from './FriendProfileScreen'
-export {default as CoverImagePicker} from "./CoverImagePicker"
+export { default as CoverImagePicker} from "./CoverImagePicker"
 export { default as NewChat } from './NewChat'

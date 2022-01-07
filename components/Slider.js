@@ -97,7 +97,7 @@ const styles = StyleSheet.create({
         // width: screenWidth ,
         // height: screenHeight ,
         flex: 1,
-        resizeMode: 'center'
+        resizeMode: 'contain'
     },
     container: {
         // flex : 1,
