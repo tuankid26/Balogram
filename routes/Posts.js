@@ -34,5 +34,11 @@ postsRoutes.get(
     asyncWrapper(postsController.list),
 );
 
+postsRoutes.get(
+    "/loadPage",
+    auth,
+    asyncWrapper(postsController.loadPage),
+);
+
 
 module.exports = postsRoutes;

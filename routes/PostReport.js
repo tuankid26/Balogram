@@ -10,4 +10,16 @@ postReportRoutes.post(
     asyncWrapper(postReportController.create),
 );
 
+
+postReportRoutes.get(
+    "/getListReport",
+    auth,
+    asyncWrapper(postReportController.getListReport),
+);
+postReportRoutes.post(
+    "/delete/:id",
+    auth,
+    asyncWrapper(postReportController.delete),
+)
+
 module.exports = postReportRoutes;

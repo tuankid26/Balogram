@@ -26,6 +26,10 @@ const GROUP_CHAT = 'GROUP_CHAT';
 const JWT_SECRET = process.env.JWT_SECRET;
 const MONGO_URI = process.env.MONGO_URI;
 const PORT = process.env.PORT;
+
+const DEFAULT_PAGE_SIZE = 5;
+
+
 module.exports = {
     GENDER_MALE,
     GENDER_FEMALE,
@@ -43,6 +47,7 @@ module.exports = {
     DOCUMENT_TYPE_IMAGE,
     DOCUMENT_TYPE_OTHER,
     PRIVATE_CHAT,
-    GROUP_CHAT
+    GROUP_CHAT,
+    DEFAULT_PAGE_SIZE
 }
 

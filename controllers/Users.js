@@ -1,9 +1,10 @@
 const jwt = require("jsonwebtoken");
 const UserModel = require("../models/Users");
+const FriendModel = require("../models/Friends");
 const DocumentModel = require("../models/Documents");
 const httpStatus = require("../utils/httpStatus");
 const bcrypt = require("bcrypt");
-const {JWT_SECRET} = require("../constants/constants");
+const { JWT_SECRET } = require("../constants/constants");
 const uploadFile = require('../functions/uploadFile');
 const usersController = {};
 
@@ -27,13 +28,13 @@ usersController.register = async (req, res, next) => {
         //Hash password
         const salt = await bcrypt.genSalt(10);
         const hashedPassword = await bcrypt.hash(password, salt);
-        let avatar  = await DocumentModel.findById("60c39f54f0b2c4268eb53367");
-        let coverImage  = await DocumentModel.findById("60c39eb8f0b2c4268eb53366");
+        let avatar = await DocumentModel.findById("619f0fde9d14e73c140b7e3d");
+        let coverImage = await DocumentModel.findById("60c39eb8f0b2c4268eb53366");
         user = new UserModel({
             phonenumber: phonenumber,
             password: hashedPassword,
             username: username,
-            avatar: "60c39f54f0b2c4268eb53367",
+            avatar: "619f0fde9d14e73c140b7e3d",
             cover_image: "60c39eb8f0b2c4268eb53366"
         });
 
@@ -43,7 +44,7 @@ usersController.register = async (req, res, next) => {
             // login for User
             // create and assign a token
             const token = jwt.sign(
-                {username: savedUser.username, firstName: savedUser.firstName, lastName: savedUser.lastName, id: savedUser._id},
+                { username: savedUser.username, firstName: savedUser.firstName, lastName: savedUser.lastName, id: savedUser._id },
                 JWT_SECRET
             );
             res.status(httpStatus.CREATED).json({
@@ -76,8 +77,10 @@ usersController.login = async (req, res, next) => {
         // console.log(phonenumber)
         const user = await UserModel.findOne({
             phonenumber: phonenumber
-        })
-        console.log(user) 
+        }).populate('avatar').populate('cover_image')
+        // const user = await UserModel.findOne({
+        //     phonenumber: phonenumber
+        // }).select('phonenumber username gender birthday description address avatar cover_image blocked_inbox blocked_diary').populate('avatar').populate('cover_image');
         if (!user) {
             return res.status(httpStatus.BAD_REQUEST).json({
                 message: 'Username or password incorrect'
@@ -96,16 +99,12 @@ usersController.login = async (req, res, next) => {
 
         // create and assign a token
         const token = jwt.sign(
-            {username: user.username, firstName: user.firstName, lastName: user.lastName, id: user._id},
+            { username: user.username, firstName: user.firstName, lastName: user.lastName, id: user._id },
             JWT_SECRET
         );
         delete user["password"];
         return res.status(httpStatus.OK).json({
-            data: {
-                id: user._id,
-                phonenumber: user.phonenumber,
-                username: user.username,
-            },
+            data: user,
             token: token
         })
     } catch (e) {
@@ -180,17 +179,18 @@ usersController.edit = async (req, res, next) => {
         }
 
 
-        user = await UserModel.findOneAndUpdate({_id: userId}, dataUserUpdate, {
+        user = await UserModel.findOneAndUpdate({ _id: userId }, dataUserUpdate, {
             new: true,
             runValidators: true
         });
 
         if (!user) {
-            return res.status(httpStatus.NOT_FOUND).json({message: "Can not find user"});
+            return res.status(httpStatus.NOT_FOUND).json({ message: "Can not find user" });
         }
         user = await UserModel.findById(userId).select('phonenumber username gender birthday avatar cover_image blocked_inbox blocked_diary').populate('avatar').populate('cover_image');
         return res.status(httpStatus.OK).json({
-            data: user
+            data: user,
+            update: dataUserUpdate
         });
     } catch (e) {
         return res.status(httpStatus.INTERNAL_SERVER_ERROR).json({
@@ -201,7 +201,7 @@ usersController.edit = async (req, res, next) => {
 usersController.changePassword = async (req, res, next) => {
     try {
         let userId = req.userId;
-        let  user = await UserModel.findById(userId);
+        let user = await UserModel.findById(userId);
         if (user == null) {
             return res.status(httpStatus.UNAUTHORIZED).json({
                 message: "UNAUTHORIZED"
@@ -210,8 +210,10 @@ usersController.changePassword = async (req, res, next) => {
         const {
             currentPassword,
             newPassword,
+            repeatNewPassword
         } = req.body;
         // password
+
         const validPassword = await bcrypt.compare(currentPassword, user.password);
         if (!validPassword) {
             return res.status(httpStatus.BAD_REQUEST).json({
@@ -219,12 +221,23 @@ usersController.changePassword = async (req, res, next) => {
                 code: 'CURRENT_PASSWORD_INCORRECT'
             });
         }
-
+        if (newPassword == currentPassword) {
+            return res.status(httpStatus.BAD_REQUEST).json({
+                message: 'New password must be different',
+                code: 'NEW_PASSWORD_INCORRECT',
+            });
+        }
+        if (newPassword != repeatNewPassword) {
+            return res.status(httpStatus.BAD_REQUEST).json({
+                message: 'Repeat password incorrect',
+                code: 'REPEAT_PASSWORD_INCORRECT',
+            });
+        }
         //Hash password
         const salt = await bcrypt.genSalt(10);
         const hashedNewPassword = await bcrypt.hash(newPassword, salt);
 
-        user = await UserModel.findOneAndUpdate({_id: userId}, {
+        user = await UserModel.findOneAndUpdate({ _id: userId }, {
             password: hashedNewPassword
         }, {
             new: true,
@@ -232,12 +245,12 @@ usersController.changePassword = async (req, res, next) => {
         });
 
         if (!user) {
-            return res.status(httpStatus.NOT_FOUND).json({message: "Can not find user"});
+            return res.status(httpStatus.NOT_FOUND).json({ message: "Can not find user" });
         }
 
         // create and assign a token
         const token = jwt.sign(
-            {username: user.username, firstName: user.firstName, lastName: user.lastName, id: user._id},
+            { username: user.username, firstName: user.firstName, lastName: user.lastName, id: user._id },
             JWT_SECRET
         );
         user = await UserModel.findById(userId).select('phonenumber username gender birthday avatar cover_image blocked_inbox blocked_diary').populate('avatar').populate('cover_image');
@@ -260,16 +273,16 @@ usersController.show = async (req, res, next) => {
             userId = req.userId;
         }
 
-        let user = await UserModel.findById(userId).select('phonenumber username gender birthday avatar cover_image blocked_inbox blocked_diary').populate('avatar').populate('cover_image');
+        let user = await UserModel.findById(userId).select('phonenumber username gender birthday description address avatar cover_image blocked_inbox blocked_diary').populate('avatar').populate('cover_image');
         if (user == null) {
-            return res.status(httpStatus.NOT_FOUND).json({message: "Can not find user"});
+            return res.status(httpStatus.NOT_FOUND).json({ message: "Can not find user" });
         }
 
         return res.status(httpStatus.OK).json({
             data: user
         });
     } catch (error) {
-        return res.status(httpStatus.INTERNAL_SERVER_ERROR).json({message: error.message});
+        return res.status(httpStatus.INTERNAL_SERVER_ERROR).json({ message: error.message });
     }
 }
 usersController.setBlock = async (req, res, next) => {
@@ -281,10 +294,10 @@ usersController.setBlock = async (req, res, next) => {
         if (user.hasOwnProperty('blocked')) {
             blocked = user.blocked_inbox
         }
-    
-        if(type) {
-     
-            if(blocked.indexOf(targetId) === -1) {
+
+        if (type) {
+
+            if (blocked.indexOf(targetId) === -1) {
                 blocked.push(targetId);
             }
         } else {
@@ -318,10 +331,10 @@ usersController.setBlockDiary = async (req, res, next) => {
         if (user.hasOwnProperty('blocked')) {
             blocked = user.blocked_diary
         }
-    
-        if(type) {
-     
-            if(blocked.indexOf(targetId) === -1) {
+
+        if (type) {
+
+            if (blocked.indexOf(targetId) === -1) {
                 blocked.push(targetId);
             }
         } else {
@@ -349,12 +362,21 @@ usersController.setBlockDiary = async (req, res, next) => {
 usersController.searchUser = async (req, res, next) => {
     try {
         let searchKey = new RegExp(req.body.keyword, 'i')
-        let result = await UserModel.find({phonenumber: searchKey}).limit(10).populate('avatar').populate('cover_image').exec();
+        let result_1 = await UserModel.find({ phonenumber: searchKey }).limit(10).populate('avatar').populate('cover_image').exec();
+        let result_2 = await UserModel.find({ username: searchKey }).limit(10).populate('avatar').populate('cover_image').exec();
 
+        let requested = await FriendModel.find({ sender: req.userId, status: "1" }).distinct('receiver')
+        let accepted = await FriendModel.find({ receiver: req.userId, status: "1" }).distinct('sender')
+        let all_friends = await UserModel.find().where('_id').in(requested.concat(accepted)).populate('avatar').populate('cover_image').exec()
+
+        let all_users = result_1.concat(result_2)
+        let friends = all_users.filter(x => all_friends.includes(x))
+        let strange = all_users.filter(x => !all_friends.includes(x))
         res.status(200).json({
             code: 200,
             message: "Tìm kiếm thành công",
-            data: result
+            friends: friends,
+            strange: strange,
         });
 
     } catch (e) {

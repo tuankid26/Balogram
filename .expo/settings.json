@@ -1,0 +1,19 @@
+{
+<<<<<<< HEAD
+  "hostType": "tunnel",
+  "lanType": "ip",
+  "dev": true,
+  "minify": false,
+  "urlRandomness": "8w-546",
+  "https": false,
+  "scheme": null,
+  "devClient": false
+=======
+  "hostType": "lan",
+  "lanType": "ip",
+  "dev": true,
+  "minify": false,
+  "urlRandomness": null,
+  "https": false
+>>>>>>> e6c4081e31b11efeac1539d19534b211e7028999
+}
