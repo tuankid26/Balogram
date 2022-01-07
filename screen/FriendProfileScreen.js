@@ -79,14 +79,14 @@ export default function FriendProfile({ route, navigation }) {
     }
   };
 
-  const setCancelFriend = () => {
-    const dataCancel = {
+  const setRemoveFriend = () => {
+    const dataRemove = {
         "user_id": Friend_ID,
         "token": token,
     }
-    friend.setCancelFriend(dataCancel)
+    friend.setRemoveFriend(dataRemove)
         .then(res => {
-          console.log("cancel thanh cong");
+          console.log("Remove thanh cong");
           setIsFriend(false);
         })
         .catch(error => {
@@ -110,7 +110,7 @@ export default function FriendProfile({ route, navigation }) {
         style={styles.Fmodal}
       >
         <View style={styles.centeredView}>
-          <Pressable onPress={() => setCancelFriend()}>
+          <Pressable onPress={() => setRemoveFriend()}>
             <Text style={styles.modalText}>Hủy kết bạn</Text>
             </Pressable>
           </View>
