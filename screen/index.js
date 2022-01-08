@@ -24,3 +24,4 @@ export {default as CoverImagePicker} from "./CoverImagePicker"
 export {default as ShowPostScreen} from "./ShowPost"
 export {default as AdminScreen} from "./AdminScreen"
 export {default as AdminMainScreen} from "./AdminMainScreen"
+export { default as NewChat } from './NewChat'

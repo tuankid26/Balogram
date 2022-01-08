@@ -1,169 +1,201 @@
 import React from "react";
-import { useState, useEffect } from "react";
-import {
-  View,
-  FlatList,
-  Text,
-  StyleSheet,
-  Dimensions,
-  TouchableOpacity,
-} from "react-native";
-import { FriendActive, LinePartition } from "../components";
+import { View, FlatList, Text, StyleSheet, Dimensions,TouchableOpacity } from "react-native";
 import { theme } from "../components/core/theme";
-import { useIsFocused } from "@react-navigation/native";
-import { Ionicons } from "react-native-vector-icons";
+import { Avatar, Button, Divider } from "react-native-paper";
+import {
+    BackButton
+} from "../components";
 const { width } = Dimensions.get("window");
-import { friend } from "../handle_api";
-import { useSelector, useDispatch } from "react-redux";
-export default function FriendScreen({ navigation }) {
-  const [dataFriend, setDataFriend] = useState([]);
-  const token = useSelector((state) => state.authReducer.token);
+import {friend} from "../handle_api";
+import { useSelector } from 'react-redux';
+import { useState, useEffect } from 'react'
 
-  const dispatch = useDispatch();
-  const recentData = useSelector((state) => state.searchReducer.arr);
-  const isFocused = useIsFocused();
 
-  useEffect(() => {
-    friend
-      .getListFriend(token)
-      .then((res) => {
-        if (isFocused) setDataFriend(res.data.data.friends);
-        // console.log(res.data.data)
-      })
-      .catch((error) => {
-        console.log("Failed");
-        console.log(error);
-      });
-  }, [isFocused]);
 
-  const onSearchPress = () => {
-    navigation.navigate("SearchScreen");
-  };
-
-  // const onPressUser = (item) => {
-  //   recentData.includes(item)
-  //     ? null
-  //     : dispatch({ type: "ADD_ITEM", payload: item });
-  //   navigation.navigate("FriendProfileScreen", { item });
-  // };
-  const onPressUser = (item) => {
-    navigation.navigate("FriendProfileScreen", { item });
-  };
-
-  const noFriend = () => {
+export default function AddFriendScreen({ navigation }) {
     
-    if (dataFriend.length == 0)
-      return (
-        <View style={styles.noF}>
-          <View>
-            <Text style={styles.textNoF}>Chưa có người bạn nào!</Text>
-          </View>
-          <View style={{ width: width / 2, padding: 10 }}>
-            <TouchableOpacity style={styles.buttonNoF} onPress={onSearchPress}>
-              <Text style={styles.textNoF2}>Tìm bạn mới</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-      );
-    else {
-      console.log(dataFriend.length);
-      // return (
-      //   <FlatList
-      //     data={dataFriend}
-      //     renderItem={({ item }) => (
-      //       <FriendActive item={item} onPressUser={onPressUser}/>
-      //     )}
-      //     keyExtractor={(item) => item._id.toString()}
-      //   />
-      // );
+    const [datafriend, setDataFriend] = useState([]);
+    const token = useSelector(state => state.authReducer.token);
+    useEffect(() => {
+        let isMounted = true; 
+        friend.getRequestFriend(token)
+            .then(res => {
+                if (isMounted) setDataFriend(res.data.data.friends);
+                
+            })
+            
+            .catch(error => {
+                if (error.response) {
+                    const error = err.response.data;
+                    dispatch(addError(error.message));
+                } else if (error.request) {
+                    console.log(error.request);
+                } else {
+                    console.log('Error', error.message);
+                }
+            })
+            return () => { isMounted = false };
+
+    }, []);
+
+    const setAcceptFriend = (userID) => {
+        const dataAccept = {
+            "user_id": userID,
+            "token": token,
+            "is_accept": "1",
+        }
+        friend.setAcceptFriend(dataAccept)
+            .then(res => {
+                const updateData = datafriend.filter(item => item._id !== res.data.data.sender);
+                setDataFriend(updateData);
+
+            })
+            .catch(error => {
+                console.log("Failed");
+                console.log(error.response.data);
+            })
+
     }
-  };
 
-  return (
-    <View style={styles.wrapper}>
-      <View style={styles.headerBar}>
-        <View style={styles.headerLeft}>
-          <Text style={styles.title}>BaloGram</Text>
-        </View>
-        <View style={styles.headerRight}>
-          <Ionicons
-            name="md-search-outline"
-            style={styles.icon}
-            onPress={onSearchPress}
-          />
-          <Ionicons
-            name="person-add-outline"
-            style={styles.icon}
-            onPress={() => navigation.navigate("AddFriendScreen")}
-          />
-        </View>
-      </View>
-      <LinePartition color={theme.colors.silver} />
-      <View>{noFriend()}</View>
+    const setAcceptFriend2 = (userID) => {
+        const dataAccept = {
+            "user_id": userID,
+            "token": token,
+            "is_accept": "2",
+        }
+        friend.setAcceptFriend(dataAccept)
+            .then(res => {
+                const updateData = datafriend.filter(item => item._id !== res.data.data.sender);
+                setDataFriend(updateData);
 
-      {/* <FlatList
-        data={dataFriend}
-        renderItem={({ item }) => <FriendActive item={item} />}
-        keyExtractor={(item) => item._id.toString()}
-      /> */}
-    </View>
-  );
+            })
+            .catch(error => {
+                console.log("Failed");
+                console.log(error.response.data);
+            })
+
+    }
+
+    const renderItem = (item) => {
+        return (
+        <TouchableOpacity>
+                <View style={styles.container}>
+                    <View style={styles.bgAvatar}>
+                        <Avatar.Image size={52} source={{uri:'../images/Store_local_image/anh2.jpg'}} />
+                    </View>
+                    <View style={styles.info}>
+                        <Text style={styles.name}>{item.username}</Text>
+                    </View>
+                    <View style={styles.accept}>
+                        <View style={{  width: width/4, padding:2}}>
+                            <TouchableOpacity style={styles.confirm} onPress={() => setAcceptFriend(item._id)}>
+                                <Text style={styles.rejText}>Đồng ý</Text>
+                            </TouchableOpacity></View>
+                        <View style={{  width: width/4, padding:2}}>
+                            <TouchableOpacity style={styles.reject} onPress={() => setAcceptFriend2(item._id)}>
+                                <Text style={styles.rejText}>Từ chối</Text>
+                            </TouchableOpacity></View>
+                        {/* <Button  style={styles.reject} onPress={() => setRemoveFriend(item._id)}> Từ chối </Button> */}
+                    </View>
+                </View>
+                <Divider style={{ margintop: 10, marginLeft: 65 }} />
+            </TouchableOpacity>
+        );
+    }
+
+
+
+    return (
+        <View style={styles.wrapper}>
+            <View style={styles.header}>
+                <View style={styles.backScreen}>
+                    <BackButton goBack={navigation.goBack} />
+                </View>
+                <Text style={styles.title}>Yêu cầu kết bạn</Text>
+            </View>
+            
+             <FlatList
+
+                data={datafriend }
+                renderItem={({ item }) => renderItem(item)}
+                keyExtractor={(item) => item._id.toString()}
+                
+            />
+              
+            
+            
+        </View>
+    );
 }
 
 const styles = StyleSheet.create({
-  wrapper: {
-    // flex: 1,
-    // backgroundColor: "white",
-  },
+    wrapper: {
+        flex: 1,
+        backgroundColor: "white",
+    },
+    header: {
+        alignItems: "center",
+        flexDirection: "row",
+        backgroundColor: theme.colors.header,
+    },
+    icon: {
+        fontSize: 25,
+        marginRight: 15,
+    },
+    title: {
+        fontSize: 24,
+        fontWeight: "bold",
+        color: "black",
+        padding: 10,
+        marginLeft:80
+    },
+    container: {
+        flexDirection: "row",
+        paddingHorizontal: 10,
+        paddingVertical: 5,
+        marginTop: 5,
+        marginBottom:5
+    },
+    bgAvatar: {
+        flex: 2,
+        paddingTop:10,
+        marginLeft:5,
+    },
+    info: {
+        flex: 8,
+        flexDirection: "column",
+        paddingLeft: 5,
+        justifyContent: "center",
+        paddingBottom:12
+    },
+    accept: {
 
-  addFriend: {
-    flex: 1,
-    justifyContent: "flex-end",
-    flexDirection: "row",
-  },
-  headerBar: {
-    height: 40,
-    flexDirection: "row",
-    alignItems: "center",
-    backgroundColor: theme.colors.white,
-    height: 40,
-  },
-
-  headerLeft: {
-    flex: 1,
-  },
-  headerRight: {
-    flex: 1,
-    justifyContent: "flex-end",
-    flexDirection: "row",
-  },
-  title: {
-    fontSize: 30,
-    color: theme.colors.logo,
-    padding: 20,
-  },
-  textNoF: {
-    fontSize: 24,
-    color: theme.colors.logo,
-  },
-  textNoF2: {
-    fontSize: 26,
-    color: theme.colors.logo,
-  },
-  buttonNoF: {
-    backgroundColor: "#CDF2CA",
-    height: width / 9,
-    alignItems: "center",
-    borderRadius: 10,
-  },
-  noF: {
-    flexDirection: "column",
-    alignItems: "center",
-    paddingTop: width / 2,
-  },
-
-  icon: {
-    fontSize: 25,
-    marginRight: 15,
-  },
+    },
+    confirm: {
+        flexDirection: 'row',
+        backgroundColor: '#a3d13a',
+        borderRadius:5,
+        justifyContent:"center",
+        height: width/12,
+    },
+    reject: {
+        flexDirection: 'row',
+        backgroundColor: '#d46161',
+        borderRadius:5,
+        justifyContent:"center",
+        height: width/12,
+    },
+    rejText: {
+        fontSize: 20,
+        color: "white",
+        marginRight:3,
+        marginTop:2
+    },
+    name: {
+        marginLeft: 12,
+        fontWeight: "bold",
+        color: "black",
+        fontSize: 19,
+        paddingBottom: 3,
+    },
 });

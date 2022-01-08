@@ -27,6 +27,7 @@ export default function LoginScreen({ navigation }) {
     auth.login(data)
       .then(res => {
         const token = res.data.token;
+        const id = res.data.data._id
         const info = {
           gender: res.data.data.gender,
           birthday: res.data.data.birthday,
@@ -39,6 +40,7 @@ export default function LoginScreen({ navigation }) {
         }
         // call dispatch to store token
         dispatch({ type: 'STORE_TOKEN', payload: token })
+        dispatch({ type: 'STORE_ID', payload: id })
         dispatch({ type: 'STORE_INFO', payload: info })
         Toast.show({
           type: 'success',

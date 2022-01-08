@@ -5,34 +5,35 @@ import { Avatar, Divider } from "react-native-paper";
 import { MaterialCommunityIcons } from "react-native-vector-icons";
 import { ipServer } from "../handle_api/ipAddressServer";
 import { useSelector, useDispatch } from "react-redux";
-import FriendProfile from "../screen/FriendProfileScreen";
-const { width } = Dimensions.get("window");
-export default function FriendActive({ item, onPressUser }) {
 
+const { width } = Dimensions.get("window");
+export default function FriendActive({ item,onPressUser } ) {
+  
   const onPressFriend = () => {
     onPressUser(item)
-  }
-  
+  } 
   return (
-    <TouchableOpacity onPress={onPressFriend}>
+    <TouchableOpacity 
+    onPress={onPressFriend}
+    >
       <View style={styles.container}>
         <View style={styles.bgAvatar}>
-          {/* <Avatar.Image
+          <Avatar.Image
                 // onPress={onPressUser(item)}
               size={45}
               source={{
                 uri: `${ipServer}${item.avatar.fileName}`,
               }}
-            /> */}
+            />
         </View>
-        {/* <View style={styles.info}>
+        <View style={styles.info}>
           <Text style={styles.name}>{item.username}</Text>
-        </View> */}
-        <View>
+        </View>
+         <View >
           <MaterialCommunityIcons name="message-outline" style={styles.icon} />
         </View>
       </View>
-      <Divider style={{ margintop: 10, marginLeft: 65 }} />
+      <Divider style={{ marginTop: 10, marginLeft: 65 }} />
     </TouchableOpacity>
   );
 }
@@ -47,6 +48,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     paddingVertical: 5,
     marginTop: 8,
+    backgroundColor :'white'
   },
   bgAvatar: {
     flex: 2,

@@ -29,9 +29,13 @@ import {
     ChangePasswordScreen,
     FriendProfileScreen,
     CoverImagePicker,
+<<<<<<< HEAD
     ShowPostScreen,
     AdminScreen,
     AdminMainScreen
+=======
+    NewChat
+>>>>>>> pankiz
 } from './screen'
 import NewPostScreen from './screen/NewPostScreen';
 
@@ -80,6 +84,7 @@ const App = () => {
                     <Stack.Screen name="ShowPostScreen" options={{ headerShown: false }} component={ShowPostScreen} />
                     <Stack.Screen name="AdminScreen" options={{ headerShown: false }} component={AdminScreen} />
                     <Stack.Screen name="AdminMainScreen" options={{ headerShown: false }} component={AdminMainScreen} />
+                    <Stack.Screen name="NewChat" options={{ headerShown: false }} component={NewChat} />
                 </Stack.Navigator>
             </NavigationContainer>
         </SafeAreaProvider>
