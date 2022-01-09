@@ -28,6 +28,10 @@ export default function AccountAndSecurity({ navigation }) {
         navigation.navigate("CoverImagePicker");
     }
 
+    const setInfoUser = () => {
+        navigation.navigate("InfoUserScreen");
+    }
+    
     return (
         <View style={styles.wrapper}>
             <View style={styles.header}>
@@ -36,7 +40,7 @@ export default function AccountAndSecurity({ navigation }) {
                     <BackButton goBack={navigation.goBack} />
                     
                 </View>
-                <Text style={styles.title}>Tài khoản và bảo mật</Text>
+                <Text style={styles.title}>Tài khoản</Text>
                 
             </View>
             <TouchableOpacity onPress={setAvatar} >
@@ -63,6 +67,21 @@ export default function AccountAndSecurity({ navigation }) {
                     />
                     <View style={styles.info}>
                         <Text style={styles.name}>Đặt ảnh bìa</Text>
+                    </View>
+                </View>
+                <Divider style={{ margintop: 10, marginLeft: 45 }} />
+            </TouchableOpacity>
+
+            <TouchableOpacity onPress={setInfoUser}>
+                <View style={styles.container}>
+                    <MaterialIcons
+                        name="reorder"
+                        style={styles.icon}
+                        color='#009933'
+                    // onPress={() => navigation.navigate("SearchScreen")}
+                    />
+                    <View style={styles.info}>
+                        <Text style={styles.name}>Thay đổi thông tin cá nhân</Text>
                     </View>
                 </View>
                 <Divider style={{ margintop: 10, marginLeft: 45 }} />

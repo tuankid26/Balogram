@@ -23,7 +23,7 @@ export default function FriendActive({ item, onPressUser }) {
               source={{
                 uri: `${ipServer}${'../images/placeholder.png'}`,
               }}
-            />
+            /> 
         </View>
         <View style={styles.info}>
           <Text style={styles.name}>{item.username}</Text>

@@ -39,6 +39,7 @@ export default function FriendProfile({ route, navigation }) {
   const [isModalVisible, setModalVisible] = useState(false);
   const [modalVisible, setModalVisible2] = useState(false);
   const [isProfileModalVisible, setProFileModalVisible] = useState(false);
+  const [blockModalVisible, setBlockModalVisible] = useState(false);
 
   const toggleModal = (item) => {
     setModalVisible(!isModalVisible);
@@ -72,12 +73,46 @@ export default function FriendProfile({ route, navigation }) {
   };
   const fetchPosts = async () => {
     try {
-      const dataFeed = await post.getListPost_newfeed(token, Friend_ID);
+      const dataFeed = await post.getListPost(token, Friend_ID);
       setDatapost(dataFeed.data.data.reverse());
     } catch (err) {
       console.log(err);
     }
   };
+
+  const setBlockDiary = () => {
+    const dataBlock = {
+        "user_id": Friend_ID,
+        "token": token,
+    }
+    friend.blockDiary(dataBlock)
+        .then(res => {
+          console.log("Block thanh cong");
+          setBlockModalVisible(false);
+        })
+        .catch(error => {
+            console.log("Failed");
+            console.log(error.response.data);
+        })
+
+};
+
+const UnBlockDiary = () => {
+  const dataBlock = {
+      "user_id": Friend_ID,
+      "token": token,
+  }
+  friend.unBlockDiary(dataBlock)
+      .then(res => {
+        console.log("Xoa Block thanh cong");
+        setBlockModalVisible(false);
+      })
+      .catch(error => {
+          console.log("Failed");
+          console.log(error.response.data);
+      })
+
+};
 
   const setRemoveFriend = () => {
     const dataRemove = {
@@ -96,7 +131,7 @@ export default function FriendProfile({ route, navigation }) {
         })
         navigation.navigate('MainScreen');
 
-}
+};
 
   const FriendModal = () => {
     return (
@@ -114,6 +149,27 @@ export default function FriendProfile({ route, navigation }) {
         <View style={styles.centeredView}>
           <Pressable onPress={() => setRemoveFriend()}>
             <Text style={styles.modalText}>Hủy kết bạn</Text>
+            </Pressable>
+          </View>
+      </Modal>
+    );
+  }
+
+  const BlockModal = () => {
+    return (
+      <Modal
+      animationType="fade"
+        transparent={true}
+        visible={blockModalVisible}
+        onRequestClose={() => {
+          setBlockModalVisible(!blockModalVisible);
+        }}
+        onBackdropPress={() => setBlockModalVisible(false)}
+        style={styles.Bmodal}
+      >
+        <View style={styles.centeredView}>
+          <Pressable onPress={() => setBlockDiary()}>
+            <Text style={styles.BmodalText}>Block</Text>
             </Pressable>
           </View>
       </Modal>
@@ -208,8 +264,9 @@ export default function FriendProfile({ route, navigation }) {
                 flexDirection: "row",
                 justifyContent: "flex-end",
               }}
-            >
-              <TouchableOpacity>
+            > 
+            <BlockModal/>
+              <TouchableOpacity onPress={() => setBlockModalVisible(!blockModalVisible)}>
                 <Entypo name="dots-three-horizontal" size={25} color="#F0ECE3"/>
               </TouchableOpacity>
             </View>
@@ -485,6 +542,7 @@ export default function FriendProfile({ route, navigation }) {
     <View style={{ flex: 1 }}>
       <ProfileModal />
       <FriendModal/>
+      
       <SafeAreaView style={{ flex: 1 }}>
         {isFriend && isFriend == true ? (
           <FlatList
@@ -739,6 +797,11 @@ marginLeft: 5
       // left: 5,
       bottom: 8
   },
+  Bmodal: {
+     alignItems: "flex-end",
+     bottom: width-50,
+     left:20
+  },
   centeredView: {
     flex: 1,
     justifyContent: "center",
@@ -769,4 +832,13 @@ marginLeft: 5
   textAlign: "center",
   borderRadius: 10,
   },
+  BmodalText: {
+    fontSize: 20,
+    borderWidth: 1,
+    borderColor: "#e69138",
+    width: 70,
+    textAlign: "center",
+    borderRadius: 10,
+    backgroundColor: "#eae0c3",
+    },
 });

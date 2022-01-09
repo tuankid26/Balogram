@@ -87,8 +87,68 @@ const setCancelFriend = async(data) => {
 
 }
 
+const blockChat = async (data) => {
+    const userBlocked = {
+      user_id: data.user_id,
+      type: 'PRIVATE_CHAT',
+    };
+    const block = await api({
+      method: 'POST',
+      url: 'users/set-block-user/',
+      data: userBlocked,
+      headers: {
+        Authorization: `Bearer ${data.token}`,
+      },
+    });
+    return block;
+  };
+  
+  const unBlockChat = async (data) => {
+    const userBlocked = {
+      user_id: data.user_id,
+    };
+    const unBlock = await api({
+      method: 'POST',
+      url: 'users/set-block-user/',
+      data: userBlocked,
+      headers: {
+        Authorization: `Bearer ${data.token}`,
+      },
+    });
+    return unBlock;
+  };
+  const blockDiary = async (data) => {
+    const userBlocked = {
+      user_id: data.user_id,
+      type: 'PRIVATE_DIARY',
+    };
+    const block = await api({
+      method: 'POST',
+      url: 'users/set-block-diary/',
+      data: userBlocked,
+      headers: {
+        Authorization: `Bearer ${data.token}`,
+      },
+    });
+    return block;
+  };
+  
+  const unBlockDiary = async (data) => {
+    const userBlocked = {
+      user_id: data.user_id,
+    };
+    const unBlock = await api({
+      method: 'POST',
+      url: 'users/set-block-diary/',
+      data: userBlocked,
+      headers: {
+        Authorization: `Bearer ${data.token}`,
+      },
+    });
+    return unBlock;
+  };
 
 
 
 
-export {setAcceptFriend, setRemoveFriend, setRequestFriend, getListFriend,getRequestFriend,setCancelFriend};
+export {setAcceptFriend, setRemoveFriend, setRequestFriend, getListFriend,getRequestFriend,setCancelFriend, blockChat,unBlockChat,blockDiary,unBlockDiary};

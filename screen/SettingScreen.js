@@ -44,7 +44,7 @@ export default function SettingScreen({ navigation }) {
                         color='green'
                     />
                     <View style={styles.info}>
-                        <Text style={styles.name}>Tài khoản và bảo mật</Text>
+                        <Text style={styles.name}>Tài khoản</Text>
                     </View>
                 </View>
                 <Divider style={{ margintop: 10, marginLeft: 45 }} />

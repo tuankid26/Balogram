@@ -6,5 +6,6 @@ import * as friend from './friends';
 import * as comment from './comment'
 import * as search from './search'
 import * as profile from './profile'
-export { auth, message, chat, post, comment, search, friend, profile };
+import * as admin from './admin'
+export { auth, message, chat, post, comment, search, friend, profile, admin };
 

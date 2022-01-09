@@ -4,8 +4,18 @@ import api from './api';
 
 
 
-const getListPost_newfeed = async (token, userId = null) => {
+const getListPost = async (token, userId = null) => {
     const url = userId ? `/posts/list?userId=${userId}` : '/posts/list';
+    const listPost = await api({
+        method: 'GET',
+        url: url,
+        headers: { Authorization: `Bearer ${token}` }
+    });
+    return listPost;
+}
+
+const getPagePost = async (token, userId = null,page = 1) => {
+    const url = userId ? `/posts/loadPage?userId=${userId}&page=${page}` : `/posts/loadPage?page=${page}`;
     const listPost = await api({
         method: 'GET',
         url: url,
@@ -75,6 +85,31 @@ const actionLikePost = async (data) => {
     return likeInfo;
 }
 
+const showPost = async (data) => {
+    const token = data.token;
+    const postId = data.postId;
+    const showInfo = await api({
+        method: "GET",
+        url: `/posts/show/${postId}`,
+        headers: { Authorization: `Bearer ${token}` }
+    });
+    
+    return showInfo;
+}
+
+const reportPost = async (data) => {
+    const token = data.token;
+    const postId = data.postId;
+    console.log(`/postReport/create/${postId}`);
+    const reportInfo = await api({
+        method: "POST",
+        url: `/postReport/create/${postId}`,
+        headers: { Authorization: `Bearer ${token}` }
+    });
+    
+    return reportInfo;
+}
 
 
-export { addPost, getListPost_newfeed, editPost, deletePost, actionLikePost };
+
+export { addPost, getListPost,getPagePost, editPost, deletePost, actionLikePost, showPost, reportPost};

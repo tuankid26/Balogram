@@ -10,6 +10,7 @@ import { ScreenHeight } from 'react-native-elements/dist/helpers';
 
 const { width: screenWidth } = Dimensions.get('window')
 const { height: screenHeight } = Dimensions.get('window')
+import { ipServer } from "../handle_api/ipAddressServer";
 
 export default class MyCarousel extends Component {
     constructor(props) {
@@ -32,12 +33,14 @@ export default class MyCarousel extends Component {
     }
 
     _renderItem({ item, index }) {
+        // console.log(`${ipServer}${item.fileName}`);
         return (
             <View key={index} style={styles.container}>
                 <Image
                     source={{
-                        uri: `data:image/jpeg;base64,${item.base64}`,
+                        uri: `${ipServer}${item.fileName}`,
                     }}
+                    // source={require("../images/avatar/default-avatar-480.png")}
                     alt="Image Alt"
                     style={styles.image}
                 />
@@ -101,7 +104,7 @@ const styles = StyleSheet.create({
     },
     container: {
         // flex : 1,
-        height: ScreenHeight - 200,
+        height: ScreenHeight -200,
         // width: 400
     }
 })

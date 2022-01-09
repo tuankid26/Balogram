@@ -60,6 +60,7 @@ export default function InfoUserScreen({ navigation }) {
                     text1: 'Đã có lỗi xảy ra'
                 });
             })
+        navigation.navigate("MainScreen");
     }
 
     const splitDateTime = (raw_date) => {
