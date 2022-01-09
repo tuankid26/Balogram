@@ -29,9 +29,13 @@ import {
     ChangePasswordScreen,
     FriendProfileScreen,
     CoverImagePicker,
+<<<<<<< HEAD
     ShowPostScreen,
     AdminScreen,
     AdminMainScreen
+=======
+    NewChat
+>>>>>>> 7eda6fcd7eae28206fa86adb06b27d8491d1c5f9
 } from './screen'
 import NewPostScreen from './screen/NewPostScreen';
 
@@ -77,9 +81,13 @@ const App = () => {
                     <Stack.Screen name="ChangePasswordScreen" options={{ headerShown: false }} component={ChangePasswordScreen} />
                     <Stack.Screen name="FriendProfileScreen" options={{ headerShown: false }} component={FriendProfileScreen} />
                     <Stack.Screen name="CoverImagePicker" options={{ headerShown: false }} component={CoverImagePicker} />
+<<<<<<< HEAD
                     <Stack.Screen name="ShowPostScreen" options={{ headerShown: false }} component={ShowPostScreen} />
                     <Stack.Screen name="AdminScreen" options={{ headerShown: false }} component={AdminScreen} />
                     <Stack.Screen name="AdminMainScreen" options={{ headerShown: false }} component={AdminMainScreen} />
+=======
+                    <Stack.Screen name="NewChat" options={{ headerShown: false }} component={NewChat} />
+>>>>>>> 7eda6fcd7eae28206fa86adb06b27d8491d1c5f9
                 </Stack.Navigator>
             </NavigationContainer>
         </SafeAreaProvider>

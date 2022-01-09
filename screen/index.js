@@ -20,7 +20,12 @@ export {default as AvatarPicker} from './AvatarPicker'
 export { default as InfoUserScreen } from './InfoUserScreen'
 export { default as ChangePasswordScreen } from './ChangePasswordScreen'
 export { default as FriendProfileScreen } from './FriendProfileScreen'
+<<<<<<< HEAD
 export {default as CoverImagePicker} from "./CoverImagePicker"
 export {default as ShowPostScreen} from "./ShowPost"
 export {default as AdminScreen} from "./AdminScreen"
 export {default as AdminMainScreen} from "./AdminMainScreen"
+=======
+export { default as CoverImagePicker} from "./CoverImagePicker"
+export { default as NewChat } from './NewChat'
+>>>>>>> 7eda6fcd7eae28206fa86adb06b27d8491d1c5f9
