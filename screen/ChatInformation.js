@@ -12,7 +12,7 @@ import { BackButton } from "../components";
 import { theme } from "../components/core/theme";
 import { Divider } from "react-native-elements";
 import { MaterialCommunityIcons } from "react-native-vector-icons";
-import { chat, message } from "../handle_api";
+import { chat, message,friend } from "../handle_api";
 const { width } = Dimensions.get("window");
 
 export default function ChatInformation({ route, navigation }) {
@@ -26,6 +26,26 @@ export default function ChatInformation({ route, navigation }) {
             console.log(err);
         }
     };
+
+    const setBlockChat = () => {
+        const dataBlock = {
+            "user_id": item._id,
+            "token": token,
+        }
+        friend.blockChat(dataBlock)
+            .then(res => {
+              console.log("Block thanh cong");
+            })
+            .catch(error => {
+                console.log("Failed");
+                console.log(error.response.data);
+            })
+            navigation.navigate('MainScreen');
+    
+    };
+
+    
+
     return (
         <View style={styles.wrapper}>
             <View style={styles.header}>
@@ -46,7 +66,7 @@ export default function ChatInformation({ route, navigation }) {
                 <Divider style={{ margintop: 10, marginLeft: 45 }} />
             </TouchableOpacity>
 
-            <TouchableOpacity>
+            <TouchableOpacity onPress={() => setBlockChat()}>
                 <View style={styles.container}>
                     <MaterialCommunityIcons
                         name="block-helper"

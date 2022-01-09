@@ -25,13 +25,14 @@ import { Comment, Slider } from "../components";
 const { width, height } = Dimensions.get("screen");
 import { theme } from "../components/core/theme";
 import { useSelector } from "react-redux";
-import { post, auth, search,friend } from "../handle_api";
+import { post, auth, search, friend } from "../handle_api";
 import { ipServer } from "../handle_api/ipAddressServer";
 import DefaultCoverImage from "../images/default-cover-6.jpg";
 // import { NewChat } from './NewChat'
 
 export default function FriendProfile({ route, navigation }) {
   const [datapost, setDatapost] = useState("");
+  const [isBlock, setIsBlock] = useState(false);
   const [isFriend, setIsFriend] = useState();
   const phonenumber = route.params.item.phonenumber;
   const [info, setInfo] = useState({});
@@ -41,6 +42,7 @@ export default function FriendProfile({ route, navigation }) {
   const [isModalVisible, setModalVisible] = useState(false);
   const [modalVisible, setModalVisible2] = useState(false);
   const [isProfileModalVisible, setProFileModalVisible] = useState(false);
+  const [blockModalVisible, setBlockModalVisible] = useState(false);
 
   const toggleModal = (item) => {
     setModalVisible(!isModalVisible);
@@ -53,8 +55,9 @@ export default function FriendProfile({ route, navigation }) {
     fetchUserInfo();
     fetchSearch();
     fetchPosts();
+    fetchBlock();
   }, []);
- 
+
   const fetchChats = async () => {
     try {
       const res = await chat.listChat(token);
@@ -89,25 +92,72 @@ export default function FriendProfile({ route, navigation }) {
       console.log(err);
     }
   };
+  const fetchBlock = async () => {
+    try {
+      const dataBlock = await friend.getBlockDiary(token);
+      const f = dataBlock.data.data.blocked_diary.filter(
+        ( _id ) => _id == Friend_ID
+      );
+      f.length == 0 ? setIsBlock(false) : setIsBlock(true);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const setBlockDiary = () => {
+    const dataBlock = {
+      user_id: Friend_ID,
+      token: token,
+    };
+    friend
+      .blockDiary(dataBlock)
+      .then((res) => {
+        console.log("Block thanh cong");
+        setBlockModalVisible(false);
+        setIsBlock(true)
+      })
+      .catch((error) => {
+        console.log("Failed");
+        console.log(error.response.data);
+      });
+  };
+
+  const UnBlockDiary = () => {
+    const dataBlock = {
+      user_id: Friend_ID,
+      token: token,
+    };
+    friend
+      .unBlockDiary(dataBlock)
+      .then((res) => {
+        console.log("Xoa Block thanh cong");
+        setBlockModalVisible(false);
+        setIsBlock(false)
+      })
+      .catch((error) => {
+        console.log("Failed");
+        console.log(error.response.data);
+      });
+  };
 
   const setRemoveFriend = () => {
     const dataRemove = {
-        "user_id": Friend_ID,
-        "token": token,
-    }
-    friend.setRemoveFriend(dataRemove)
-        .then(res => {
-          console.log("Remove thanh cong");
-          setIsFriend(false);
-          setModalVisible2(false);
-        })
-        .catch(error => {
-            console.log("Failed");
-            console.log(error.response.data);
-        })
-        navigation.navigate('MainScreen');
-
-}
+      user_id: Friend_ID,
+      token: token,
+    };
+    friend
+      .setRemoveFriend(dataRemove)
+      .then((res) => {
+        console.log("Remove thanh cong");
+        setIsFriend(false);
+        setModalVisible2(false);
+      })
+      .catch((error) => {
+        console.log("Failed");
+        console.log(error.response.data);
+      });
+    navigation.navigate("MainScreen");
+  };
 
   const FriendModal = () => {
     return (
@@ -125,12 +175,52 @@ export default function FriendProfile({ route, navigation }) {
         <View style={styles.centeredView}>
           <Pressable onPress={() => setRemoveFriend()}>
             <Text style={styles.modalText}>Hủy kết bạn</Text>
-            </Pressable>
-          </View>
+          </Pressable>
+        </View>
       </Modal>
     );
-  }
-
+  };
+  const BlockModal = () => {
+    if (!isBlock) {
+      return (
+        <Modal
+          animationType="fade"
+          transparent={true}
+          visible={blockModalVisible}
+          onRequestClose={() => {
+            setBlockModalVisible(!blockModalVisible);
+          }}
+          onBackdropPress={() => setBlockModalVisible(false)}
+          style={styles.Bmodal}
+        >
+          <View style={styles.centeredView}>
+            <Pressable onPress={() => setBlockDiary()}>
+              <Text style={styles.BmodalText}>Block</Text>
+            </Pressable>
+          </View>
+        </Modal>
+      );
+    } else {
+      return (
+        <Modal
+          animationType="fade"
+          transparent={true}
+          visible={blockModalVisible}
+          onRequestClose={() => {
+            setBlockModalVisible(!blockModalVisible);
+          }}
+          onBackdropPress={() => setBlockModalVisible(false)}
+          style={styles.Bmodal}
+        >
+          <View style={styles.centeredView}>
+            <Pressable onPress={() => UnBlockDiary()}>
+              <Text style={styles.BmodalText}>Hủy block</Text>
+            </Pressable>
+          </View>
+        </Modal>
+      );
+    }
+  };
   const ProfileModal = () => {
     return (
       <Modal
@@ -201,7 +291,7 @@ export default function FriendProfile({ route, navigation }) {
   const Profile = () => {
     const info_coverimage = info.cover_image;
     const info_avatar = info.avatar;
-    // console.log(info_coverimage)
+    // console.log(info)
     return (
       <View style={styles.container}>
         <View>
@@ -220,11 +310,19 @@ export default function FriendProfile({ route, navigation }) {
                 justifyContent: "flex-end",
               }}
             >
-              <TouchableOpacity>
-                <Entypo name="dots-three-horizontal" size={25} color="#F0ECE3"/>
+              <BlockModal />
+              <TouchableOpacity
+                onPress={() => setBlockModalVisible(!blockModalVisible)}
+              >
+                <Entypo
+                  name="dots-three-horizontal"
+                  size={25}
+                  color="#F0ECE3"
+                />
               </TouchableOpacity>
             </View>
           </View>
+
           {info_coverimage ? (
             <Image
               style={styles.background}
@@ -273,22 +371,21 @@ export default function FriendProfile({ route, navigation }) {
         {isFriend && isFriend == true ? (
           <View>
             <View style={styles.containerGallery}>
-              <View style={{ width: "50%", alignItems: "center", left: 20 }} >
-              <Pressable
-        onPress={() => setModalVisible2(!modalVisible)}
-      >
-                <Text
-                  style={{
-                    fontSize: 20,
-                    borderWidth: 1,
-                    borderColor: "green",
-                    width: 80,
-                    textAlign: "center",
-                    borderRadius: 10,
-                  }}
-                >
-                  Bạn bè
-                </Text></Pressable>
+              <View style={{ width: "50%", alignItems: "center", left: 20 }}>
+                <Pressable onPress={() => setModalVisible2(!modalVisible)}>
+                  <Text
+                    style={{
+                      fontSize: 20,
+                      borderWidth: 1,
+                      borderColor: "green",
+                      width: 80,
+                      textAlign: "center",
+                      borderRadius: 10,
+                    }}
+                  >
+                    Bạn bè
+                  </Text>
+                </Pressable>
               </View>
               <View style={{ alignItems: "center", width: "50%", right: 20 }}>
                 <Text
@@ -300,7 +397,9 @@ export default function FriendProfile({ route, navigation }) {
                     textAlign: "center",
                     borderRadius: 10,
                   }}
-                  onPress={() => navigation.navigate('NewChat')}
+                  onPress={() =>
+                    navigation.navigate("NewChat", { item: info._id })
+                  }
                 >
                   Nhắn tin
                 </Text>
@@ -496,7 +595,7 @@ export default function FriendProfile({ route, navigation }) {
   return (
     <View style={{ flex: 1 }}>
       <ProfileModal />
-      <FriendModal/>
+      <FriendModal />
       <SafeAreaView style={{ flex: 1 }}>
         {isFriend && isFriend == true ? (
           <FlatList
@@ -506,7 +605,7 @@ export default function FriendProfile({ route, navigation }) {
             ListHeaderComponent={Profile}
           />
         ) : (
-          <View/>
+          <View />
         )}
       </SafeAreaView>
     </View>
@@ -520,8 +619,8 @@ const styles = StyleSheet.create({
     borderRadius: 4,
     borderColor: "rgba(0, 0, 0, 0.1)",
   },
-  backbutton:{
-marginLeft: 5
+  backbutton: {
+    marginLeft: 5,
   },
   container: {
     flex: 1,
@@ -747,20 +846,20 @@ marginLeft: 5
   },
   Fmodal: {
     width: "50%",
-     alignItems: "center",
-      // left: 5,
-      bottom: 8
+    alignItems: "center",
+    // left: 5,
+    bottom: 8,
   },
   centeredView: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    marginTop: 60
+    marginTop: 60,
   },
   button: {
     borderRadius: 20,
     padding: 10,
-    elevation: 2
+    elevation: 2,
   },
   buttonOpen: {
     backgroundColor: "#F194FF",
@@ -771,14 +870,23 @@ marginLeft: 5
   textStyle: {
     color: "white",
     fontWeight: "bold",
-    textAlign: "center"
+    textAlign: "center",
   },
   modalText: {
-  fontSize: 20,
-  borderWidth: 1,
-  borderColor: "red",
-  width: 120,
-  textAlign: "center",
-  borderRadius: 10,
+    fontSize: 20,
+    borderWidth: 1,
+    borderColor: "red",
+    width: 120,
+    textAlign: "center",
+    borderRadius: 10,
+  },
+  BmodalText: {
+    fontSize: 20,
+    borderWidth: 1,
+    borderColor: "#e69138",
+    width: 70,
+    textAlign: "center",
+    borderRadius: 10,
+    backgroundColor: "#eae0c3",
   },
 });

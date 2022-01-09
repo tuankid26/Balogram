@@ -5,10 +5,10 @@ import { Avatar, Divider } from "react-native-paper";
 import { MaterialCommunityIcons } from "react-native-vector-icons";
 import { ipServer } from "../handle_api/ipAddressServer";
 import { useSelector, useDispatch } from "react-redux";
-import FriendProfile from "../screen/FriendProfileScreen";
+
 const { width } = Dimensions.get("window");
 export default function FriendActive({ item, onPressUser }) {
-
+// console.log(item)
   const onPressFriend = () => {
     onPressUser(item)
   } 
@@ -22,7 +22,7 @@ export default function FriendActive({ item, onPressUser }) {
                 onPress={onPressFriend}
               size={45}
               source={{
-                uri: `${ipServer}${'../images/placeholder.png'}`,
+                uri: `${ipServer}${item.avatar.fileName}`,
               }}
             />
         </View>

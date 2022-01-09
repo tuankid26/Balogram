@@ -40,7 +40,6 @@ export default function MainMessengerScreen({ navigation }) {
       socket.current = io(SOCKET_URL);
     };
     initialize();
-    console.log(chats);
   }, []);
 
   const fetchChats = async () => {

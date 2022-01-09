@@ -1,1 +1,1 @@
-export const ipServer = "http://150.230.109.159:8000/public/"
+export const ipServer = "http://150.230.98.85:8000/public/"
