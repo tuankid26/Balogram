@@ -74,6 +74,7 @@ usersController.login = async (req, res, next) => {
             phonenumber,
             password
         } = req.body;
+        // console.log(phonenumber)
         const user = await UserModel.findOne({
             phonenumber: phonenumber
         }).populate('avatar').populate('cover_image')

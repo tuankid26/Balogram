@@ -9,11 +9,11 @@ postCommentController.create = async (req, res, next) => {
         try {
             post = await PostModel.findById(req.params.postId);
             if (post == null) {
-                return res.status(httpStatus.NOT_FOUND).json({message: "Can not find post"});
+                return res.status(httpStatus.NOT_FOUND).json({ message: "Can not find post" });
             }
         } catch (error) {
-            return res.status(httpStatus.INTERNAL_SERVER_ERROR).json({message: error.message});
-        }const {
+            return res.status(httpStatus.INTERNAL_SERVER_ERROR).json({ message: error.message });
+        } const {
             content,
             commentAnswered
         } = req.body;
@@ -48,17 +48,36 @@ postCommentController.create = async (req, res, next) => {
 
 postCommentController.list = async (req, res, next) => {
     try {
-        console.log(req.params.postId);
+        // console.log(req.params.postId);
         let postComments = await PostCommentModel.find({
             post: req.params.postId
-        }).populate('user', [
-            'username', 'phonenumber'
-        ]);
+        }).populate({
+            path: 'user',
+            select: '_id username phonenumber avatar',
+            model: 'Users',
+            populate: {
+                path: 'avatar',
+                select: '_id fileName',
+                model: 'Documents',
+            },
+        });
+        // console.log(postComments)
+
+        // if (postComments.length > 0) {
+        //     for (let indexComment = 0; indexComment < postComments.length; indexComment++) {
+        //         console.log(postComments[indexComment].user.avatar);
+        //         // const fileName = postComments[indexComment].avatar.fileName;
+        //         // console.log(fileName);
+                
+        //     }
+
+        // }
+
         return res.status(httpStatus.OK).json({
             data: postComments
         });
     } catch (error) {
-        return res.status(httpStatus.INTERNAL_SERVER_ERROR).json({message: error.message});
+        return res.status(httpStatus.INTERNAL_SERVER_ERROR).json({ message: error.message });
     }
 
 }

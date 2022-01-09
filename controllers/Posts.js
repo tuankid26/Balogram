@@ -6,9 +6,11 @@ const DocumentModel = require("../models/Documents");
 var url = require('url');
 const httpStatus = require("../utils/httpStatus");
 const bcrypt = require("bcrypt");
-const {JWT_SECRET} = require("../constants/constants");
-const {ROLE_CUSTOMER} = require("../constants/constants");
+const { JWT_SECRET } = require("../constants/constants");
+const { ROLE_CUSTOMER } = require("../constants/constants");
 const uploadFile = require('../functions/uploadFile');
+const getPaginationParams = require("../utils/getPaginationParams");
+
 
 const postsController = {};
 postsController.create = async (req, res, next) => {
@@ -92,10 +94,10 @@ postsController.edit = async (req, res, next) => {
         let postId = req.params.id;
         let postFind = await PostModel.findById(postId);
         if (postFind == null) {
-            return res.status(httpStatus.NOT_FOUND).json({message: "Can not find post"});
+            return res.status(httpStatus.NOT_FOUND).json({ message: "Can not find post" });
         }
         if (postFind.author.toString() !== userId) {
-            return res.status(httpStatus.FORBIDDEN).json({message: "Can not edit this post"});
+            return res.status(httpStatus.FORBIDDEN).json({ message: "Can not edit this post" });
         }
 
         const {
@@ -195,27 +197,38 @@ postsController.show = async (req, res, next) => {
             },
         });
         if (post == null) {
-            return res.status(httpStatus.NOT_FOUND).json({message: "Can not find post"});
+            return res.status(httpStatus.NOT_FOUND).json({ message: "Can not find post" });
         }
+        // post = post.toObject();
+        // if (post.images.length > 0) {
+        //     for (let indexImage = 0; indexImage < post.images.length; indexImage++) {
+        //         const base64 = uploadFile.loadFile(post.images[indexImage].fileName);
+        //         // postBase64.push(base64);
+        //         post.images[indexImage]["base64"] = base64;
+        //         // console.log(postItem.images[indexImage]);
+        //     }
+
+        // }
+        // console.log(post)
         post.isLike = post.like.includes(req.userId);
         return res.status(httpStatus.OK).json({
             data: post,
         });
     } catch (error) {
-        return res.status(httpStatus.INTERNAL_SERVER_ERROR).json({message: error.message});
+        return res.status(httpStatus.INTERNAL_SERVER_ERROR).json({ message: error.message });
     }
 }
 postsController.delete = async (req, res, next) => {
     try {
         let post = await PostModel.findByIdAndDelete(req.params.id);
         if (post == null) {
-            return res.status(httpStatus.NOT_FOUND).json({message: "Can not find post"});
+            return res.status(httpStatus.NOT_FOUND).json({ message: "Can not find post" });
         }
         return res.status(httpStatus.OK).json({
             message: 'Delete post done',
         });
     } catch (error) {
-        return res.status(httpStatus.INTERNAL_SERVER_ERROR).json({message: error.message});
+        return res.status(httpStatus.INTERNAL_SERVER_ERROR).json({ message: error.message });
     }
 }
 
@@ -223,6 +236,7 @@ postsController.list = async (req, res, next) => {
     try {
         let posts = [];
         let userId = req.userId;
+
         if (req.query.userId) {
             // get Post of one user
             posts = await PostModel.find({
@@ -263,7 +277,7 @@ postsController.list = async (req, res, next) => {
             // get post of friends of 1 user
             posts = await PostModel.find({
                 "author": listIdFriends
-            }).populate('images', ['fileName']).populate('videos', ['fileName']).populate({
+            }).sort({ createdAt: "desc" }).populate('images', ['fileName']).populate('videos', ['fileName']).populate({
                 path: 'author',
                 select: '_id username phonenumber avatar',
                 model: 'Users',
@@ -275,11 +289,18 @@ postsController.list = async (req, res, next) => {
             });
         }
         let postWithIsLike = [];
-        for (let i = 0; i < posts.length; i ++) {
+        for (let i = 0; i < posts.length; i++) {
             let postItem = posts[i].toObject();
+            let postItemLike = [];
+
+            for (let indexIdLike = 0; indexIdLike < postItem.like.length; indexIdLike++){
+                const userLikeId = String(postItem.like[indexIdLike]);
+                postItemLike.push(userLikeId);
+            }
+
             let postBase64 = []
-            if (postItem.images.length > 0){
-                for (let indexImage = 0; indexImage < postItem.images.length; indexImage++){
+            if (postItem.images.length > 0) {
+                for (let indexImage = 0; indexImage < postItem.images.length; indexImage++) {
                     const base64 = uploadFile.loadFile(postItem.images[indexImage].fileName);
                     // postBase64.push(base64);
                     postItem.images[indexImage]["base64"] = base64;
@@ -287,16 +308,118 @@ postsController.list = async (req, res, next) => {
                 }
 
             }
-            postItem.isLike = postItem.like.includes(req.userId);
+            if (postItem.author.avatar){
+                const fileNameAvatar = postItem.author.avatar.fileName;
+                const base64 = uploadFile.loadFile(fileNameAvatar);
+                postItem.author.avatar.base64 = base64;
+            }
+            postItem.userCall = userId;
+            postItem.isLike = postItemLike.includes(userId);
             postWithIsLike.push(postItem);
         }
-        console.log("CAll API POSt list");
         return res.status(httpStatus.OK).json({
-            data: postWithIsLike
+            data: postWithIsLike,
+            userID: req.query.userId
         });
     } catch (error) {
-        return res.status(httpStatus.INTERNAL_SERVER_ERROR).json({message: error.message});
+        return res.status(httpStatus.INTERNAL_SERVER_ERROR).json({ message: error.message });
     }
 }
+
+
+postsController.loadPage = async (req, res, next) => {
+    try {
+        let posts = [];
+        let userId = req.userId;
+        if (req.query.userId) {
+            posts = await PostModel.find({
+                author: req.query.userId
+            }).populate('images', ['fileName']).populate('videos', ['fileName']).populate({
+                path: 'author',
+                select: '_id username phonenumber avatar',
+                model: 'Users',
+                populate: {
+                    path: 'avatar',
+                    select: '_id fileName',
+                    model: 'Documents',
+                },
+            });
+        } else {
+            // get list friend of 1 user
+            let friends = await FriendModel.find({
+                status: "1",
+            }).or([
+                {
+                    sender: userId
+                },
+                {
+                    receiver: userId
+                }
+            ])
+            let listIdFriends = [];
+            // console.log(friends)
+            for (let i = 0; i < friends.length; i++) {
+                if (friends[i].sender.toString() === userId.toString()) {
+                    listIdFriends.push(friends[i].receiver);
+                } else {
+                    listIdFriends.push(friends[i].sender);
+                }
+            }
+            listIdFriends.push(userId);
+            // console.log(listIdFriends);
+            // get post of friends of 1 user
+            const { offset, limit } = await getPaginationParams(req);
+            posts = await PostModel.find({
+                "author": listIdFriends
+            }).skip(offset)
+            .limit(limit).sort({ createdAt: "desc" }).populate('images', ['fileName']).populate('videos', ['fileName']).populate({
+                path: 'author',
+                select: '_id username phonenumber avatar',
+                model: 'Users',
+                populate: {
+                    path: 'avatar',
+                    select: '_id fileName',
+                    model: 'Documents',
+                },
+            });
+        }
+        let postWithIsLike = [];
+        for (let i = 0; i < posts.length; i++) {
+            let postItem = posts[i].toObject();
+            let postItemLike = [];
+
+            for (let indexIdLike = 0; indexIdLike < postItem.like.length; indexIdLike++){
+                const userLikeId = String(postItem.like[indexIdLike]);
+                postItemLike.push(userLikeId);
+            }
+
+            let postBase64 = []
+            if (postItem.images.length > 0) {
+                for (let indexImage = 0; indexImage < postItem.images.length; indexImage++) {
+                    const base64 = uploadFile.loadFile(postItem.images[indexImage].fileName);
+                    // postBase64.push(base64);
+                    postItem.images[indexImage]["base64"] = base64;
+                    // console.log(postItem.images[indexImage]);
+                }
+
+            }
+            if (postItem.author.avatar){
+                const fileNameAvatar = postItem.author.avatar.fileName;
+                const base64 = uploadFile.loadFile(fileNameAvatar);
+                postItem.author.avatar.base64 = base64;
+            }
+            postItem.userCall = userId;
+            postItem.isLike = postItemLike.includes(userId);
+            postWithIsLike.push(postItem);
+        }
+        return res.status(httpStatus.OK).json({
+            data: postWithIsLike,
+            userID: req.query.userId
+        });
+    } catch (error) {
+        return res.status(httpStatus.INTERNAL_SERVER_ERROR).json({ message: error.message });
+    }
+}
+
 
 module.exports = postsController;
