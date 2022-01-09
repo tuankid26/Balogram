@@ -16,6 +16,7 @@ friendsController.setRequest = async (req, res, next) => {
     try {
       let sender = req.userId;
       let receiver = req.body.user_id;
+
       let checkBack = await FriendModel.findOne({
         sender: receiver,
         receiver: sender,
@@ -23,6 +24,7 @@ friendsController.setRequest = async (req, res, next) => {
       if (checkBack != null) {
         if (checkBack.status == "0" || checkBack.status == "1") {
           return res.status(200).json({
+            checkBack:checkBack,
             code: 200,
             status: "error",
             success: false,
@@ -141,44 +143,84 @@ friendsController.setAccept = async (req, res, next) => {
 }
 
 friendsController.setRemoveFriend = async (req, res, next) => {
-    try {
-        let receiver = req.userId;
-        let sender = req.body.user_id;
+  try {
+    let receiver = req.userId;
+    let sender = req.body.user_id;
 
-        let friendRc1 = await FriendModel.findOne({ sender: sender, receiver: receiver });
-        let friendRc2 = await FriendModel.findOne({ sender: receiver, receiver: sender });
-        let final;
-        if (friendRc1 == null) {
-            final = friendRc2;
-        } else {
-            final = friendRc1;
-        }
-        // if (final.status != '1') {
-        //     return res.status(200).json({
-        //         code: 200,
-        //         success: false,
-        //         message: "Khong thể thao tác",
-        //         final: final,
-        //         friend1: friendRc1,
-        //         friend2: friendRc2,
-        //     });
-        // }
-
-        final.status = '3';
-        final.save();
-
-        res.status(200).json({
-            code: 200,
-            success: true,
-            message: "Xóa bạn thành công",
-            data: final
-        });
-    } catch (e) {
-        return res.status(httpStatus.INTERNAL_SERVER_ERROR).json({
-            message: e.message
-        });
+    let friendRc1 = await FriendModel.findOne({
+      sender: sender,
+      receiver: receiver,
+    });
+    let friendRc2 = await FriendModel.findOne({
+      sender: receiver,
+      receiver: sender,
+    });
+    let final;
+    if (friendRc1 == null) {
+      final = friendRc2;
+    } else {
+      final = friendRc1;
     }
-}
+    if (final.status != "1") {
+      res.status(200).json({
+        code: 200,
+        success: false,
+        message: "Khong thể thao tác",
+      });
+    }
+
+    final.status = "3";
+    final.save();
+
+    res.status(200).json({
+      code: 200,
+      success: true,
+      message: "Xóa bạn thành công",
+      data: final,
+    });
+  } catch (e) {
+    return res.status(httpStatus.INTERNAL_SERVER_ERROR).json({
+      message: e.message,
+    });
+  }
+};
+
+friendsController.cancelFriendRequest = async (req, res) => {
+  try {
+    let sender = req.userId;
+    let receiver = req.body.user_id;
+    let friendStatus = await FriendModel.findOne({
+      sender,
+      receiver,
+    });
+
+    if (!friendStatus) {
+      return res.status(400).json({
+        message: "You have not sent a friend request to this user",
+      });
+    }
+
+    const status = friendStatus.status;
+    if (status != "0") {
+      // current friend status is not request sent
+      return res.status(400).json({
+        message: "Invalid status for canceling friend request",
+      });
+    }
+
+    await FriendModel.findByIdAndRemove(friendStatus._id, {
+      useFindAndModify: false,
+    });
+
+    return res.status(200).json({
+      message: "Cancel friend request succesfully",
+    });
+  } catch (e) {
+    return res.status(httpStatus.INTERNAL_SERVER_ERROR).json({
+      message: e.message,
+    });
+  }
+};
 
 friendsController.listFriends = async (req, res, next) => {
     try {
