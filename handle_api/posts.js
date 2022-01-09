@@ -112,8 +112,4 @@ const reportPost = async (data) => {
 
 
 
-<<<<<<< HEAD
-export { addPost, getListPost,getPagePost, editPost, deletePost, actionLikePost, showPost, reportPost};
-=======
 export { addPost, getListPost,getPagePost, editPost, deletePost, actionLikePost };
->>>>>>> 7eda6fcd7eae28206fa86adb06b27d8491d1c5f9

@@ -33,6 +33,7 @@ import DefaultCoverImage from "../images/default-cover-6.jpg";
 export default function FriendProfile({ route, navigation }) {
   const [datapost, setDatapost] = useState("");
   const [isFriend, setIsFriend] = useState();
+  const [isBlock, setIsBlock] = useState(false);
   const phonenumber = route.params.item.phonenumber;
   const [info, setInfo] = useState({});
   const Friend_ID = route.params.item._id;
@@ -54,6 +55,7 @@ export default function FriendProfile({ route, navigation }) {
     fetchUserInfo();
     fetchSearch();
     fetchPosts();
+    fetchBlock();
   }, []);
  
   const fetchChats = async () => {
@@ -86,6 +88,18 @@ export default function FriendProfile({ route, navigation }) {
     try {
       const dataFeed = await post.getListPost(token, Friend_ID);
       setDatapost(dataFeed.data.data.reverse());
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const fetchBlock = async () => {
+    try {
+      const dataBlock = await friend.getBlockDiary(token);
+      const f = dataBlock.data.blocked_diary.filter(({ _id }) => _id == Friend_ID);
+      f.length == 0 ? setIsBlock(false) : setIsBlock(true);
+      console.log(dataBlock);
+      console.log(f);
     } catch (err) {
       console.log(err);
     }
@@ -167,6 +181,7 @@ const UnBlockDiary = () => {
   }
 
   const BlockModal = () => {
+    if(!isBlock){
     return (
       <Modal
       animationType="fade"
@@ -184,7 +199,27 @@ const UnBlockDiary = () => {
             </Pressable>
           </View>
       </Modal>
-    );
+    );}
+    else{
+      return (
+        <Modal
+      animationType="fade"
+        transparent={true}
+        visible={blockModalVisible}
+        onRequestClose={() => {
+          setBlockModalVisible(!blockModalVisible);
+        }}
+        onBackdropPress={() => setBlockModalVisible(false)}
+        style={styles.Bmodal}
+      >
+        <View style={styles.centeredView}>
+          <Pressable onPress={() => UnBlockDiary()}>
+            <Text style={styles.BmodalText}>Hủy block</Text>
+            </Pressable>
+          </View>
+      </Modal>
+      );
+    }
   }
 
   const ProfileModal = () => {

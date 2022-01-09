@@ -148,7 +148,27 @@ const blockChat = async (data) => {
     return unBlock;
   };
 
+  const getBlockChat = async (token) => {
+    const url = '/users/get-block-user/';
+    const blockchat = await api({
+        method: 'POST',
+        url: url,
+        headers: { Authorization: `Bearer ${token}` }
+    });
+    return blockchat;
+}
+
+const getBlockDiary = async (token) => {
+  const url = '/users/get-block-diary/';
+  const blockdiary = await api({
+      method: 'POST',
+      url: url,
+      headers: { Authorization: `Bearer ${token}` }
+  });
+  return blockdiary;
+}
 
 
 
-export {setAcceptFriend, setRemoveFriend, setRequestFriend, getListFriend,getRequestFriend,setCancelFriend, blockChat,unBlockChat,blockDiary,unBlockDiary};
+
+export {setAcceptFriend, setRemoveFriend, setRequestFriend, getListFriend,getRequestFriend,setCancelFriend, blockChat,unBlockChat,blockDiary,unBlockDiary,getBlockChat,getBlockDiary};

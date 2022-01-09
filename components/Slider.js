@@ -94,13 +94,8 @@ const styles = StyleSheet.create({
         // borderWidth: 1
     },
     image: {
-<<<<<<< HEAD
-        width: screenWidth ,
-        height: screenHeight + 100 ,
-=======
         // width: screenWidth ,
         // height: screenHeight ,
->>>>>>> 7eda6fcd7eae28206fa86adb06b27d8491d1c5f9
         flex: 1,
         resizeMode: 'contain'
     },

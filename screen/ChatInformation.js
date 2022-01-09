@@ -40,24 +40,11 @@ export default function ChatInformation({ route, navigation }) {
                 console.log("Failed");
                 console.log(error.response.data);
             })
+            navigation.navigate('MainScreen');
     
     };
 
-    const UnBlockChat = () => {
-        const dataBlock = {
-            "user_id": item._id,
-            "token": token,
-        }
-        friend.unBlockChat(dataBlock)
-            .then(res => {
-              console.log("Xoa block thanh cong");
-            })
-            .catch(error => {
-                console.log("Failed");
-                console.log(error.response.data);
-            })
     
-    };
 
     return (
         <View style={styles.wrapper}>

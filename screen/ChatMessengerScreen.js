@@ -1,9 +1,9 @@
 import React, { useState, useCallback, useEffect, useLayoutEffect, useRef } from "react";
 import { GiftedChat } from "react-native-gifted-chat";
-import { View, StyleSheet } from "react-native";
+import { View, StyleSheet,SafeAreaView } from "react-native";
 import { Avatar, Icon } from "react-native-elements";
 import { io } from "socket.io-client";
-import { chat, message } from "../handle_api";
+import { chat, message,friend } from "../handle_api";
 import { useSelector, useDispatch } from 'react-redux';
 import {ipServer} from "../handle_api/ipAddressServer";
 import DefaultAvatar from '../images/avatar/default-avatar-480.png';
@@ -15,6 +15,7 @@ export default function ChatMessengerScreen({ route, navigation }) {
   const socket = useRef();
   const { item } = route.params;
   const [show, setShow] = useState(false);
+  const [isBlock, setIsBlock] = useState(false);
   const [messages, setMessages] = useState([]);
   // const [arrivalMessage, setArrivalMessage] = useState(null);
   const chatId = item._id;
@@ -61,6 +62,7 @@ export default function ChatMessengerScreen({ route, navigation }) {
       socket.current = io(SOCKET_URL);
     };
     initialize();
+    fetchBlock();
   }, []);
 
   useEffect(() => {
@@ -84,6 +86,16 @@ export default function ChatMessengerScreen({ route, navigation }) {
     try {
       const res = await message.getMessages(chatId, token);
       return res.data.data;
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const fetchBlock = async () => {
+    try {
+      const dataBlock = await friend.getBlockChat(token);
+      const f = dataBlock.data.blocked_diary.filter(({ _id }) => _id == chatId);
+      f.length == 0 ? setIsBlock(false) : setIsBlock(true);
     } catch (err) {
       console.log(err);
     }
@@ -145,8 +157,33 @@ export default function ChatMessengerScreen({ route, navigation }) {
     });
   }
 
+  const UnBlockChat = () => {
+    const dataBlock = {
+        "user_id": chatId,
+        "token": token,
+    }
+    friend.unBlockChat(dataBlock)
+        .then(res => {
+          console.log("Xoa block thanh cong");
+        })
+        .catch(error => {
+            console.log("Failed");
+            console.log(error.response.data);
+        })
+
+};
+
+
   return (
-    <GiftedChat
+    // <View>
+    
+    <SafeAreaView style={{ flex: 1 }}>
+        {isBlock && isBlock == true ? (
+          <Pressable onPress={() => UnBlockChat()}>
+          <Text style={styles.btext}>Hủy block</Text>
+          </Pressable>
+        ) : (
+          <GiftedChat
       showAvatarForEveryMessage={true}
       messages={messages}
       onSend={(messages) => onSend(messages)}
@@ -155,11 +192,23 @@ export default function ChatMessengerScreen({ route, navigation }) {
       }}
       onLongPress={onLongPress}
     />
+        )}
+      </SafeAreaView>
+    // </View>
   );
 }
 
 const styles = StyleSheet.create({
   headerLeft: {
     flexDirection: "row",
+  },
+  btext: {
+    fontSize: 20,
+    borderWidth: 1,
+    borderColor: "#e69138",
+    width: 70,
+    textAlign: "center",
+    borderRadius: 10,
+    backgroundColor: "#eae0c3",
   },
 });
