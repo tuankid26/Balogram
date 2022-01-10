@@ -15,7 +15,7 @@ import { ipServer } from "../handle_api/ipAddressServer";
 import DefaultAvatar from "../images/avatar/default-avatar-480.png";
 
 // const SOCKET_URL = "http://192.168.0.102:3000";
-import { SOCKET_URL } from "../handle_api";
+import { SOCKET_URL } from "../handle_api/api";
 
 export default function ChatMessengerScreen({ route, navigation }) {
   const socket = useRef();
@@ -111,10 +111,8 @@ export default function ChatMessengerScreen({ route, navigation }) {
   const fetchBlock = async () => {
     try {
       const dataBlock = await friend.getBlockChat(token);
-      console.log(dataBlock.data.data.blocked_inbox)
       const f = dataBlock.data.data.blocked_inbox.filter((item) => item == chatId);
       f.length == 0 ? setIsBlock(false) : setIsBlock(true);
-      console.log(f.length)
     } catch (err) {
       console.log(err);
     }
@@ -190,6 +188,7 @@ export default function ChatMessengerScreen({ route, navigation }) {
       .unBlockChat(dataBlock)
       .then((res) => {
         console.log("Xoa block thanh cong");
+        navigation.navigate('MainMessengerScreen')
       })
       .catch((error) => {
         console.log("Failed");
@@ -201,7 +200,7 @@ export default function ChatMessengerScreen({ route, navigation }) {
 
     <SafeAreaView style={{ flex: 1 }}>
       {isBlock && isBlock == true ? (
-        <Pressable onPress={() => UnBlockChat()}>
+        <Pressable style = {{alignItems:'center', marginTop : 100}} onPress={() => UnBlockChat()}>
           <Text style={styles.btext}>Hủy block</Text>
         </Pressable>
       ) : (
@@ -228,7 +227,8 @@ const styles = StyleSheet.create({
     fontSize: 20,
     borderWidth: 1,
     borderColor: "#e69138",
-    width: 70,
+    width: 100,
+    height : 50,
     textAlign: "center",
     borderRadius: 10,
     backgroundColor: "#eae0c3",
