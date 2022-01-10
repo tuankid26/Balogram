@@ -116,7 +116,6 @@ export default function NewChat({ route, navigation }) {
         multiline={true}
         numberOfLines={5}
       />
-      <Text>{messages}</Text>
     </View>
   );
 }
