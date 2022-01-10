@@ -398,7 +398,7 @@ export default function FriendProfile({ route, navigation }) {
                     borderRadius: 10,
                   }}
                   onPress={() =>
-                    navigation.navigate("NewChat", { item: info._id })
+                    navigation.navigate("NewChat", { item: info._id,name : info.username })
                   }
                 >
                   Nhắn tin

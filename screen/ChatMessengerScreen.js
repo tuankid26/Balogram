@@ -15,7 +15,7 @@ import { ipServer } from "../handle_api/ipAddressServer";
 import DefaultAvatar from "../images/avatar/default-avatar-480.png";
 
 // const SOCKET_URL = "http://192.168.0.102:3000";
-import { SOCKET_URL } from "../handle_api";
+import { SOCKET_URL } from "../handle_api/api";
 
 export default function ChatMessengerScreen({ route, navigation }) {
   const socket = useRef();

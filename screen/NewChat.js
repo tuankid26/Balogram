@@ -22,6 +22,7 @@ export default function NewChat({ route, navigation }) {
   const [messages, setMessages] = useState("");
   const [chatId, setChatId] = useState(null);
   const receiverId = route.params.item;
+  const username = route.params.name;
   const token = useSelector(state => state.authReducer.token);
   const senderId =  useSelector(state => state.authReducer.userId);
   useEffect(() => {
@@ -96,7 +97,7 @@ export default function NewChat({ route, navigation }) {
         <BackButton goBack={navigation.goBack} />
 
         {/* <Avatar rounded  source={require('../images/Store_local_image/anh2.jpg')} /> */}
-        <Text style={styles.title}>Name</Text>
+        <Text style={styles.title}>{username}</Text>
 
         <Icon
           name={"send"}
