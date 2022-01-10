@@ -8,6 +8,7 @@ import {
   Dimensions,
   Pressable,
   RefreshControl,
+  ActivityIndicator
 } from "react-native";
 
 import DefaultAvatar from '../images/avatar/default-avatar-480.png';
@@ -42,6 +43,7 @@ export default function NewFeedScreen({ navigation }) {
   const uploadStatus = useSelector((state) => {
     return state.upload;
   });
+
 
   const dispatch = useDispatch();
   const onLikePress = (userId, postId) => {
@@ -86,7 +88,7 @@ export default function NewFeedScreen({ navigation }) {
   const [isModalReportVisible, setModalReportVisible] = useState(false);
   const [isOtherPostVisible, setOtherPostVisible] = useState(false);
   const toggleModal = (item) => {
-    if (item.author._id === userId){
+    if (item.author._id === userId ){
     setModalVisible(!isModalVisible);
     setToggleItem(item);
     }
@@ -167,9 +169,13 @@ export default function NewFeedScreen({ navigation }) {
 
 
   const handleEndReached = () => {
-    // setFetchingNextPage(true);
-    fetchNextPage();
+    setFetchingNextPage(true);
   };
+  useEffect(() => {
+    if (isFetchingNextPage) {
+      fetchNextPage();
+    }
+  }, [isFetchingNextPage]);
 
 
   const onRefresh = useCallback(() => {
@@ -227,6 +233,13 @@ export default function NewFeedScreen({ navigation }) {
       setDoubleTouch(now);
     }
   };
+  const renderFooter = () => {
+    return isFetchingNextPage ? (
+      <View style={{alignItems: 'center'}}>
+        <ActivityIndicator size="large" color="rgba(0,0,0,0.3)" />
+      </View>
+    ) : null;
+  }
 
   const renderItem = (item) => {
     const date_time = splitDateTime(item.updatedAt);
@@ -312,7 +325,6 @@ export default function NewFeedScreen({ navigation }) {
 
   return (
     <View style={{ flex: 1 }}>
-      <Toast position="bottom" />
       <StatusBar backgroundColor={theme.colors.white} barStyle="dark-content" />
       <HeaderMain onAddPost={onAddPost} onSearchPress={onSearchPress} />
       
@@ -339,6 +351,7 @@ export default function NewFeedScreen({ navigation }) {
           keyExtractor={(item) => item._id.toString()}
           onEndReachedThreshold={0.01}
           onEndReached={handleEndReached}
+          ListFooterComponent={renderFooter}
         />
       </View>
     </View>

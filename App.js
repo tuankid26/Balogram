@@ -29,13 +29,10 @@ import {
     ChangePasswordScreen,
     FriendProfileScreen,
     CoverImagePicker,
-<<<<<<< HEAD
     ShowPostScreen,
     AdminScreen,
-    AdminMainScreen
-=======
+    AdminMainScreen,
     NewChat
->>>>>>> pankiz
 } from './screen'
 import NewPostScreen from './screen/NewPostScreen';
 

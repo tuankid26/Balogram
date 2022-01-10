@@ -34,7 +34,7 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/BalogramIcon_3.png",
+        "foregroundImage": "./assets/Logo_balogram_5.png",
         "backgroundColor": "#FFFFFF"
       },
       "permissions": [

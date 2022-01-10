@@ -7,7 +7,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { mediaActions, uploadActions } from '../redux/actions';
 import * as FileSystem from 'expo-file-system';
 import {MaterialDesignIcons} from 'react-native-vector-icons'
-
+import Toast from 'react-native-toast-message';
 import {
   BackButton,
   TextInput
@@ -28,7 +28,6 @@ export default function NewPostScreen({ navigation }) {
 
     const convertedImageAssets = await convertToBase64(imageAssets);
     const convertedVideoAssets = await convertToBase64(videoAssets);
-
     const data = {
       token: token,
       described: status,
@@ -44,10 +43,9 @@ export default function NewPostScreen({ navigation }) {
       dispatch(uploadActions.uploadFailure(errMsg));
     }
     dispatch(mediaActions.resetState());
-
     navigation.navigate("MainScreen");
-
   }
+
   const goBack = () => {
     dispatch(mediaActions.resetState());
     navigation.navigate("MainScreen");
@@ -88,6 +86,7 @@ export default function NewPostScreen({ navigation }) {
 
   return (
     <View style={{ flex: 1,backgroundColor:'white' }}>
+      <Toast />
       <View style={styles.headerBar}>
         <View style={styles.headerLeft}>
           <BackButton goBack={goBack} />
