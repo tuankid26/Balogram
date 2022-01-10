@@ -415,7 +415,7 @@ export default function FriendProfile({ route, navigation }) {
               onPress={viewInfo}
             >
               <Entypo name="dots-three-horizontal" size={20} />
-              <Text style={{ marginLeft: 10, fontSize: 20 }}>
+              <Text style={{ marginLeft: 10, fontSize: 20, marginTop:10}}>
                 Thông tin giới thiệu
               </Text>
             </TouchableOpacity>
@@ -845,7 +845,9 @@ const styles = StyleSheet.create({
     margin: 10,
   },
   Fmodal: {
-    width: "50%",
+    width: 200,
+    marginTop : 220,
+    marginLeft : 90,
     alignItems: "center",
     // left: 5,
     bottom: 8,
