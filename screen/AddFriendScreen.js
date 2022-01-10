@@ -9,7 +9,7 @@ const { width } = Dimensions.get("window");
 import {friend} from "../handle_api";
 import { useSelector } from 'react-redux';
 import { useState, useEffect } from 'react'
-
+import { ipServer } from "../handle_api/ipAddressServer";
 
 
 export default function AddFriendScreen({ navigation }) {
@@ -81,7 +81,12 @@ export default function AddFriendScreen({ navigation }) {
         <TouchableOpacity>
                 <View style={styles.container}>
                     <View style={styles.bgAvatar}>
-                        <Avatar.Image size={52} source={{uri:'../images/Store_local_image/anh2.jpg'}} />
+                        {item.avatar    
+                            ?
+                            <Avatar.Image size={52} source={{uri:`${ipServer}${item.avatar.fileName}`}} />
+                            :
+                            <Avatar.Image size={52} source={{uri:'../images/avatar/default-avatar-480.png'}} />
+                        }
                     </View>
                     <View style={styles.info}>
                         <Text style={styles.name}>{item.username}</Text>

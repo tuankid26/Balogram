@@ -177,7 +177,7 @@ export default function SearchScreen({ navigation }) {
                     {l.avatar ? (
                       <Avatar
                         source={{
-                          uri: `${ipServer}${'../images/placeholder.png'}`,
+                          uri: `${ipServer}${l.avatar.fileName}`,
                         }}
                         size={60}
                         rounded
