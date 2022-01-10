@@ -36,13 +36,6 @@ usersRoutes.get(
 );
 
 
-<<<<<<< HEAD
-usersRoutes.post("/set-block-user", auth, usersController.setBlock);
-usersRoutes.post("/get-block-user", auth, usersController.getBlock);
-usersRoutes.post("/set-block-diary", auth, usersController.setBlockDiary);
-usersRoutes.post("/get-block-diary", auth, usersController.getBlockDiary);
-usersRoutes.post("/search", auth, usersController.searchUser);
-=======
 usersRoutes.post(
     "/set-block-user",
     auth,
@@ -60,6 +53,5 @@ usersRoutes.post(
     auth,
     usersController.searchUser
 );
->>>>>>> 2b850d83d94a621eaa56d666134a6c4e3d92faf7
 
 module.exports = usersRoutes;
