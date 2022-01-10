@@ -26,18 +26,7 @@ export default function NewChat({ route, navigation }) {
   const token = useSelector(state => state.authReducer.token);
   const senderId =  useSelector(state => state.authReducer.userId);
   useEffect(() => {
-    const find = async () => {
-        initialize();
-        const findChat = chats.filter((item) => item.receivedId == receiverId )
-        await setChatId(findChat[0]._id)
-    }
-    find();
-    // const findChat = chats.filter((item) => item.receivedId == receiverId )
-    //     setChatId(findChat[0]._id)
-    // console.log(chats)
-    // const findChat = chats.filter((item) => item.receivedId == receiverId )
-    // setChatId(findChat[0]._id)
-    
+    initialize();
   }, []);
 
   const initialize = async () => {
@@ -56,6 +45,8 @@ export default function NewChat({ route, navigation }) {
         }))
         .reverse()
     );
+    const findChat = chats.filter((item) => item.receivedId == receiverId )
+    if (findChat != null) setChatId(findChat[0]._id)
   };
   const fetchChats = async () => {
     try {
@@ -80,10 +71,11 @@ export default function NewChat({ route, navigation }) {
         if (chatId == null) setChatId(result.chat._id)
         const item = {
             _id : chatId ,
-            name : result.user.username,
-            receiverId : receiverId,
+            name : username,
+            receivedId : receiverId,
             avatar : result.user.avatar
         }
+
         navigation.navigate("ChatMessengerScreen",{item})
       } catch (err) {
         console.log(err);
