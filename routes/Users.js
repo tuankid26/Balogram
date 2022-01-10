@@ -53,5 +53,16 @@ usersRoutes.post(
     auth,
     usersController.searchUser
 );
+usersRoutes.post(
+    "/get-block-user",
+    auth,
+    usersController.getBlock
+);
+
+usersRoutes.post(
+    "/get-block-diary",
+    auth,
+    usersController.getBlockDiary
+);
 
 module.exports = usersRoutes;
