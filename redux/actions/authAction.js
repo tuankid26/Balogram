@@ -20,5 +20,6 @@ const storeId = (userId) => {
 
 export {
     storeToken,
-    removeToken
+    removeToken,
+    storeId
 };

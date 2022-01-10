@@ -20,6 +20,7 @@ const sendMessage = async (chatId, senderId, receiverId, msg, token) => {
             { _id: senderId },
             { _id: receiverId }
         ],
+        // senderId : senderId,
         content: msg,
         type: "PRIVATE_CHAT"
     };

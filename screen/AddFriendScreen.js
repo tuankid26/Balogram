@@ -57,18 +57,20 @@ export default function AddFriendScreen({ navigation }) {
 
     }
 
-    const setRemoveFriend = (userID) => {
-        const dataRemove = {
+    const setAcceptFriend2 = (userID) => {
+        const dataAccept = {
             "user_id": userID,
             "token": token,
+            "is_accept": "2",
         }
-        friend.setRemoveFriend(dataRemove)
+        friend.setAcceptFriend(dataAccept)
             .then(res => {
                 const updateData = datafriend.filter(item => item._id !== res.data.data.sender);
                 setDataFriend(updateData);
+
             })
             .catch(error => {
-                console.log("Failed"); 
+                console.log("Failed");
                 console.log(error.response.data);
             })
 
@@ -86,11 +88,11 @@ export default function AddFriendScreen({ navigation }) {
                     </View>
                     <View style={styles.accept}>
                         <View style={{  width: width/4, padding:2}}>
-                            <TouchableOpacity style={styles.confirm} onPress={() => setRemoveFriend(item._id)}>
+                            <TouchableOpacity style={styles.confirm} onPress={() => setAcceptFriend(item._id)}>
                                 <Text style={styles.rejText}>Đồng ý</Text>
                             </TouchableOpacity></View>
                         <View style={{  width: width/4, padding:2}}>
-                            <TouchableOpacity style={styles.reject} onPress={() => setRemoveFriend(item._id)}>
+                            <TouchableOpacity style={styles.reject} onPress={() => setAcceptFriend2(item._id)}>
                                 <Text style={styles.rejText}>Từ chối</Text>
                             </TouchableOpacity></View>
                         {/* <Button  style={styles.reject} onPress={() => setRemoveFriend(item._id)}> Từ chối </Button> */}

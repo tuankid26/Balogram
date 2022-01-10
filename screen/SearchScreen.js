@@ -53,6 +53,7 @@ export default function SearchScreen({ navigation }) {
       .then((res) => {
         setFriends(res.data.friends);
         setStrange(res.data.strange);
+        console.log(res.data.strange);
       })
       .catch((error) => {
         console.log(error.response.data);
@@ -176,7 +177,7 @@ export default function SearchScreen({ navigation }) {
                     {l.avatar ? (
                       <Avatar
                         source={{
-                          uri: `${ipServer}${l.avatar.fileName}`,
+                          uri: `${ipServer}${'../images/placeholder.png'}`,
                         }}
                         size={60}
                         rounded
