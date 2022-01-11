@@ -70,15 +70,23 @@ export default function NewChat({ route, navigation }) {
         token
       );
       const result = sendResult.data.data;
-      if (chatId == null) setChatId(result.chat._id);
-      const item = {
-        _id: chatId,
-        name: username,
-        receivedId: receiverId,
-        avatar: result.user.avatar,
-      };
-
-      navigation.navigate("ChatMessengerScreen", { item });
+      if (chatId == null) {
+        const item = {
+          _id: result.chat._id,
+          name: username,
+          receivedId: receiverId,
+          avatar: result.user.avatar,
+        };
+        navigation.navigate("ChatMessengerScreen", { item });
+      } else {
+        const item = {
+          _id: chatId,
+          name: username,
+          receivedId: receiverId,
+          avatar: result.user.avatar,
+        };
+        navigation.navigate("ChatMessengerScreen", { item });
+      }
     } catch (err) {
       console.log(err);
     }
