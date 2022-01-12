@@ -37,7 +37,6 @@ export default function FriendProfile({ route, navigation }) {
   const phonenumber = route.params.item.phonenumber;
   const [info, setInfo] = useState({});
   const Friend_ID = route.params.item._id;
-
   const token = useSelector((state) => state.authReducer.token);
   const [isModalVisible, setModalVisible] = useState(false);
   const [modalVisible, setModalVisible2] = useState(false);
@@ -160,14 +159,22 @@ export default function FriendProfile({ route, navigation }) {
           onBackdropPress={() => setBlockModalVisible(false)}
           style={styles.Bmodal}
         >
-          <View style={styles.centeredView}>
-            <Pressable onPress={() => setBlockDiary()}>
-              <Text style={styles.BmodalText}>Chặn bài viết</Text>
-            </Pressable>
-            <Pressable onPress={() => setRemoveFriend()}>
-              <Text style={styles.BmodalText}>Hủy kết bạn</Text>
-            </Pressable>
-          </View>
+          {isFriend == false ? (
+            <View style={styles.centeredView}>
+              <Pressable onPress={() => setBlockDiary()}>
+                <Text style={styles.BmodalText}>Chặn bài viết</Text>
+              </Pressable>
+              <Pressable onPress={() => setRemoveFriend()}>
+                <Text style={styles.BmodalText}>Hủy kết bạn</Text>
+              </Pressable>
+            </View>
+          ) : (
+            <View style={styles.centeredView}>
+              <Pressable>
+                <Text style={styles.BmodalText}>Không thể thao tác</Text>
+              </Pressable>
+            </View>
+          )}
         </Modal>
       );
     } else {
@@ -357,7 +364,7 @@ export default function FriendProfile({ route, navigation }) {
             <Text style={styles.intro}> {info.description} </Text>
           </View>
         )}
-        {isFriend && isFriend == true ? (
+        {isFriend == false ? (
           <View>
             <View style={styles.containerGallery}>
               <View style={{ width: "50%", alignItems: "center", left: 20 }}>
@@ -585,7 +592,7 @@ export default function FriendProfile({ route, navigation }) {
     <View style={{ flex: 1 }}>
       <ProfileModal />
       <SafeAreaView style={{ flex: 1 }}>
-        {isFriend && isFriend == true ? (
+        {isFriend == false ? (
           <FlatList
             data={datapost}
             renderItem={({ item }) => renderItem(item)}
@@ -593,7 +600,11 @@ export default function FriendProfile({ route, navigation }) {
             ListHeaderComponent={Profile}
           />
         ) : (
-          <View />
+          <FlatList
+            data={[]}
+            renderItem={({ }) => ({})}
+            ListHeaderComponent={Profile}
+          />
         )}
       </SafeAreaView>
     </View>
