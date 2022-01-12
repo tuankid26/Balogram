@@ -420,8 +420,9 @@ usersController.searchUser = async (req, res, next) => {
         let all_friends = await UserModel.find().where('_id').in(requested.concat(accepted)).populate('avatar').populate('cover_image').exec()
 
         let all_users = result_1.concat(result_2)
-        let friends = all_users.filter(x => all_friends.includes(x))
-        let strange = all_users.filter(x => !all_friends.includes(x))
+        let friends = all_users.filter(x => all_friends.map(x => JSON.stringify(x)).includes(JSON.stringify(x)))
+        let strange = all_users.filter(x => !all_friends.map(x => JSON.stringify(x)).includes(JSON.stringify(x)))
+
         res.status(200).json({
             code: 200,
             message: "Tìm kiếm thành công",
