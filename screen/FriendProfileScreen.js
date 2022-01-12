@@ -58,14 +58,6 @@ export default function FriendProfile({ route, navigation }) {
     fetchBlock();
   }, []);
 
-  const fetchChats = async () => {
-    try {
-      const res = await chat.listChat(token);
-      return res.data.data;
-    } catch (err) {
-      console.log(err);
-    }
-  };
   const fetchSearch = async () => {
     try {
       const dataFeed = await search.search(token, phonenumber);
@@ -79,7 +71,6 @@ export default function FriendProfile({ route, navigation }) {
     try {
       const res = await auth.getUser(token, Friend_ID);
       setInfo(res.data.data);
-      //   console.log(info)
     } catch (err) {
       console.log(err);
     }
@@ -96,7 +87,7 @@ export default function FriendProfile({ route, navigation }) {
     try {
       const dataBlock = await friend.getBlockDiary(token);
       const f = dataBlock.data.data.blocked_diary.filter(
-        ( _id ) => _id == Friend_ID
+        (_id) => _id == Friend_ID
       );
       f.length == 0 ? setIsBlock(false) : setIsBlock(true);
     } catch (err) {
@@ -112,7 +103,6 @@ export default function FriendProfile({ route, navigation }) {
     friend
       .blockDiary(dataBlock)
       .then((res) => {
-        console.log("Block thanh cong");
         setBlockModalVisible(false);
         setIsBlock(true)
       })
@@ -130,7 +120,6 @@ export default function FriendProfile({ route, navigation }) {
     friend
       .unBlockDiary(dataBlock)
       .then((res) => {
-        console.log("Xoa Block thanh cong");
         setBlockModalVisible(false);
         setIsBlock(false)
       })
@@ -148,7 +137,6 @@ export default function FriendProfile({ route, navigation }) {
     friend
       .setRemoveFriend(dataRemove)
       .then((res) => {
-        console.log("Remove thanh cong");
         setIsFriend(false);
         setModalVisible2(false);
       })
@@ -156,36 +144,15 @@ export default function FriendProfile({ route, navigation }) {
         console.log("Failed");
         console.log(error.response.data);
       });
-    navigation.navigate("MainScreen");
+    // navigation.navigate("MainScreen");
   };
 
-  const FriendModal = () => {
-    return (
-      <Modal
-        // animationType="fade"
-        transparent={true}
-        visible={modalVisible}
-        onRequestClose={() => {
-          Alert.alert("Modal has been closed.");
-          setModalVisible2(!modalVisible);
-        }}
-        onBackdropPress={() => setModalVisible2(false)}
-        style={styles.Fmodal}
-      >
-        <View style={styles.centeredView}>
-          <Pressable onPress={() => setRemoveFriend()}>
-            <Text style={styles.modalText}>Hủy kết bạn</Text>
-          </Pressable>
-        </View>
-      </Modal>
-    );
-  };
   const BlockModal = () => {
     if (!isBlock) {
       return (
         <Modal
           animationType="fade"
-          transparent={true}
+          coverScreen={false}
           visible={blockModalVisible}
           onRequestClose={() => {
             setBlockModalVisible(!blockModalVisible);
@@ -195,7 +162,10 @@ export default function FriendProfile({ route, navigation }) {
         >
           <View style={styles.centeredView}>
             <Pressable onPress={() => setBlockDiary()}>
-              <Text style={styles.BmodalText}>Block</Text>
+              <Text style={styles.BmodalText}>Chặn bài viết</Text>
+            </Pressable>
+            <Pressable onPress={() => setRemoveFriend()}>
+              <Text style={styles.BmodalText}>Hủy kết bạn</Text>
             </Pressable>
           </View>
         </Modal>
@@ -204,7 +174,6 @@ export default function FriendProfile({ route, navigation }) {
       return (
         <Modal
           animationType="fade"
-          transparent={true}
           visible={blockModalVisible}
           onRequestClose={() => {
             setBlockModalVisible(!blockModalVisible);
@@ -214,7 +183,7 @@ export default function FriendProfile({ route, navigation }) {
         >
           <View style={styles.centeredView}>
             <Pressable onPress={() => UnBlockDiary()}>
-              <Text style={styles.BmodalText}>Hủy block</Text>
+              <Text style={styles.BmodalText}>Hủy chặn</Text>
             </Pressable>
           </View>
         </Modal>
@@ -224,13 +193,19 @@ export default function FriendProfile({ route, navigation }) {
   const ProfileModal = () => {
     return (
       <Modal
-        Modal
         isVisible={isProfileModalVisible}
+        animationType="fade"
         onBackdropPress={() => setProFileModalVisible(false)}
-        style={styles.content}
+        style={{
+          backgroundColor: 'transparent',
+          opacity: 0.9,
+        }}
       >
         <View
-          style={{ height: "40%", backgroundColor: "#D0FFFF", marginTop: 100 }}
+          style={{
+            justifyContent: 'center',
+            backgroundColor: '#F5FFFF'
+          }}
         >
           <View
             style={{ flexDirection: "row", alignItems: "center", padding: 10 }}
@@ -283,6 +258,19 @@ export default function FriendProfile({ route, navigation }) {
               {info && info.address}
             </Text>
           </View>
+          <View
+            style={{ flexDirection: "row", alignItems: "center", padding: 10 }}
+          >
+            <MaterialCommunityIcons
+              name="card-account-phone"
+              size={25}
+              color="#72664F"
+            />
+            <Text style={{ fontSize: 15, marginLeft: 5 }}>Liên hệ: </Text>
+            <Text style={{ fontSize: 15, fontWeight: "bold" }}>
+              {info && info.phonenumber}
+            </Text>
+          </View>
         </View>
       </Modal>
     );
@@ -303,6 +291,7 @@ export default function FriendProfile({ route, navigation }) {
                 <Ionicons name="arrow-back" size={30} color="#F0ECE3" />
               </TouchableOpacity>
             </View>
+            <BlockModal />
             <View
               style={{
                 flex: 1,
@@ -310,7 +299,7 @@ export default function FriendProfile({ route, navigation }) {
                 justifyContent: "flex-end",
               }}
             >
-              <BlockModal />
+
               <TouchableOpacity
                 onPress={() => setBlockModalVisible(!blockModalVisible)}
               >
@@ -398,7 +387,7 @@ export default function FriendProfile({ route, navigation }) {
                     borderRadius: 10,
                   }}
                   onPress={() =>
-                    navigation.navigate("NewChat", { item: info._id,name : info.username })
+                    navigation.navigate("NewChat", { item: info._id, name: info.username })
                   }
                 >
                   Nhắn tin
@@ -415,7 +404,7 @@ export default function FriendProfile({ route, navigation }) {
               onPress={viewInfo}
             >
               <Entypo name="dots-three-horizontal" size={20} />
-              <Text style={{ marginLeft: 10, fontSize: 20, marginTop:10}}>
+              <Text style={{ marginLeft: 10, fontSize: 20, marginTop: 10 }}>
                 Thông tin giới thiệu
               </Text>
             </TouchableOpacity>
@@ -509,7 +498,7 @@ export default function FriendProfile({ route, navigation }) {
     };
     post
       .actionLikePost(data)
-      .then((res) => {})
+      .then((res) => { })
       .catch((error) => {
         console.log("Failed");
         console.log(error.response.data);
@@ -595,7 +584,6 @@ export default function FriendProfile({ route, navigation }) {
   return (
     <View style={{ flex: 1 }}>
       <ProfileModal />
-      <FriendModal />
       <SafeAreaView style={{ flex: 1 }}>
         {isFriend && isFriend == true ? (
           <FlatList
@@ -613,11 +601,14 @@ export default function FriendProfile({ route, navigation }) {
 }
 
 const styles = StyleSheet.create({
+  Bmodal: {
+    justifyContent: 'flex-start',
+    alignItems: 'flex-end',
+  },
   content: {
     backgroundColor: "white",
     padding: 22,
     borderRadius: 4,
-    borderColor: "rgba(0, 0, 0, 0.1)",
   },
   backbutton: {
     marginLeft: 5,
@@ -846,17 +837,16 @@ const styles = StyleSheet.create({
   },
   Fmodal: {
     width: 200,
-    marginTop : 220,
-    marginLeft : 90,
+    marginTop: 220,
+    marginLeft: 90,
     alignItems: "center",
     // left: 5,
     bottom: 8,
   },
   centeredView: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    marginTop: 60,
+    // borderColor: 'red',
+    // borderWidth: 1
+    // flex: 1
   },
   button: {
     borderRadius: 20,
@@ -876,8 +866,6 @@ const styles = StyleSheet.create({
   },
   modalText: {
     fontSize: 20,
-    borderWidth: 1,
-    borderColor: "red",
     width: 120,
     textAlign: "center",
     borderRadius: 10,
@@ -885,10 +873,9 @@ const styles = StyleSheet.create({
   BmodalText: {
     fontSize: 20,
     borderWidth: 1,
-    borderColor: "#e69138",
-    width: 70,
+    borderRadius: 5,
+    borderColor: "black",
     textAlign: "center",
-    borderRadius: 10,
-    backgroundColor: "#eae0c3",
+    backgroundColor: "white",
   },
 });

@@ -53,7 +53,6 @@ export default function SearchScreen({ navigation }) {
       .then((res) => {
         setFriends(res.data.friends);
         setStrange(res.data.strange);
-        console.log(res.data.strange);
       })
       .catch((error) => {
         console.log(error.response.data);
@@ -63,25 +62,24 @@ export default function SearchScreen({ navigation }) {
     let recent_avatar = item.avatar;
     return (
       <View>
-        <TouchableOpacity style={styles.recentContainer}>
+        <TouchableOpacity style={styles.recentContainer} onPress={() => navigation.navigate("FriendProfileScreen", { item })}>
           <View style={styles.recentWrapper}>
-            { recent_avatar ?
-            (
-              <Avatar
-              source={{
-                uri: `${ipServer}${item.avatar.fileName}`,
-              }}
-              size={60}
-              rounded
-            />
-            ) : (
-              <Avatar
-              source={require("../images/avatar/default-avatar-480.png")}
-              size={60}
-              rounded
-            />
-
-          )}
+            {recent_avatar ?
+              (
+                <Avatar
+                  source={{
+                    uri: `${ipServer}${item.avatar.fileName}`,
+                  }}
+                  size={60}
+                  rounded
+                />
+              ) : (
+                <Avatar
+                  source={require("../images/avatar/default-avatar-480.png")}
+                  size={60}
+                  rounded
+                />
+              )}
             <Text>{item.username}</Text>
           </View>
         </TouchableOpacity>
@@ -89,12 +87,12 @@ export default function SearchScreen({ navigation }) {
     );
   };
   const onPressUser = (item) => {
-      console.log(item)
-    recentData.includes(item)
-      ? null
-      : dispatch({ type: "ADD_ITEM", payload: item });
+    if (recentData.findIndex(u => u._id == item._id) == -1) {
+      dispatch({ type: "ADD_ITEM", payload: item });
+    }
     navigation.navigate("FriendProfileScreen", { item });
   };
+
   return (
     <View style={styles.outline}>
       <View style={styles.header}>
@@ -146,7 +144,9 @@ export default function SearchScreen({ navigation }) {
                   <ListItem key={i} bottomDivider>
                     <TouchableOpacity>
                       <Avatar
-                        source={require("../images/avatar/default-avatar-480.png")}
+                        source={{
+                          uri: `${ipServer}${l.avatar.fileName}`,
+                        }}
                         size={60}
                         rounded
                       />
