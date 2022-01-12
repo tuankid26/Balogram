@@ -18,10 +18,17 @@ export default function LoginScreen({ navigation }) {
   const dispatch = useDispatch();
   const onLoginPressed = () => {
     const data = {
+<<<<<<< HEAD
       // phonenumber: phonenumber,
       // password: password
       phonenumber: "000002",
       password: "123123123"
+=======
+      phonenumber: phonenumber,
+      password: password
+      // phonenumber: "03565184741",
+      // password: "123123123"
+>>>>>>> pankiz
     }
 
     auth.login(data)
