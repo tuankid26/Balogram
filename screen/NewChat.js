@@ -1,4 +1,10 @@
-import React, { useState, useCallback, useEffect, useLayoutEffect, useRef } from "react";
+import React, {
+  useState,
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+} from "react";
 import {
   View,
   FlatList,
@@ -13,40 +19,37 @@ import { theme } from "../components/core/theme";
 import { Avatar, Icon, Divider } from "react-native-elements";
 import { MaterialCommunityIcons, FontAwesome } from "react-native-vector-icons";
 import { useSelector, useDispatch } from "react-redux";
-import { message,chat } from "../handle_api";
+import { message, chat } from "../handle_api";
 const { width } = Dimensions.get("window");
 
 export default function NewChat({ route, navigation }) {
   const dispatch = useDispatch();
-  const [chats, setChats] = useState([]);
+  // const [chats, setChats] = useState([]);
   const [messages, setMessages] = useState("");
   const [chatId, setChatId] = useState(null);
   const receiverId = route.params.item;
   const username = route.params.name;
-  const token = useSelector(state => state.authReducer.token);
-  const senderId =  useSelector(state => state.authReducer.userId);
+  const token = useSelector((state) => state.authReducer.token);
+  const senderId = useSelector((state) => state.authReducer.userId);
   useEffect(() => {
     initialize();
   }, []);
 
   const initialize = async () => {
     const newChats = await fetchChats();
-    setChats(
-      newChats
-        .map((msg) => ({
-          receivedId: msg[1]._id,
-          sendId: msg[0].member.filter((item) => {
-            return item !== msg[1]._id
-          }),
-          name: msg[1].username,
-          avatar: msg[1].avatar,
-          text: msg[2].content,
-          _id: msg[0]._id
-        }))
-        .reverse()
-    );
-    const findChat = chats.filter((item) => item.receivedId == receiverId )
-    if (findChat != null) setChatId(findChat[0]._id)
+    const chats = newChats.map((msg) => ({
+      receivedId: msg[1]._id,
+      sendId: msg[0].member.filter((item) => {
+        return item !== msg[1]._id;
+      }),
+      name: msg[1].username,
+      avatar: msg[1].avatar,
+      text: msg[2].content,
+      _id: msg[0]._id,
+    }));
+    const findChat = chats.filter((item) => item.receivedId == receiverId);
+    if (findChat != null) setChatId(findChat[0]._id);
+    // console.log(chatId)
   };
   const fetchChats = async () => {
     try {
@@ -57,29 +60,36 @@ export default function NewChat({ route, navigation }) {
     }
   };
 
-
-  const onSend = async  () => {
-      try {
-        const sendResult = await message.sendMessage(
-          chatId,
-          senderId,
-          receiverId,
-          messages,
-          token
-        );
-        const result = sendResult.data.data;
-        if (chatId == null) setChatId(result.chat._id)
+  const onSend = async () => {
+    try {
+      const sendResult = await message.sendMessage(
+        chatId,
+        senderId,
+        receiverId,
+        messages,
+        token
+      );
+      const result = sendResult.data.data;
+      if (chatId == null) {
         const item = {
-            _id : chatId ,
-            name : username,
-            receivedId : receiverId,
-            avatar : result.user.avatar
-        }
-
-        navigation.navigate("ChatMessengerScreen",{item})
-      } catch (err) {
-        console.log(err);
+          _id: result.chat._id,
+          name: username,
+          receivedId: receiverId,
+          avatar: result.user.avatar,
+        };
+        navigation.navigate("ChatMessengerScreen", { item });
+      } else {
+        const item = {
+          _id: chatId,
+          name: username,
+          receivedId: receiverId,
+          avatar: result.user.avatar,
+        };
+        navigation.navigate("ChatMessengerScreen", { item });
       }
+    } catch (err) {
+      console.log(err);
+    }
     //   console.log(chatId)
   };
 

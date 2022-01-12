@@ -18,10 +18,10 @@ export default function LoginScreen({ navigation }) {
   const dispatch = useDispatch();
   const onLoginPressed = () => {
     const data = {
-      phonenumber: phonenumber,
-      password: password
-      // phonenumber: "03565184741",
-      // password: "123123123"
+      // phonenumber: phonenumber,
+      // password: password
+      phonenumber: "000002",
+      password: "123123123"
     }
 
     auth.login(data)
@@ -46,21 +46,21 @@ export default function LoginScreen({ navigation }) {
           type: 'success',
           text1: 'Đăng nhập thành công'
         });
-        if (res.data.data.username == "Admin"){
+        if (res.data.data.username == "Admin") {
           navigation.reset({
             index: 0,
             routes: [{ name: 'AdminMainScreen' }],
           })
         }
-        else{
-        navigation.reset({
-          index: 0,
-          routes: [{ name: 'MainScreen' }],
-        })
+        else {
+          navigation.reset({
+            index: 0,
+            routes: [{ name: 'MainScreen' }],
+          })
         }
       })
       .catch(error => {
-        
+
         Toast.show({
           type: 'error',
           text1: 'Tài khoản hoặc mật khẩu không chính xác'
