@@ -25,7 +25,10 @@ postsController.create = async (req, res, next) => {
         let dataImages = [];
         if (Array.isArray(images)) {
             for (const image of images) {
+                // console.log(image)
                 if (uploadFile.matchesFileBase64(image) !== false) {
+                    // console.log("dsdadas");
+                    // console.log(image);
                     const imageResult = uploadFile.uploadFile(image);
                     if (imageResult !== false) {
                         let imageDocument = new DocumentModel({
