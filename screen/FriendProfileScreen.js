@@ -40,7 +40,6 @@ export default function FriendProfile({ route, navigation }) {
   const Friend_ID = route.params.item._id;
   const token = useSelector((state) => state.authReducer.token);
   const [isModalVisible, setModalVisible] = useState(false);
-  const [modalVisible, setModalVisible2] = useState(false);
   const [isProfileModalVisible, setProFileModalVisible] = useState(false);
   const [blockModalVisible, setBlockModalVisible] = useState(false);
 
@@ -117,6 +116,7 @@ export default function FriendProfile({ route, navigation }) {
     friend
       .blockDiary(dataBlock)
       .then((res) => {
+        Alert.alert("Thông báo", "Chặn nhật ký thành công!");
         setBlockModalVisible(false);
         setIsBlock(true)
       })
@@ -134,6 +134,7 @@ export default function FriendProfile({ route, navigation }) {
     friend
       .unBlockDiary(dataBlock)
       .then((res) => {
+        Alert.alert("Thông báo", "Hủy chặn nhật ký thành công!");
         setBlockModalVisible(false);
         setIsBlock(false)
       })
@@ -150,8 +151,8 @@ export default function FriendProfile({ route, navigation }) {
     friend
       .setRemoveFriend(dataRemove)
       .then((res) => {
-        setIsFriend(false);
-        setModalVisible2(false);
+        setIsFriend(true);
+        Alert.alert("Thông báo", "Hủy kết bạn thành công!");
       })
       .catch((error) => {
         console.log("Failed");
@@ -382,7 +383,7 @@ export default function FriendProfile({ route, navigation }) {
           <View>
             <View style={styles.containerGallery}>
               <View style={{ width: "50%", alignItems: "center", left: 20 }}>
-                <Pressable onPress={() => setModalVisible2(!modalVisible)}>
+                <Pressable>
                   <Text
                     style={{
                       fontSize: 20,
@@ -429,6 +430,19 @@ export default function FriendProfile({ route, navigation }) {
                 Thông tin giới thiệu
               </Text>
             </TouchableOpacity>
+            <View>
+              {isBlock ?
+                (<Text
+                  style={{
+                    textAlign: "center",
+                    fontStyle: "italic",
+                    color: "#9A4747",
+                  }}
+                >
+                  Bạn đã chặn nhật ký của người này
+                </Text>
+                ) : (<Text />)}
+            </View>
           </View>
         ) : (
           <View>
@@ -606,7 +620,7 @@ export default function FriendProfile({ route, navigation }) {
     <View style={{ flex: 1 }}>
       <ProfileModal />
       <SafeAreaView style={{ flex: 1 }}>
-        {isFriend == false ? (
+        {isFriend == false && isBlock == false ? (
           <FlatList
             data={datapost}
             renderItem={({ item }) => renderItem(item)}
