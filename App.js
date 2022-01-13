@@ -32,7 +32,8 @@ import {
     ShowPostScreen,
     AdminScreen,
     AdminMainScreen,
-    NewChat
+    NewChat,
+    VideoPicker
 } from './screen'
 import NewPostScreen from './screen/NewPostScreen';
 
@@ -82,6 +83,7 @@ const App = () => {
                     <Stack.Screen name="AdminScreen" options={{ headerShown: false }} component={AdminScreen} />
                     <Stack.Screen name="AdminMainScreen" options={{ headerShown: false }} component={AdminMainScreen} />
                     <Stack.Screen name="NewChat" options={{ headerShown: false }} component={NewChat} />
+                    <Stack.Screen name="VideoPicker" options={{ headerShown: false }} component={VideoPicker} />
                 </Stack.Navigator>
             </NavigationContainer>
         </SafeAreaProvider>

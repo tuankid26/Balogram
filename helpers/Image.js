@@ -41,7 +41,19 @@ const getAssetsInAlbum = async (album) => {
         first: 50 ,
         album: album,
         sortBy: ['creationTime'],
-        mediaType: ['photo', 'video']
+        mediaType: ['photo']
+    };
+
+    const assets = await MediaLibrary.getAssetsAsync(options);
+    return assets;
+}
+
+const getVideosInAlbum = async (album) => {
+    const options = {
+        first: 50 ,
+        album: album,
+        sortBy: ['creationTime'],
+        mediaType: ['video']
     };
 
     const assets = await MediaLibrary.getAssetsAsync(options);
@@ -89,4 +101,4 @@ const resizeImage = async (image, width) => {
     ); 
     return manipResult;
 }
-export  { askMediaLibraryPermission, getAlbumList, getAlbum, getAssetsInAlbum, launchCamera, resizeImage };
+export  { askMediaLibraryPermission, getAlbumList, getAlbum, getAssetsInAlbum, launchCamera, resizeImage, getVideosInAlbum };

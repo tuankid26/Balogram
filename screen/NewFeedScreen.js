@@ -22,7 +22,8 @@ import { uploadActions } from "../redux/actions";
 import { PostsHelper } from "../helpers";
 const { width } = Dimensions.get("window");
 import Toast from 'react-native-toast-message';
-
+import { Video } from 'expo-av';
+import { ipServer } from "../handle_api/ipAddressServer";
 const wait = (timeout) => {
   return new Promise((resolve) => setTimeout(resolve, timeout));
 };
@@ -247,6 +248,8 @@ export default function NewFeedScreen({ navigation }) {
     const text_like = num_like + " lượt thích";
     const itemIsLike = item.isLike;
     let avatar = item.author.avatar;
+    let item_video = item.videos[0];
+    
     return (
       <View style={styles.containerPost}>
         <View style={styles.containerPostHeader}>
@@ -288,7 +291,24 @@ export default function NewFeedScreen({ navigation }) {
             <Text style={styles.described}>{item.described}</Text>
           )}
           <View style={styles.containerImage}>
-            <Slider item={item.images} index={0} />
+            {item_video 
+            ?
+              <Video
+                style={styles.video}
+                
+                source={{
+                  uri: `${ipServer}${item_video.fileName}`,
+                }}
+                useNativeControls={true}
+                resizeMode="cover"
+                shouldPlay={false}
+                
+                isLooping={true}
+                // onPlaybackStatusUpdate={status => setStatus(() => status)}
+              />
+            :
+              <Slider item={item.images} index={0} />
+            }
           </View>
 
           <View style={styles.containerReact}>
@@ -407,6 +427,15 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     backgroundColor: theme.colors.white,
   },
+  video: {
+    alignSelf: 'center',
+    // alignItems: 'center',
+    // alignContent: 'center',
+    marginLeft: 5,
+    width: width - 10,
+    height: 200,
+    resizeMode: "contain",
+  },
   optionDot: {
     backgroundColor: theme.colors.white,
     justifyContent: "flex-end",
@@ -415,6 +444,7 @@ const styles = StyleSheet.create({
   },
   containerImage: {
     flex: 1,
+    alignContent: "center"
     // height : 468
     // borderColor: 'red',
     // borderWidth: 2,

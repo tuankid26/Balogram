@@ -80,6 +80,9 @@ export default function NewPostScreen({ navigation }) {
   const addImage = () => {
     navigation.navigate("MediaPicker");
   }
+  const addVideo = () => {
+    navigation.navigate("VideoPicker");
+  }
   const handleRemoveAsset = (asset) => {
     dispatch(mediaActions.removeAsset(asset));
   }
@@ -113,7 +116,7 @@ export default function NewPostScreen({ navigation }) {
       </View>
 
       <View style = {{flexDirection: 'row', marginLeft : 10, alignItems : 'center', marginTop : 5}}>
-        <Icon name="videocam"   type="MaterialIcons" size={35} color={'#406882'} onPress={addImage} />
+        <Icon name="videocam"   type="MaterialIcons" size={35} color={'#406882'} onPress={addVideo} />
         <Text style = {{fontSize : 20, marginLeft :10}}>Thêm Video </Text>
       </View>
       

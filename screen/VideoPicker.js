@@ -11,7 +11,7 @@ import { StatusBar } from 'react-native';
 const { width } = Dimensions.get('window')
 import { useCallback } from 'react';
 import * as FileSystem from 'expo-file-system';
-
+import { Avatar } from "react-native-paper";
 const Header = props => {
 
   const Item = Picker.Item;
@@ -103,8 +103,8 @@ const MediaItem = (props) => {
     
         return;
       }
-      const result = await ImageHelper.resizeImage(item, 720);
-      item.uri = result.uri;
+    //   const result = await ImageHelper.resizeImage(item, 720);
+    //   item.uri = result.uri;
       dispatch(mediaActions.addAsset(item));
     },
     [selectedAssets],
@@ -119,12 +119,20 @@ const MediaItem = (props) => {
       style={{ position: 'relative' }}
       onPress={() => handleItemSelected(item)}
     >
+    <View style={{ position: "relative", alignItems: "center", justifyContent: "center" }}>
       <Image
         source={{
           uri: item.uri,
         }}
         style={styles.image}
       />
+      <View style={{ position: "absolute"}}>
+      <Image
+        source={require("../assets/play_icon.png")}
+        style={styles.buttonplay}
+        />
+        </View>
+    </View>
 
       <View
         style={[
@@ -195,7 +203,7 @@ const Content = (props) => {
   );
 };
 
-const MediaPicker = ({ navigation }) => {
+const VideoPicker = ({ navigation }) => {
   const albumNames = ['Camera', 'Screenshots', 'Instagram', 'Zalo', 'Facebook','Movies'];
   const dispatch = useDispatch();
   const [selectedAlbum, setSelectedAlbum] = useState(albumNames[0]);
@@ -217,7 +225,7 @@ const MediaPicker = ({ navigation }) => {
 
     try {
       const album = await ImageHelper.getAlbum(albumName);
-      albumAssets = await ImageHelper.getAssetsInAlbum(album);
+      albumAssets = await ImageHelper.getVideosInAlbum(album);
 
     } catch (err) {
       console.log(err);
@@ -244,7 +252,6 @@ const MediaPicker = ({ navigation }) => {
     const result = await ImageHelper.launchCamera();
     let item = {};
     if (!result.cancelled) {
-      console.log(result.uri);
       
       item.uri = result.uri;
       item.mediaType = "photo";
@@ -252,7 +259,6 @@ const MediaPicker = ({ navigation }) => {
       const resize_item = await ImageHelper.resizeImage(item, 720);
       item.uri = resize_item.uri;
       item.id = "sadasdasdas238128390812903"
-      console.log(item);
       dispatch(mediaActions.addAsset(item));
 
       navigation.goBack();
@@ -291,6 +297,7 @@ const styles = StyleSheet.create({
     height: width / 3,
     resizeMode: 'cover',
     // marginRight: 2,
+    // position: "relative"
   },
   selectedImage: {
     position: 'absolute',
@@ -302,6 +309,12 @@ const styles = StyleSheet.create({
   text: {
     fontSize: 13,
     color: '#FFFFFF'
+  },
+  buttonplay: {
+    width: width * 15 / 100,
+    height: width * 15 / 100,
+    borderRadius: width * 10 / 100,
+    // position: "absolute"
   },
   selected: {
     position: 'absolute',
@@ -316,9 +329,9 @@ const styles = StyleSheet.create({
 });
 
 
-MediaPicker.propTypes = {
+VideoPicker.propTypes = {
 
 };
 
 
-export default MediaPicker;
+export default VideoPicker;
