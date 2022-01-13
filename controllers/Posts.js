@@ -241,15 +241,10 @@ postsController.list = async (req, res, next) => {
         let posts = [];
         let userId = req.userId;
         let user = await UserModel.findById(req.userId);
-      let blocked = user.blocked_diary || [];
-        // console.log(user2.data.data.blocked_diary);
-        // return res.status(httpStatus.OK).json({
-        //     user:req.query.userId,
-        // });
-        // console.log("b");
-        if (req.query.userId && !(req.query.userId in blocked)) {
+        let blocked = user.blocked_diary || [];
+
+        if (req.body.userId && !(blocked.includes(req.body.userId))) {
             // get Post of one user
-            // console.log("a");
             posts = await PostModel.find({
                 author: req.query.userId
             }).populate('images', ['fileName']).populate('videos', ['fileName']).populate({
@@ -278,7 +273,6 @@ postsController.list = async (req, res, next) => {
                 }
             ])
             let listIdFriends = [];
-            console.log(friends)
             for (let i = 0; i < friends.length; i++) {
                 if(blocked.findIndex(u => u == friends[i].sender) != -1) continue;
                 if(blocked.findIndex(u => u == friends[i].receiver) != -1) continue;

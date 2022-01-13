@@ -38,8 +38,9 @@ friendsController.setRequest = async (req, res, next) => {
         sender: sender,
         receiver: receiver,
       });
+      console.log(isFriend)
       if (isFriend != null) {
-        if (isFriend.status == "1") {
+        if (isFriend.status == "0") {
           return res.status(200).json({
             code: 200,
             success: false,
@@ -47,7 +48,7 @@ friendsController.setRequest = async (req, res, next) => {
           });
         }
   
-        isFriend.status = "0";
+        isFriend.status = "1";
         isFriend.save();
         res.status(200).json({
           code: 200,
