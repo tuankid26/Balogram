@@ -142,7 +142,7 @@ export default function SearchScreen({ navigation }) {
                 .filter((l, i) => i <= 1 && l._id != userId)
                 .map((l, i) => (
                   <ListItem key={i} bottomDivider>
-                    <TouchableOpacity>
+                    <TouchableOpacity onPress={() => onPressUser(l)}>
                       <Avatar
                         source={{
                           uri: `${ipServer}${l.avatar.fileName}`,
@@ -159,7 +159,7 @@ export default function SearchScreen({ navigation }) {
                     </TouchableOpacity>
                   </ListItem>
                 ))}
-              <Button onPress={onpress} title="Xem tất cả" />
+              <Button title="Xem tất cả" />
             </View>
           </View>
         </View>

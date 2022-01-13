@@ -9,6 +9,7 @@ import {
   Pressable,
   SafeAreaView,
   TouchableOpacity,
+  Alert
 } from "react-native";
 import Modal from "react-native-modal";
 import { format, formatDistance, subDays } from "date-fns";
@@ -37,10 +38,8 @@ export default function FriendProfile({ route, navigation }) {
   const phonenumber = route.params.item.phonenumber;
   const [info, setInfo] = useState({});
   const Friend_ID = route.params.item._id;
-
   const token = useSelector((state) => state.authReducer.token);
   const [isModalVisible, setModalVisible] = useState(false);
-  const [modalVisible, setModalVisible2] = useState(false);
   const [isProfileModalVisible, setProFileModalVisible] = useState(false);
   const [blockModalVisible, setBlockModalVisible] = useState(false);
 
@@ -94,7 +93,21 @@ export default function FriendProfile({ route, navigation }) {
       console.log(err);
     }
   };
-
+  const setRequestFriend = (userID) => {
+    const dataRequest = {
+      user_id: userID,
+      token: token,
+    };
+    friend
+      .setRequestFriend(dataRequest)
+      .then((res) => {
+        Alert.alert(res.data.message);
+      })
+      .catch((error) => {
+        console.log("Failed");
+        console.log(error);
+      });
+  };
   const setBlockDiary = () => {
     const dataBlock = {
       user_id: Friend_ID,
@@ -103,6 +116,7 @@ export default function FriendProfile({ route, navigation }) {
     friend
       .blockDiary(dataBlock)
       .then((res) => {
+        Alert.alert("Thông báo", "Chặn nhật ký thành công!");
         setBlockModalVisible(false);
         setIsBlock(true)
       })
@@ -120,12 +134,12 @@ export default function FriendProfile({ route, navigation }) {
     friend
       .unBlockDiary(dataBlock)
       .then((res) => {
+        Alert.alert("Thông báo", "Hủy chặn nhật ký thành công!");
         setBlockModalVisible(false);
         setIsBlock(false)
       })
       .catch((error) => {
         console.log("Failed");
-        console.log(error.response.data);
       });
   };
 
@@ -137,8 +151,8 @@ export default function FriendProfile({ route, navigation }) {
     friend
       .setRemoveFriend(dataRemove)
       .then((res) => {
-        setIsFriend(false);
-        setModalVisible2(false);
+        setIsFriend(true);
+        Alert.alert("Thông báo", "Hủy kết bạn thành công!");
       })
       .catch((error) => {
         console.log("Failed");
@@ -160,14 +174,22 @@ export default function FriendProfile({ route, navigation }) {
           onBackdropPress={() => setBlockModalVisible(false)}
           style={styles.Bmodal}
         >
-          <View style={styles.centeredView}>
-            <Pressable onPress={() => setBlockDiary()}>
-              <Text style={styles.BmodalText}>Chặn bài viết</Text>
-            </Pressable>
-            <Pressable onPress={() => setRemoveFriend()}>
-              <Text style={styles.BmodalText}>Hủy kết bạn</Text>
-            </Pressable>
-          </View>
+          {isFriend == false ? (
+            <View style={styles.centeredView}>
+              <Pressable onPress={() => setBlockDiary()}>
+                <Text style={styles.BmodalText}>Chặn bài viết</Text>
+              </Pressable>
+              <Pressable onPress={() => setRemoveFriend()}>
+                <Text style={styles.BmodalText}>Hủy kết bạn</Text>
+              </Pressable>
+            </View>
+          ) : (
+            <View style={styles.centeredView}>
+              <Pressable>
+                <Text style={styles.BmodalText}>Không thể thao tác</Text>
+              </Pressable>
+            </View>
+          )}
         </Modal>
       );
     } else {
@@ -357,11 +379,11 @@ export default function FriendProfile({ route, navigation }) {
             <Text style={styles.intro}> {info.description} </Text>
           </View>
         )}
-        {isFriend && isFriend == true ? (
+        {isFriend == false ? (
           <View>
             <View style={styles.containerGallery}>
               <View style={{ width: "50%", alignItems: "center", left: 20 }}>
-                <Pressable onPress={() => setModalVisible2(!modalVisible)}>
+                <Pressable>
                   <Text
                     style={{
                       fontSize: 20,
@@ -408,11 +430,24 @@ export default function FriendProfile({ route, navigation }) {
                 Thông tin giới thiệu
               </Text>
             </TouchableOpacity>
+            <View>
+              {isBlock ?
+                (<Text
+                  style={{
+                    textAlign: "center",
+                    fontStyle: "italic",
+                    color: "#9A4747",
+                  }}
+                >
+                  Bạn đã chặn nhật ký của người này
+                </Text>
+                ) : (<Text />)}
+            </View>
           </View>
         ) : (
           <View>
             <View style={styles.containerGallery}>
-              <View>
+              <TouchableOpacity onPress={() => setRequestFriend(Friend_ID)}>
                 <Text
                   style={{
                     fontSize: 20,
@@ -425,7 +460,7 @@ export default function FriendProfile({ route, navigation }) {
                 >
                   Kết bạn
                 </Text>
-              </View>
+              </TouchableOpacity>
             </View>
             <View>
               <Text
@@ -585,7 +620,7 @@ export default function FriendProfile({ route, navigation }) {
     <View style={{ flex: 1 }}>
       <ProfileModal />
       <SafeAreaView style={{ flex: 1 }}>
-        {isFriend && isFriend == true ? (
+        {isFriend == false && isBlock == false ? (
           <FlatList
             data={datapost}
             renderItem={({ item }) => renderItem(item)}
@@ -593,7 +628,11 @@ export default function FriendProfile({ route, navigation }) {
             ListHeaderComponent={Profile}
           />
         ) : (
-          <View />
+          <FlatList
+            data={[]}
+            renderItem={({ }) => ({})}
+            ListHeaderComponent={Profile}
+          />
         )}
       </SafeAreaView>
     </View>
