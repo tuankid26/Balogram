@@ -9,6 +9,7 @@ import {
   Pressable,
   SafeAreaView,
   TouchableOpacity,
+  Alert
 } from "react-native";
 import Modal from "react-native-modal";
 import { format, formatDistance, subDays } from "date-fns";
@@ -93,7 +94,21 @@ export default function FriendProfile({ route, navigation }) {
       console.log(err);
     }
   };
-
+  const setRequestFriend = (userID) => {
+    const dataRequest = {
+      user_id: userID,
+      token: token,
+    };
+    friend
+      .setRequestFriend(dataRequest)
+      .then((res) => {
+        Alert.alert(res.data.message);
+      })
+      .catch((error) => {
+        console.log("Failed");
+        console.log(error);
+      });
+  };
   const setBlockDiary = () => {
     const dataBlock = {
       user_id: Friend_ID,
@@ -124,7 +139,6 @@ export default function FriendProfile({ route, navigation }) {
       })
       .catch((error) => {
         console.log("Failed");
-        console.log(error.response.data);
       });
   };
 
@@ -419,7 +433,7 @@ export default function FriendProfile({ route, navigation }) {
         ) : (
           <View>
             <View style={styles.containerGallery}>
-              <View>
+              <TouchableOpacity onPress={() => setRequestFriend(Friend_ID)}>
                 <Text
                   style={{
                     fontSize: 20,
@@ -432,7 +446,7 @@ export default function FriendProfile({ route, navigation }) {
                 >
                   Kết bạn
                 </Text>
-              </View>
+              </TouchableOpacity>
             </View>
             <View>
               <Text
