@@ -5,6 +5,7 @@ import React, {
   useLayoutEffect,
   useRef,
 } from "react";
+import Toast from 'react-native-toast-message';
 import { GiftedChat } from "react-native-gifted-chat";
 import { View, StyleSheet, SafeAreaView,Pressable,Text } from "react-native";
 import { Avatar, Icon } from "react-native-elements";
@@ -14,7 +15,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { ipServer } from "../handle_api/ipAddressServer";
 import DefaultAvatar from "../images/avatar/default-avatar-480.png";
 
-// const SOCKET_URL = "http://192.168.0.102:3000";
+// const SOCKET_URL = "http://192.168.1.153:3000";
 import { SOCKET_URL } from "../handle_api/api";
 
 export default function ChatMessengerScreen({ route, navigation }) {
@@ -41,7 +42,10 @@ export default function ChatMessengerScreen({ route, navigation }) {
       headerLeft: () => (
         <View style={styles.headerLeft}>
           <Icon name={"chevron-left"} size={40} onPress={onBack} />
-          <Avatar rounded source={avatar} />
+          {/* <Avatar rounded source={{
+                uri: `${ipServer}${avatar}`,
+              }} /> */}
+              
         </View>
       ),
       headerTitle: item.name,
@@ -81,7 +85,8 @@ export default function ChatMessengerScreen({ route, navigation }) {
   }, []);
 
   useEffect(() => {
-    socket.current?.on("getMessage", (data) => {
+    socket.current?.on("chatmessage", (data) => {
+      console.log(data)
       if (senderId === data.receivedId) {
         const newMsg = {
           _id: data._id,
