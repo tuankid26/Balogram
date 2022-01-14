@@ -130,7 +130,7 @@ const CoverImagePicker = ({ navigation }) => {
   const handleAlbumSelected = (album) => setSelectedAlbum(album);
 
   const handleItemSelected = async (item) => {
-    const result = await ImageHelper.resizeImage(item, 480);
+    const result = await ImageHelper.resizeImage(item, 720);
     item.uri = result.uri;
     item.mediaType = "photo";
     const items = [item];
