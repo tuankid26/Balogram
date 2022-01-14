@@ -24,6 +24,8 @@ const { width } = Dimensions.get("window");
 import Toast from 'react-native-toast-message';
 import { Video } from 'expo-av';
 import { ipServer } from "../handle_api/ipAddressServer";
+import VideoPlayer from '../components/VideoPlayer';
+
 const wait = (timeout) => {
   return new Promise((resolve) => setTimeout(resolve, timeout));
 };
@@ -293,18 +295,22 @@ export default function NewFeedScreen({ navigation }) {
           <View style={styles.containerImage}>
             {item_video 
             ?
-              <Video
-                style={styles.video}
+              // <Video
+              //   style={styles.video}
                 
-                source={{
-                  uri: `${ipServer}${item_video.fileName}`,
-                }}
-                useNativeControls={true}
-                resizeMode="cover"
-                shouldPlay={false}
+              //   source={{
+              //     uri: `${ipServer}${item_video.fileName}`,
+              //   }}
+              //   useNativeControls={true}
+              //   resizeMode="cover"
+              //   shouldPlay={false}
                 
-                isLooping={true}
-                // onPlaybackStatusUpdate={status => setStatus(() => status)}
+              //   isLooping={true}
+              //   // onPlaybackStatusUpdate={status => setStatus(() => status)}
+              // />
+              <VideoPlayer
+              videoUri={`${ipServer}${item_video.fileName}`}
+              item={item}
               />
             :
               <Slider item={item.images} index={0} />

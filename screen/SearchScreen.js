@@ -20,6 +20,8 @@ import { search } from "../handle_api/search";
 import { BackButton } from "../components";
 import { friend } from "../handle_api";
 import { useSelector, useDispatch } from "react-redux";
+import { Video } from 'expo-av';
+
 export default function SearchScreen({ navigation }) {
   const dispatch = useDispatch();
   const [text, setText] = useState();
