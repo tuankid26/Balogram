@@ -10,6 +10,6 @@ const axiosClient = axios.create({
     timeout: 10 * 1000,
 });
 
-// export const SOCKET_URL = "ws://150.230.98.85:3000";
-export const SOCKET_URL = "http://192.168.1.153:3000";
+export const SOCKET_URL = "ws://150.230.98.85:3000";
+// export const SOCKET_URL = "http://192.168.1.153:3000";
 export default axiosClient;
