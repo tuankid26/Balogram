@@ -42,19 +42,78 @@ app.listen(PORT, () => {
 })
 
 // Socket.io chat realtime
-io.on('connection', (socket) => {
-    MessageModel.find().then(result => {
-        socket.emit('output-messages', result)
-    })
-    console.log('a user connected');
-    socket.emit('message', 'Hello world');
-    socket.on('disconnect', () => {
-        console.log('user disconnected');
+// io.on('connection', (socket) => {
+//     MessageModel.find().then(result => {
+//         socket.emit('output-messages', result)
+//     })
+//     console.log('a user connected');
+//     socket.emit('message', 'Hello world');
+//     socket.on('disconnect', () => {
+//         console.log('user disconnected');
+//     });
+//     socket.on('chatmessage', msg => {
+//         // const message = new MessageModel({ msg });
+//         message.save().then(() => {
+//             io.emit('message', msg)
+//         })
+//     })
+// });
+io.on("connection", (socket) => {
+
+    console.log("a user connected", socket.id);
+  
+   
+  
+    socket.on("disconnect", () => {
+  
+      console.log("user disconnected");
+  
     });
-    socket.on('chatmessage', msg => {
-        // const message = new MessageModel({ msg });
-        message.save().then(() => {
-            io.emit('message', msg)
-        })
-    })
-});
+  
+   
+  
+    socket.on("sendMessage", (msg) => {
+  
+      console.log("sending message");
+  
+      socket.broadcast.emit("getMessage", msg);
+  
+      io.emit("latestMessage", msg);
+  
+    });
+  
+    socket.on("deleteMessage", (msg) => {
+  
+      console.log("deleted msg: ", msg);
+  
+      socket.broadcast.emit("removeMess", msg);
+  
+      if (msg.isLatest) {
+  
+        io.emit("removeLatestMessage", msg);
+  
+     }
+  
+    });
+  
+    socket.on("blockUser", (msg) => {
+  
+      io.emit("blockChat", msg);
+  
+    });
+  
+    socket.on("unblock", (msg) => {
+  
+      io.emit("unblockChat", msg);
+  
+    });
+  
+    socket.on("deleteChat", (data) => {
+  
+      console.log("emit chat delete event with data: ", data);
+  
+      io.emit("deleteChat", data);
+  
+    });
+  
+  });
