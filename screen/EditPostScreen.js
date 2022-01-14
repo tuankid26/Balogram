@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { StyleSheet, View, FlatList, Image, Button, TouchableOpacity, ImageBackground } from 'react-native'
+import { StyleSheet, View, FlatList, Image, Button, TouchableOpacity, ImageBackground, Alert } from 'react-native'
 import { Text } from 'react-native-paper'
 import { theme } from '../components/core/theme'
 import { Icon } from 'react-native-elements'
@@ -16,7 +16,7 @@ import {
 import { post } from "../handle_api";
 
 export default function EditPostScreen({ route, navigation }) {
-  
+
   const { toggleItem } = route.params;
   const [status, setStatus] = useState(toggleItem.described);
   const dispatch = useDispatch();
@@ -56,7 +56,7 @@ export default function EditPostScreen({ route, navigation }) {
       videos: convertedVideoAssets
     }
 
-    try{
+    try {
       const res = await post.editPost(data);
       console.log("EDIT DONE");
       dispatch(uploadActions.uploadSuccess(res.data.data));
@@ -66,9 +66,8 @@ export default function EditPostScreen({ route, navigation }) {
     }
 
     dispatch(mediaActions.resetState());
-
     navigation.navigate("MainScreen");
-
+    Alert.alert("Thông báo", "Chỉnh sửa bài viết thành công!")
   }
 
 

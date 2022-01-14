@@ -8,7 +8,8 @@ import {
     TextInput,
     Picker,
     TouchableOpacity,
-    Button
+    Button,
+    Alert
 } from "react-native";
 import { BackButton } from "../components";
 import { theme } from "../components/core/theme";
@@ -29,18 +30,13 @@ export default function InfoUserScreen({ navigation }) {
         repeatNewPassword: repeatNewPassword
     }
     const onPress = () => {
-        console.log("dsds");
-        console.log
         auth.changePassword(data)
             .then(res => {
-                console.log(res)
-                Toast.show({
-                    type: 'success',
-                    text1: 'Đổi mật khẩu thành công'
-                });
                 setCurrentPassword("")
                 setNewPassword("")
                 setRepeatNewPassword("")
+                Alert.alert("Thông báo", "Đổi mật khẩu thành công!")
+                navigation.navigate("SettingScreen");
             })
             .catch(error => {
                 Toast.show({
