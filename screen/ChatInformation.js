@@ -6,13 +6,14 @@ import {
     StyleSheet,
     Dimensions,
     TouchableOpacity,
+    Alert,
 } from "react-native";
 import { useSelector, useDispatch } from 'react-redux';
 import { BackButton } from "../components";
 import { theme } from "../components/core/theme";
 import { Divider } from "react-native-elements";
 import { MaterialCommunityIcons } from "react-native-vector-icons";
-import { chat, message,friend } from "../handle_api";
+import { chat, message, friend } from "../handle_api";
 const { width } = Dimensions.get("window");
 
 export default function ChatInformation({ route, navigation }) {
@@ -34,17 +35,15 @@ export default function ChatInformation({ route, navigation }) {
         }
         friend.blockChat(dataBlock)
             .then(res => {
-              console.log("Block thanh cong");
+                Alert.alert("Thông báo", "Chặn trò cuyện thành công!")
             })
             .catch(error => {
                 console.log("Failed");
-                console.log(error.response.data);
             })
-            navigation.navigate('MainScreen');
-    
+        navigation.navigate('MainScreen');
     };
 
-    
+
 
     return (
         <View style={styles.wrapper}>
@@ -74,7 +73,7 @@ export default function ChatInformation({ route, navigation }) {
                     // color="#B1AE57"
                     />
                     <View style={styles.info}>
-                        <Text style={styles.name}>Block</Text>
+                        <Text style={styles.name}>Chăn cuộc trò chuyện</Text>
                     </View>
                 </View>
                 <Divider style={{ margintop: 10, marginLeft: 45 }} />

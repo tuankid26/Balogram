@@ -1,4 +1,4 @@
-import React, { Component, useState, useEffect,useRef } from "react";
+import React, { Component, useState, useEffect, useRef } from "react";
 import {
   View,
   FlatList,
@@ -13,12 +13,14 @@ import Item_Messenger from "../components/Item_Messenger";
 import { LinePartition } from "../components";
 import { theme } from "../components/core/theme";
 import { useSelector } from 'react-redux';
-import { chat } from "../handle_api";
+import { chat, friend } from "../handle_api";
 import { SOCKET_URL } from '../handle_api/api';
-import {io} from 'socket.io-client';
+import { io } from 'socket.io-client';
+import { fi } from "date-fns/locale";
 
 export default function MainMessengerScreen({ navigation }) {
   const [chats, setChats] = useState([]);
+  const [blocks, setBlocks] = useState([]);
   const socket = useRef();
   const token = useSelector(state => state.authReducer.token);
 
@@ -26,23 +28,30 @@ export default function MainMessengerScreen({ navigation }) {
   const initialize = async () => {
 
     const newChats = await fetchChats();
-    if(newChats) {
-    setChats(
-      newChats
-        .map((msg) => ({
-          receivedId: msg[1]._id,
-          sendId: msg[0].member.filter((item) => {
-            return item !== msg[1]._id
-          }),
-          name: msg[1].username,
-          avatar: msg[1].avatar,
-          text: msg[2].content,
-          _id: msg[0]._id
-        }))
-        .reverse()
-    );}};
+    if (newChats) {
+      setChats(
+        newChats
+          .map((msg) => ({
+            receivedId: msg[1]._id,
+            sendId: msg[0].member.filter((item) => {
+              return item !== msg[1]._id
+            }),
+            name: msg[1].username,
+            avatar: msg[1].avatar,
+            text: msg[2].content,
+            _id: msg[0]._id
+          }))
+          .reverse()
+      );
+    }
+  };
   useEffect(() => {
     initialize();
+    friend.getBlockChat(token)
+      .then(res => {
+        setBlocks(res.data.data.blocked_inbox)
+      })
+      .catch(error => { })
   }, []);
 
   const fetchChats = async () => {
@@ -61,8 +70,9 @@ export default function MainMessengerScreen({ navigation }) {
     }
   }, [isRefreshing]);
 
-  const renderItem = (item) => {
-    // console.log(item)
+  const renderItem = (item, blocks) => {
+    const isBlock = blocks.includes(item._id)
+    console.log(isBlock)
     return (
       <View>
         <TouchableOpacity
@@ -70,7 +80,7 @@ export default function MainMessengerScreen({ navigation }) {
             navigation.navigate("ChatMessengerScreen", { item });
           }}
         >
-          <Item_Messenger item={item} />
+          <Item_Messenger item={item} isBlock={isBlock} />
         </TouchableOpacity>
       </View>
     );
@@ -87,9 +97,8 @@ export default function MainMessengerScreen({ navigation }) {
       </View>
       <LinePartition color={theme.colors.black} />
       <FlatList
-        // ref={"flatList"}
         data={chats}
-        renderItem={({ item }) => renderItem(item)}
+        renderItem={({ item }) => renderItem(item, blocks)}
         keyExtractor={(item) => item._id.toString()}
         refreshControl={
           <RefreshControl
@@ -112,7 +121,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     backgroundColor: theme.colors.white,
-    height : 40,
+    height: 40,
   },
 
   headerLeft: {

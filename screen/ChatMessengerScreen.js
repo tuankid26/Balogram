@@ -7,7 +7,7 @@ import React, {
 } from "react";
 import Toast from 'react-native-toast-message';
 import { GiftedChat } from "react-native-gifted-chat";
-import { View, StyleSheet, SafeAreaView,Pressable,Text } from "react-native";
+import { View, StyleSheet, SafeAreaView, Pressable, Text, Alert } from "react-native";
 import { Avatar, Icon } from "react-native-elements";
 import { io } from "socket.io-client";
 import { chat, message, friend } from "../handle_api";
@@ -45,7 +45,7 @@ export default function ChatMessengerScreen({ route, navigation }) {
           {/* <Avatar rounded source={{
                 uri: `${ipServer}${avatar}`,
               }} /> */}
-              
+
         </View>
       ),
       headerTitle: item.name,
@@ -79,22 +79,20 @@ export default function ChatMessengerScreen({ route, navigation }) {
           }))
           .reverse()
       );
-      socket.current = io(SOCKET_URL);
     };
     initialize();
+    socket.current = io(SOCKET_URL);
   }, []);
 
   useEffect(() => {
-    // console.log(messages)
     socket.current?.on("getMessage", (data) => {
-      
-      if (senderId === data.receivedId ) {
+      if (senderId === data.receivedId) {
         const newMsg = {
           _id: data._id,
           text: data.content,
           createdAt: data.createdAt,
-          user : {
-          _id: data.senderId,
+          user: {
+            _id: data.senderId,
           }
         };
         setMessages((previousMessages) =>
@@ -192,7 +190,7 @@ export default function ChatMessengerScreen({ route, navigation }) {
     friend
       .unBlockChat(dataBlock)
       .then((res) => {
-        console.log("Xoa block thanh cong");
+        Alert.alert("Thông báo", "Hủy chặn cuộc trò chuyện thành công")
         navigation.navigate('MainMessengerScreen')
       })
       .catch((error) => {
@@ -205,7 +203,7 @@ export default function ChatMessengerScreen({ route, navigation }) {
 
     <SafeAreaView style={{ flex: 1 }}>
       {isBlock && isBlock == true ? (
-        <Pressable style = {{alignItems:'center', marginTop : 100}} onPress={() => UnBlockChat()}>
+        <Pressable style={{ alignItems: 'center', marginTop: 100 }} onPress={() => UnBlockChat()}>
           <Text style={styles.btext}>Hủy block</Text>
         </Pressable>
       ) : (
@@ -233,7 +231,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: "#e69138",
     width: 100,
-    height : 50,
+    height: 50,
     textAlign: "center",
     borderRadius: 10,
     backgroundColor: "#eae0c3",

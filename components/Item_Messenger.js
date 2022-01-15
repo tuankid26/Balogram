@@ -1,45 +1,49 @@
 import { NavigationContainer } from '@react-navigation/native'
 import React, { Component } from 'react'
 import { View, Text, Image, TouchableOpacity } from 'react-native'
-// import Swipeout from 'react-native-swipeout'
-// import Icon from 'react-native-vector-icons/FontAwesome5'
 import { StyleSheet, Dimensions } from 'react-native'
-// import avt from '../images/Store_local_image/bmt.jpg'
 const { width } = Dimensions.get('window')
-import {ipServer} from "../handle_api/ipAddressServer";
+import { ipServer } from "../handle_api/ipAddressServer";
 import DefaultAvatar from '../images/avatar/default-avatar-480.png';
 
 class Item_Messenger extends Component {
 
     render() {
         const { item } = this.props
-        
+        const { isBlock } = this.props
         const avatar = item.avatar;
-        // console.log(`${ipServer}${avatar.fileName}`);
 
         return (
             <View style={styles.container}>
                 <View style={styles.bgAvatar}>
                     {
                         avatar
-                        ?
+                            ?
                             <Image
-                            source={{uri: `${ipServer}${avatar.fileName}`}}
-                            style={styles.avatar}
+                                source={{ uri: `${ipServer}${avatar.fileName}` }}
+                                style={styles.avatar}
                             />
-                        :
+                            :
                             <Image
-                            source={DefaultAvatar}
-                            style={styles.avatar}
+                                source={DefaultAvatar}
+                                style={styles.avatar}
                             />
 
 
                     }
-                    
+
                 </View>
                 <View style={styles.info}>
                     <Text style={styles.name}>{item.name}</Text>
-                    <Text numberOfLines={1}>{item.text}</Text>
+                    {isBlock ? <Text
+                        style={{
+                            fontStyle: "italic",
+                            color: "#9A4747",
+                        }}
+                    >
+                        Bạn đã chặn cuộc trò chuyện này
+                    </Text> : <Text numberOfLines={1}>{item.text}</Text>
+                    }
                 </View>
                 <View style={styles.bgSeen}>
                     <Image
