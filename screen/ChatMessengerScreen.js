@@ -33,6 +33,7 @@ export default function ChatMessengerScreen({ route, navigation }) {
   const token = useSelector((state) => state.authReducer.token);
   const receiverId = item.receivedId;
   const senderId = useSelector((state) => state.authReducer.id);
+  socket.current = io(SOCKET_URL);
   const onBack = () => {
     navigation.navigate("MainScreen");
   };
@@ -79,7 +80,7 @@ export default function ChatMessengerScreen({ route, navigation }) {
           }))
           .reverse()
       );
-      socket.current = io(SOCKET_URL);
+      // socket.current = io(SOCKET_URL);
     };
     initialize();
   }, []);
@@ -87,16 +88,19 @@ export default function ChatMessengerScreen({ route, navigation }) {
   useEffect(() => {
     // console.log(messages)
     socket.current?.on("getMessage", (data) => {
-      
+    
       if (senderId === data.receivedId ) {
+        console.log(data)
         const newMsg = {
           _id: data._id,
           text: data.content,
           createdAt: data.createdAt,
           user : {
           _id: data.senderId,
+          avatar: `${ipServer}${avatar}`,
           }
         };
+        
         setMessages((previousMessages) =>
           GiftedChat.append(previousMessages, newMsg)
         );
