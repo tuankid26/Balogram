@@ -12,9 +12,9 @@
     "slug": "BaloGram",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/Telegram.png",
+    "icon": "./assets/BalogramIcon_2.png",
     "splash": {
-      "image": "./assets/Telegram.png",
+      "image": "./assets/BalogramIcon_2.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
@@ -34,7 +34,7 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/Telegram.png",
+        "foregroundImage": "./assets/Logo_balogram_5.png",
         "backgroundColor": "#FFFFFF"
       },
       "permissions": [
@@ -46,7 +46,7 @@
       "package": "com.Balogram.Balogram"
     },
     "web": {
-      "favicon": "./assets/Telegram.png"
+      "favicon": "./assets/BalogramIcon_2.png"
     }
   }
 }

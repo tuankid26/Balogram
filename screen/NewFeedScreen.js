@@ -271,6 +271,7 @@ export default function NewFeedScreen({ navigation }) {
                 />
             }
             <View style={styles.containerInfo}>
+
               <Text style={styles.containerUserName}>
                 {item.author.username}
               </Text>
