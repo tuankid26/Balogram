@@ -9,6 +9,7 @@ import {
   Pressable,
   SafeAreaView,
   TouchableOpacity,
+  Alert
 } from "react-native";
 import Modal from "react-native-modal";
 import { format, formatDistance, subDays } from "date-fns";
@@ -25,19 +26,22 @@ import { Comment, Slider } from "../components";
 const { width, height } = Dimensions.get("screen");
 import { theme } from "../components/core/theme";
 import { useSelector } from "react-redux";
-import { post, auth, search } from "../handle_api";
+import { post, auth, search, friend } from "../handle_api";
 import { ipServer } from "../handle_api/ipAddressServer";
 import DefaultCoverImage from "../images/default-cover-6.jpg";
+// import { NewChat } from './NewChat'
+
 export default function FriendProfile({ route, navigation }) {
   const [datapost, setDatapost] = useState("");
+  const [isBlock, setIsBlock] = useState(false);
   const [isFriend, setIsFriend] = useState();
   const phonenumber = route.params.item.phonenumber;
   const [info, setInfo] = useState({});
   const Friend_ID = route.params.item._id;
-
   const token = useSelector((state) => state.authReducer.token);
   const [isModalVisible, setModalVisible] = useState(false);
   const [isProfileModalVisible, setProFileModalVisible] = useState(false);
+  const [blockModalVisible, setBlockModalVisible] = useState(false);
 
   const toggleModal = (item) => {
     setModalVisible(!isModalVisible);
@@ -50,7 +54,9 @@ export default function FriendProfile({ route, navigation }) {
     fetchUserInfo();
     fetchSearch();
     fetchPosts();
+    fetchBlock();
   }, []);
+
   const fetchSearch = async () => {
     try {
       const dataFeed = await search.search(token, phonenumber);
@@ -64,7 +70,6 @@ export default function FriendProfile({ route, navigation }) {
     try {
       const res = await auth.getUser(token, Friend_ID);
       setInfo(res.data.data);
-      //   console.log(info)
     } catch (err) {
       console.log(err);
     }
@@ -77,16 +82,152 @@ export default function FriendProfile({ route, navigation }) {
       console.log(err);
     }
   };
+  const fetchBlock = async () => {
+    try {
+      const dataBlock = await friend.getBlockDiary(token);
+      const f = dataBlock.data.data.blocked_diary.filter(
+        (_id) => _id == Friend_ID
+      );
+      f.length == 0 ? setIsBlock(false) : setIsBlock(true);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+  const setRequestFriend = (userID) => {
+    const dataRequest = {
+      user_id: userID,
+      token: token,
+    };
+    friend
+      .setRequestFriend(dataRequest)
+      .then((res) => {
+        Alert.alert(res.data.message);
+      })
+      .catch((error) => {
+        console.log("Failed");
+        console.log(error);
+      });
+  };
+  const setBlockDiary = () => {
+    const dataBlock = {
+      user_id: Friend_ID,
+      token: token,
+    };
+    friend
+      .blockDiary(dataBlock)
+      .then((res) => {
+        Alert.alert("Thông báo", "Chặn nhật ký thành công!");
+        setBlockModalVisible(false);
+        setIsBlock(true)
+      })
+      .catch((error) => {
+        console.log("Failed");
+        console.log(error.response.data);
+      });
+  };
+
+  const UnBlockDiary = () => {
+    const dataBlock = {
+      user_id: Friend_ID,
+      token: token,
+    };
+    friend
+      .unBlockDiary(dataBlock)
+      .then((res) => {
+        Alert.alert("Thông báo", "Hủy chặn nhật ký thành công!");
+        setBlockModalVisible(false);
+        setIsBlock(false)
+      })
+      .catch((error) => {
+        console.log("Failed");
+      });
+  };
+
+  const setRemoveFriend = () => {
+    const dataRemove = {
+      user_id: Friend_ID,
+      token: token,
+    };
+    friend
+      .setRemoveFriend(dataRemove)
+      .then((res) => {
+        setIsFriend(true);
+        Alert.alert("Thông báo", "Hủy kết bạn thành công!");
+      })
+      .catch((error) => {
+        console.log("Failed");
+        console.log(error.response.data);
+      });
+    // navigation.navigate("MainScreen");
+  };
+
+  const BlockModal = () => {
+    if (!isBlock) {
+      return (
+        <Modal
+          animationType="fade"
+          coverScreen={false}
+          visible={blockModalVisible}
+          onRequestClose={() => {
+            setBlockModalVisible(!blockModalVisible);
+          }}
+          onBackdropPress={() => setBlockModalVisible(false)}
+          style={styles.Bmodal}
+        >
+          {isFriend == false ? (
+            <View style={styles.centeredView}>
+              <Pressable onPress={() => setBlockDiary()}>
+                <Text style={styles.BmodalText}>Chặn bài viết</Text>
+              </Pressable>
+              <Pressable onPress={() => setRemoveFriend()}>
+                <Text style={styles.BmodalText}>Hủy kết bạn</Text>
+              </Pressable>
+            </View>
+          ) : (
+            <View style={styles.centeredView}>
+              <Pressable>
+                <Text style={styles.BmodalText}>Không thể thao tác</Text>
+              </Pressable>
+            </View>
+          )}
+        </Modal>
+      );
+    } else {
+      return (
+        <Modal
+          animationType="fade"
+          visible={blockModalVisible}
+          onRequestClose={() => {
+            setBlockModalVisible(!blockModalVisible);
+          }}
+          onBackdropPress={() => setBlockModalVisible(false)}
+          style={styles.Bmodal}
+        >
+          <View style={styles.centeredView}>
+            <Pressable onPress={() => UnBlockDiary()}>
+              <Text style={styles.BmodalText}>Hủy chặn</Text>
+            </Pressable>
+          </View>
+        </Modal>
+      );
+    }
+  };
   const ProfileModal = () => {
     return (
       <Modal
-        Modal
         isVisible={isProfileModalVisible}
+        animationType="fade"
         onBackdropPress={() => setProFileModalVisible(false)}
-        style={styles.content}
+        style={{
+          backgroundColor: 'transparent',
+          opacity: 0.9,
+        }}
       >
         <View
-          style={{ height: "40%", backgroundColor: "#D0FFFF", marginTop: 100 }}
+          style={{
+            justifyContent: 'center',
+            backgroundColor: '#F5FFFF'
+          }}
         >
           <View
             style={{ flexDirection: "row", alignItems: "center", padding: 10 }}
@@ -139,6 +280,19 @@ export default function FriendProfile({ route, navigation }) {
               {info && info.address}
             </Text>
           </View>
+          <View
+            style={{ flexDirection: "row", alignItems: "center", padding: 10 }}
+          >
+            <MaterialCommunityIcons
+              name="card-account-phone"
+              size={25}
+              color="#72664F"
+            />
+            <Text style={{ fontSize: 15, marginLeft: 5 }}>Liên hệ: </Text>
+            <Text style={{ fontSize: 15, fontWeight: "bold" }}>
+              {info && info.phonenumber}
+            </Text>
+          </View>
         </View>
       </Modal>
     );
@@ -147,7 +301,7 @@ export default function FriendProfile({ route, navigation }) {
   const Profile = () => {
     const info_coverimage = info.cover_image;
     const info_avatar = info.avatar;
-    // console.log(info_coverimage)
+    // console.log(info)
     return (
       <View style={styles.container}>
         <View>
@@ -159,6 +313,7 @@ export default function FriendProfile({ route, navigation }) {
                 <Ionicons name="arrow-back" size={30} color="#F0ECE3" />
               </TouchableOpacity>
             </View>
+            <BlockModal />
             <View
               style={{
                 flex: 1,
@@ -166,11 +321,19 @@ export default function FriendProfile({ route, navigation }) {
                 justifyContent: "flex-end",
               }}
             >
-              <TouchableOpacity>
-                <Entypo name="dots-three-horizontal" size={25} color="#F0ECE3"/>
+
+              <TouchableOpacity
+                onPress={() => setBlockModalVisible(!blockModalVisible)}
+              >
+                <Entypo
+                  name="dots-three-horizontal"
+                  size={25}
+                  color="#F0ECE3"
+                />
               </TouchableOpacity>
             </View>
           </View>
+
           {info_coverimage ? (
             <Image
               style={styles.background}
@@ -216,22 +379,24 @@ export default function FriendProfile({ route, navigation }) {
             <Text style={styles.intro}> {info.description} </Text>
           </View>
         )}
-        {isFriend && isFriend == true ? (
+        {isFriend == false ? (
           <View>
             <View style={styles.containerGallery}>
               <View style={{ width: "50%", alignItems: "center", left: 20 }}>
-                <Text
-                  style={{
-                    fontSize: 20,
-                    borderWidth: 1,
-                    borderColor: "green",
-                    width: 80,
-                    textAlign: "center",
-                    borderRadius: 10,
-                  }}
-                >
-                  Bạn bè
-                </Text>
+                <Pressable>
+                  <Text
+                    style={{
+                      fontSize: 20,
+                      borderWidth: 1,
+                      borderColor: "green",
+                      width: 80,
+                      textAlign: "center",
+                      borderRadius: 10,
+                    }}
+                  >
+                    Bạn bè
+                  </Text>
+                </Pressable>
               </View>
               <View style={{ alignItems: "center", width: "50%", right: 20 }}>
                 <Text
@@ -243,6 +408,9 @@ export default function FriendProfile({ route, navigation }) {
                     textAlign: "center",
                     borderRadius: 10,
                   }}
+                  onPress={() =>
+                    navigation.navigate("NewChat", { item: info._id, name: info.username })
+                  }
                 >
                   Nhắn tin
                 </Text>
@@ -258,15 +426,28 @@ export default function FriendProfile({ route, navigation }) {
               onPress={viewInfo}
             >
               <Entypo name="dots-three-horizontal" size={20} />
-              <Text style={{ marginLeft: 10, fontSize: 20 }}>
+              <Text style={{ marginLeft: 10, fontSize: 20, marginTop: 10 }}>
                 Thông tin giới thiệu
               </Text>
             </TouchableOpacity>
+            <View>
+              {isBlock ?
+                (<Text
+                  style={{
+                    textAlign: "center",
+                    fontStyle: "italic",
+                    color: "#9A4747",
+                  }}
+                >
+                  Bạn đã chặn nhật ký của người này
+                </Text>
+                ) : (<Text />)}
+            </View>
           </View>
         ) : (
           <View>
             <View style={styles.containerGallery}>
-              <View>
+              <TouchableOpacity onPress={() => setRequestFriend(Friend_ID)}>
                 <Text
                   style={{
                     fontSize: 20,
@@ -279,7 +460,7 @@ export default function FriendProfile({ route, navigation }) {
                 >
                   Kết bạn
                 </Text>
-              </View>
+              </TouchableOpacity>
             </View>
             <View>
               <Text
@@ -352,7 +533,7 @@ export default function FriendProfile({ route, navigation }) {
     };
     post
       .actionLikePost(data)
-      .then((res) => {})
+      .then((res) => { })
       .catch((error) => {
         console.log("Failed");
         console.log(error.response.data);
@@ -439,7 +620,7 @@ export default function FriendProfile({ route, navigation }) {
     <View style={{ flex: 1 }}>
       <ProfileModal />
       <SafeAreaView style={{ flex: 1 }}>
-        {isFriend && isFriend == true ? (
+        {isFriend == false && isBlock == false ? (
           <FlatList
             data={datapost}
             renderItem={({ item }) => renderItem(item)}
@@ -447,7 +628,11 @@ export default function FriendProfile({ route, navigation }) {
             ListHeaderComponent={Profile}
           />
         ) : (
-          <View/>
+          <FlatList
+            data={[]}
+            renderItem={({ }) => ({})}
+            ListHeaderComponent={Profile}
+          />
         )}
       </SafeAreaView>
     </View>
@@ -455,14 +640,17 @@ export default function FriendProfile({ route, navigation }) {
 }
 
 const styles = StyleSheet.create({
+  Bmodal: {
+    justifyContent: 'flex-start',
+    alignItems: 'flex-end',
+  },
   content: {
     backgroundColor: "white",
     padding: 22,
     borderRadius: 4,
-    borderColor: "rgba(0, 0, 0, 0.1)",
   },
-  backbutton:{
-marginLeft: 5
+  backbutton: {
+    marginLeft: 5,
   },
   container: {
     flex: 1,
@@ -685,5 +873,48 @@ marginLeft: 5
   reactIcon: {
     fontSize: 30,
     margin: 10,
+  },
+  Fmodal: {
+    width: 200,
+    marginTop: 220,
+    marginLeft: 90,
+    alignItems: "center",
+    // left: 5,
+    bottom: 8,
+  },
+  centeredView: {
+    // borderColor: 'red',
+    // borderWidth: 1
+    // flex: 1
+  },
+  button: {
+    borderRadius: 20,
+    padding: 10,
+    elevation: 2,
+  },
+  buttonOpen: {
+    backgroundColor: "#F194FF",
+  },
+  buttonClose: {
+    backgroundColor: "#2196F3",
+  },
+  textStyle: {
+    color: "white",
+    fontWeight: "bold",
+    textAlign: "center",
+  },
+  modalText: {
+    fontSize: 20,
+    width: 120,
+    textAlign: "center",
+    borderRadius: 10,
+  },
+  BmodalText: {
+    fontSize: 20,
+    borderWidth: 1,
+    borderRadius: 5,
+    borderColor: "black",
+    textAlign: "center",
+    backgroundColor: "white",
   },
 });

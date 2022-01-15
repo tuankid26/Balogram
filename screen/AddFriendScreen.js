@@ -1,29 +1,29 @@
 import React from "react";
-import { View, FlatList, Text, StyleSheet, Dimensions,TouchableOpacity } from "react-native";
+import { View, FlatList, Text, StyleSheet, Dimensions, TouchableOpacity, Alert } from "react-native";
 import { theme } from "../components/core/theme";
 import { Avatar, Button, Divider } from "react-native-paper";
 import {
     BackButton
 } from "../components";
 const { width } = Dimensions.get("window");
-import {friend} from "../handle_api";
+import { friend } from "../handle_api";
 import { useSelector } from 'react-redux';
 import { useState, useEffect } from 'react'
-
+import { ipServer } from "../handle_api/ipAddressServer";
 
 
 export default function AddFriendScreen({ navigation }) {
-    
+
     const [datafriend, setDataFriend] = useState([]);
     const token = useSelector(state => state.authReducer.token);
     useEffect(() => {
-        let isMounted = true; 
+        let isMounted = true;
         friend.getRequestFriend(token)
             .then(res => {
                 if (isMounted) setDataFriend(res.data.data.friends);
-                
+
             })
-            
+
             .catch(error => {
                 if (error.response) {
                     const error = err.response.data;
@@ -34,7 +34,7 @@ export default function AddFriendScreen({ navigation }) {
                     console.log('Error', error.message);
                 }
             })
-            return () => { isMounted = false };
+        return () => { isMounted = false };
 
     }, []);
 
@@ -48,7 +48,7 @@ export default function AddFriendScreen({ navigation }) {
             .then(res => {
                 const updateData = datafriend.filter(item => item._id !== res.data.data.sender);
                 setDataFriend(updateData);
-
+                Alert.alert("Thông báo", "Đồng ý kết bạn thành công!");
             })
             .catch(error => {
                 console.log("Failed");
@@ -57,18 +57,20 @@ export default function AddFriendScreen({ navigation }) {
 
     }
 
-    const setRemoveFriend = (userID) => {
-        const dataRemove = {
+    const setAcceptFriend2 = (userID) => {
+        const dataAccept = {
             "user_id": userID,
             "token": token,
+            "is_accept": "2",
         }
-        friend.setRemoveFriend(dataRemove)
+        friend.setAcceptFriend(dataAccept)
             .then(res => {
                 const updateData = datafriend.filter(item => item._id !== res.data.data.sender);
                 setDataFriend(updateData);
+                Alert.alert("Thông báo", "Từ chối kết bạn thành công!")
             })
             .catch(error => {
-                console.log("Failed"); 
+                console.log("Failed");
                 console.log(error.response.data);
             })
 
@@ -76,21 +78,26 @@ export default function AddFriendScreen({ navigation }) {
 
     const renderItem = (item) => {
         return (
-        <TouchableOpacity>
+            <TouchableOpacity>
                 <View style={styles.container}>
                     <View style={styles.bgAvatar}>
-                        <Avatar.Image size={52} source={{uri:'../images/Store_local_image/anh2.jpg'}} />
+                        {item.avatar
+                            ?
+                            <Avatar.Image size={52} source={{ uri: `${ipServer}${item.avatar.fileName}` }} />
+                            :
+                            <Avatar.Image size={52} source={{ uri: '../images/avatar/default-avatar-480.png' }} />
+                        }
                     </View>
                     <View style={styles.info}>
                         <Text style={styles.name}>{item.username}</Text>
                     </View>
                     <View style={styles.accept}>
-                        <View style={{  width: width/4, padding:2}}>
-                            <TouchableOpacity style={styles.confirm} onPress={() => setRemoveFriend(item._id)}>
+                        <View style={{ width: width / 4, padding: 2 }}>
+                            <TouchableOpacity style={styles.confirm} onPress={() => setAcceptFriend(item._id)}>
                                 <Text style={styles.rejText}>Đồng ý</Text>
                             </TouchableOpacity></View>
-                        <View style={{  width: width/4, padding:2}}>
-                            <TouchableOpacity style={styles.reject} onPress={() => setRemoveFriend(item._id)}>
+                        <View style={{ width: width / 4, padding: 2 }}>
+                            <TouchableOpacity style={styles.reject} onPress={() => setAcceptFriend2(item._id)}>
                                 <Text style={styles.rejText}>Từ chối</Text>
                             </TouchableOpacity></View>
                         {/* <Button  style={styles.reject} onPress={() => setRemoveFriend(item._id)}> Từ chối </Button> */}
@@ -111,17 +118,17 @@ export default function AddFriendScreen({ navigation }) {
                 </View>
                 <Text style={styles.title}>Yêu cầu kết bạn</Text>
             </View>
-            
-             <FlatList
 
-                data={datafriend }
+            <FlatList
+
+                data={datafriend}
                 renderItem={({ item }) => renderItem(item)}
                 keyExtractor={(item) => item._id.toString()}
-                
+
             />
-              
-            
-            
+
+
+
         </View>
     );
 }
@@ -145,26 +152,26 @@ const styles = StyleSheet.create({
         fontWeight: "bold",
         color: "black",
         padding: 10,
-        marginLeft:80
+        marginLeft: 80
     },
     container: {
         flexDirection: "row",
         paddingHorizontal: 10,
         paddingVertical: 5,
         marginTop: 5,
-        marginBottom:5
+        marginBottom: 5
     },
     bgAvatar: {
         flex: 2,
-        paddingTop:10,
-        marginLeft:5,
+        paddingTop: 10,
+        marginLeft: 5,
     },
     info: {
         flex: 8,
         flexDirection: "column",
         paddingLeft: 5,
         justifyContent: "center",
-        paddingBottom:12
+        paddingBottom: 12
     },
     accept: {
 
@@ -172,22 +179,22 @@ const styles = StyleSheet.create({
     confirm: {
         flexDirection: 'row',
         backgroundColor: '#a3d13a',
-        borderRadius:5,
-        justifyContent:"center",
-        height: width/12,
+        borderRadius: 5,
+        justifyContent: "center",
+        height: width / 12,
     },
     reject: {
         flexDirection: 'row',
         backgroundColor: '#d46161',
-        borderRadius:5,
-        justifyContent:"center",
-        height: width/12,
+        borderRadius: 5,
+        justifyContent: "center",
+        height: width / 12,
     },
     rejText: {
         fontSize: 20,
         color: "white",
-        marginRight:3,
-        marginTop:2
+        marginRight: 3,
+        marginTop: 2
     },
     name: {
         marginLeft: 12,

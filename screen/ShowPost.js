@@ -27,8 +27,8 @@ import { BackButton } from "../components";
 const wait = (timeout) => {
   return new Promise((resolve) => setTimeout(resolve, timeout));
 };
-
-import { LinePartition, Comment, Slider_local_image } from "../components";
+import { ipServer } from "../handle_api/ipAddressServer";
+import { LinePartition, Comment, ReportSlider } from "../components";
 
 export default function ShowPostScreen({ route, navigation }) {
   const { itemReport } = route.params;
@@ -88,6 +88,7 @@ export default function ShowPostScreen({ route, navigation }) {
   if (item.author){
     date_time = splitDateTime(item.updatedAt);
     avatar = item.author.avatar;
+    // console.log(item.author);
     return (
         <View>
         <StatusBar backgroundColor={theme.colors.white} barStyle="dark-content" />
@@ -99,7 +100,7 @@ export default function ShowPostScreen({ route, navigation }) {
                 ? <Avatar
                     size={40}
                     rounded
-                    source={{uri: `data:image/jpeg;base64,${avatar.base64}`}}
+                    source={{uri: `${ipServer}${avatar.fileName}`}}
                     containerStyle={{ marginLeft: 5, marginTop: 5 }}
                     />
                 : <Avatar
@@ -267,9 +268,9 @@ const styles = StyleSheet.create({
       },
       containerFeed: {
         justifyContent: "flex-start",
-        alignItems: "flex-start",
+        // alignItems: "flex-start",
         backgroundColor: theme.colors.white,
-        flex: 1,
+        // flex: 1,
       },
       image: {
         flex: 1,

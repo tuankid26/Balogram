@@ -148,7 +148,7 @@ const styles = StyleSheet.create({
         flexDirection: "row"
     },
     headerview: {
-        backgroundColor: "#000000",
+        backgroundColor: "#fff",
         marginBottom: 4
     },
     content_comment_action: {

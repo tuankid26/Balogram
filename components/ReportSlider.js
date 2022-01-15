@@ -98,13 +98,13 @@ const styles = StyleSheet.create({
     },
     image: {
         width: screenWidth ,
-        height: screenHeight ,
+        height: screenHeight + 100 ,
         flex: 1,
-        resizeMode: 'center'
+        resizeMode: 'contain'
     },
     container: {
         // flex : 1,
-        height: ScreenHeight - 200,
-        width: 400
+        height: ScreenHeight -200,
+        // width: 400
     }
 })

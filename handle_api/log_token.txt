@@ -12,3 +12,35 @@ phonenumber: 000002
 password: 123123123
 token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkLDuWkgTeG6oW5oIFR14bqlbiIsImlkIjoiNjE4Y2U0YTEzN2JlNGYzNzhjZWIxYTYxIiwiaWF0IjoxNjM2NjIzNTI4fQ.u-TmfZg85TYRrkCbxUyCza6jYZi-XjLidITjgazQYu4"
 user_id: "618ce4a137be4f378ceb1a61"
+
+
+
+DEMO
+User1:
+Nguyễn Hải Dương
+phonenumber: 0356518472
+password: deptrai123
+
+User2:
+Vũ Tuấn Trường 
+phonenumber: 0356518473
+password: deptrai123
+
+User3:
+Hoàng Huy Quân
+phonenumber: 0356518475
+password: deptrai123
+
+User4:
+Bm Tuấn
+phonenumber: 000002
+password: 123123123
+
+User 5:
+Nguyễn Việt Anh
+phonenumber: 0356518476
+password: deptrai123
+
+user 6:
+0356518479
+deptrai123

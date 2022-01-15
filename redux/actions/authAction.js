@@ -11,7 +11,15 @@ const removeToken = () => {
     }
 }
 
+const storeId = (userId) => {
+    return {
+        type: 'STORAGE_ID',
+        payload:  userId
+    }
+}
+
 export {
     storeToken,
-    removeToken
+    removeToken,
+    storeId
 };

@@ -8,6 +8,7 @@ import {
   Dimensions,
   Pressable,
   RefreshControl,
+  ActivityIndicator
 } from "react-native";
 
 import DefaultAvatar from '../images/avatar/default-avatar-480.png';
@@ -21,6 +22,9 @@ import { uploadActions } from "../redux/actions";
 import { PostsHelper } from "../helpers";
 const { width } = Dimensions.get("window");
 import Toast from 'react-native-toast-message';
+import { Video } from 'expo-av';
+import { ipServer } from "../handle_api/ipAddressServer";
+import VideoPlayer from '../components/VideoPlayer';
 
 const wait = (timeout) => {
   return new Promise((resolve) => setTimeout(resolve, timeout));
@@ -42,6 +46,7 @@ export default function NewFeedScreen({ navigation }) {
   const uploadStatus = useSelector((state) => {
     return state.upload;
   });
+
 
   const dispatch = useDispatch();
   const onLikePress = (userId, postId) => {
@@ -86,7 +91,7 @@ export default function NewFeedScreen({ navigation }) {
   const [isModalReportVisible, setModalReportVisible] = useState(false);
   const [isOtherPostVisible, setOtherPostVisible] = useState(false);
   const toggleModal = (item) => {
-    if (item.author._id === userId){
+    if (item.author._id === userId ){
     setModalVisible(!isModalVisible);
     setToggleItem(item);
     }
@@ -167,9 +172,13 @@ export default function NewFeedScreen({ navigation }) {
 
 
   const handleEndReached = () => {
-    // setFetchingNextPage(true);
-    fetchNextPage();
+    setFetchingNextPage(true);
   };
+  useEffect(() => {
+    if (isFetchingNextPage) {
+      fetchNextPage();
+    }
+  }, [isFetchingNextPage]);
 
 
   const onRefresh = useCallback(() => {
@@ -227,6 +236,13 @@ export default function NewFeedScreen({ navigation }) {
       setDoubleTouch(now);
     }
   };
+  const renderFooter = () => {
+    return isFetchingNextPage ? (
+      <View style={{alignItems: 'center'}}>
+        <ActivityIndicator size="large" color="rgba(0,0,0,0.3)" />
+      </View>
+    ) : null;
+  }
 
   const renderItem = (item) => {
     const date_time = splitDateTime(item.updatedAt);
@@ -234,6 +250,8 @@ export default function NewFeedScreen({ navigation }) {
     const text_like = num_like + " lượt thích";
     const itemIsLike = item.isLike;
     let avatar = item.author.avatar;
+    let item_video = item.videos[0];
+    
     return (
       <View style={styles.containerPost}>
         <View style={styles.containerPostHeader}>
@@ -275,7 +293,28 @@ export default function NewFeedScreen({ navigation }) {
             <Text style={styles.described}>{item.described}</Text>
           )}
           <View style={styles.containerImage}>
-            <Slider item={item.images} index={0} />
+            {item_video 
+            ?
+              // <Video
+              //   style={styles.video}
+                
+              //   source={{
+              //     uri: `${ipServer}${item_video.fileName}`,
+              //   }}
+              //   useNativeControls={true}
+              //   resizeMode="cover"
+              //   shouldPlay={false}
+                
+              //   isLooping={true}
+              //   // onPlaybackStatusUpdate={status => setStatus(() => status)}
+              // />
+              <VideoPlayer
+              videoUri={`${ipServer}${item_video.fileName}`}
+              item={item}
+              />
+            :
+              <Slider item={item.images} index={0} />
+            }
           </View>
 
           <View style={styles.containerReact}>
@@ -312,7 +351,6 @@ export default function NewFeedScreen({ navigation }) {
 
   return (
     <View style={{ flex: 1 }}>
-      <Toast position="bottom" />
       <StatusBar backgroundColor={theme.colors.white} barStyle="dark-content" />
       <HeaderMain onAddPost={onAddPost} onSearchPress={onSearchPress} />
       
@@ -339,6 +377,7 @@ export default function NewFeedScreen({ navigation }) {
           keyExtractor={(item) => item._id.toString()}
           onEndReachedThreshold={0.01}
           onEndReached={handleEndReached}
+          ListFooterComponent={renderFooter}
         />
       </View>
     </View>
@@ -394,6 +433,15 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     backgroundColor: theme.colors.white,
   },
+  video: {
+    alignSelf: 'center',
+    // alignItems: 'center',
+    // alignContent: 'center',
+    marginLeft: 5,
+    width: width - 10,
+    height: 200,
+    resizeMode: "contain",
+  },
   optionDot: {
     backgroundColor: theme.colors.white,
     justifyContent: "flex-end",
@@ -402,6 +450,8 @@ const styles = StyleSheet.create({
   },
   containerImage: {
     flex: 1,
+    alignContent: "center"
+    // height : 468
     // borderColor: 'red',
     // borderWidth: 2,
   },

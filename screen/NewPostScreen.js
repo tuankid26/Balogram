@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react'
-import { StyleSheet, View, FlatList, Image, Button, TouchableOpacity, ImageBackground } from 'react-native'
+import { StyleSheet, View, FlatList, Image, Button, TouchableOpacity, ImageBackground, Alert } from 'react-native'
 import { Text } from 'react-native-paper'
 import { theme } from '../components/core/theme'
 import { Icon } from 'react-native-elements'
 import { useSelector, useDispatch } from 'react-redux';
 import { mediaActions, uploadActions } from '../redux/actions';
 import * as FileSystem from 'expo-file-system';
-import {MaterialDesignIcons} from 'react-native-vector-icons'
-
+import { MaterialDesignIcons } from 'react-native-vector-icons'
+import Toast from 'react-native-toast-message';
 import {
   BackButton,
   TextInput
@@ -28,7 +28,6 @@ export default function NewPostScreen({ navigation }) {
 
     const convertedImageAssets = await convertToBase64(imageAssets);
     const convertedVideoAssets = await convertToBase64(videoAssets);
-
     const data = {
       token: token,
       described: status,
@@ -44,10 +43,10 @@ export default function NewPostScreen({ navigation }) {
       dispatch(uploadActions.uploadFailure(errMsg));
     }
     dispatch(mediaActions.resetState());
-
     navigation.navigate("MainScreen");
-
+    Alert.alert("Thông báo", "Đăng bài viết mới thành công!")
   }
+
   const goBack = () => {
     dispatch(mediaActions.resetState());
     navigation.navigate("MainScreen");
@@ -82,12 +81,16 @@ export default function NewPostScreen({ navigation }) {
   const addImage = () => {
     navigation.navigate("MediaPicker");
   }
+  const addVideo = () => {
+    navigation.navigate("VideoPicker");
+  }
   const handleRemoveAsset = (asset) => {
     dispatch(mediaActions.removeAsset(asset));
   }
 
   return (
-    <View style={{ flex: 1,backgroundColor:'white' }}>
+    <View style={{ flex: 1, backgroundColor: 'white' }}>
+      <Toast />
       <View style={styles.headerBar}>
         <View style={styles.headerLeft}>
           <BackButton goBack={goBack} />
@@ -108,18 +111,18 @@ export default function NewPostScreen({ navigation }) {
         multiline={true}
         numberOfLines={5}
       />
-      <View style = {{flexDirection: 'row', marginLeft : 10, alignItems : 'center'}}>
-        <Icon name="filter"   type="MaterialIcons" size={35} onPress={addImage} />
-        <Text style = {{fontSize : 20, marginLeft :10,}}>Thêm ảnh </Text>
+      <View style={{ flexDirection: 'row', marginLeft: 10, alignItems: 'center' }}>
+        <Icon name="filter" type="MaterialIcons" size={35} onPress={addImage} />
+        <Text style={{ fontSize: 20, marginLeft: 10, }}>Thêm ảnh </Text>
       </View>
 
-      <View style = {{flexDirection: 'row', marginLeft : 10, alignItems : 'center', marginTop : 5}}>
-        <Icon name="videocam"   type="MaterialIcons" size={35} color={'#406882'} onPress={addImage} />
-        <Text style = {{fontSize : 20, marginLeft :10}}>Thêm Video </Text>
+      <View style={{ flexDirection: 'row', marginLeft: 10, alignItems: 'center', marginTop: 5 }}>
+        <Icon name="videocam" type="MaterialIcons" size={35} color={'#406882'} onPress={addVideo} />
+        <Text style={{ fontSize: 20, marginLeft: 10 }}>Thêm Video </Text>
       </View>
-      
+
       {/* Render Image from Gallery */}
-     
+
       <View style={{ flex: 1 }}>
         <FlatList
           numColumns={3}
@@ -166,7 +169,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     // borderRadius: 6,
     // height : 250,
-    backgroundColor:'white'
+    backgroundColor: 'white'
   },
   button: {
     backgroundColor: theme.colors.button

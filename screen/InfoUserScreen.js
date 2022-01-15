@@ -8,6 +8,7 @@ import {
     TextInput,
     Picker,
     TouchableOpacity,
+    Alert,
 } from "react-native";
 import { BackButton } from "../components";
 import DateTimePicker from '@react-native-community/datetimepicker';
@@ -49,10 +50,8 @@ export default function InfoUserScreen({ navigation }) {
         dispatch({ type: 'STORE_INFO', payload: newInfo })
         auth.edit({ token, newInfo })
             .then(res => {
-                Toast.show({
-                    type: 'success',
-                    text1: 'Lưu thành công'
-                });
+                Alert.alert("Thông báo", "Thay đổi thông tin cá nhân thành công!")
+                navigation.navigate("SettingScreen");
             })
             .catch(error => {
                 Toast.show({
@@ -60,7 +59,6 @@ export default function InfoUserScreen({ navigation }) {
                     text1: 'Đã có lỗi xảy ra'
                 });
             })
-        navigation.navigate("MainScreen");
     }
 
     const splitDateTime = (raw_date) => {

@@ -20,6 +20,8 @@ import { search } from "../handle_api/search";
 import { BackButton } from "../components";
 import { friend } from "../handle_api";
 import { useSelector, useDispatch } from "react-redux";
+import { Video } from 'expo-av';
+
 export default function SearchScreen({ navigation }) {
   const dispatch = useDispatch();
   const [text, setText] = useState();
@@ -62,25 +64,24 @@ export default function SearchScreen({ navigation }) {
     let recent_avatar = item.avatar;
     return (
       <View>
-        <TouchableOpacity style={styles.recentContainer}>
+        <TouchableOpacity style={styles.recentContainer} onPress={() => navigation.navigate("FriendProfileScreen", { item })}>
           <View style={styles.recentWrapper}>
-            { recent_avatar ?
-            (
-              <Avatar
-              source={{
-                uri: `${ipServer}${item.avatar.fileName}`,
-              }}
-              size={60}
-              rounded
-            />
-            ) : (
-              <Avatar
-              source={require("../images/avatar/default-avatar-480.png")}
-              size={60}
-              rounded
-            />
-
-          )}
+            {recent_avatar ?
+              (
+                <Avatar
+                  source={{
+                    uri: `${ipServer}${item.avatar.fileName}`,
+                  }}
+                  size={60}
+                  rounded
+                />
+              ) : (
+                <Avatar
+                  source={require("../images/avatar/default-avatar-480.png")}
+                  size={60}
+                  rounded
+                />
+              )}
             <Text>{item.username}</Text>
           </View>
         </TouchableOpacity>
@@ -88,12 +89,12 @@ export default function SearchScreen({ navigation }) {
     );
   };
   const onPressUser = (item) => {
-      console.log(item)
-    recentData.includes(item)
-      ? null
-      : dispatch({ type: "ADD_ITEM", payload: item });
+    if (recentData.findIndex(u => u._id == item._id) == -1) {
+      dispatch({ type: "ADD_ITEM", payload: item });
+    }
     navigation.navigate("FriendProfileScreen", { item });
   };
+
   return (
     <View style={styles.outline}>
       <View style={styles.header}>
@@ -143,9 +144,11 @@ export default function SearchScreen({ navigation }) {
                 .filter((l, i) => i <= 1 && l._id != userId)
                 .map((l, i) => (
                   <ListItem key={i} bottomDivider>
-                    <TouchableOpacity>
+                    <TouchableOpacity onPress={() => onPressUser(l)}>
                       <Avatar
-                        source={require("../images/avatar/default-avatar-480.png")}
+                        source={{
+                          uri: `${ipServer}${l.avatar.fileName}`,
+                        }}
                         size={60}
                         rounded
                       />
@@ -158,7 +161,7 @@ export default function SearchScreen({ navigation }) {
                     </TouchableOpacity>
                   </ListItem>
                 ))}
-              <Button onPress={onpress} title="Xem tất cả" />
+              <Button title="Xem tất cả" />
             </View>
           </View>
         </View>
@@ -173,21 +176,21 @@ export default function SearchScreen({ navigation }) {
                 .map((l, i) => (
                   <ListItem key={i} bottomDivider>
                     <TouchableOpacity onPress={() => onPressUser(l)}>
-                    {l.avatar ? (
-                      <Avatar
-                        source={{
-                          uri: `${ipServer}${l.avatar.fileName}`,
-                        }}
-                        size={60}
-                        rounded
-                      />
-                    ) : (
-                      <Avatar
-                      source={require("../images/avatar/default-avatar-480.png")}
-                      size={60}
-                      rounded
-                    />
-                    )}
+                      {l.avatar ? (
+                        <Avatar
+                          source={{
+                            uri: `${ipServer}${l.avatar.fileName}`,
+                          }}
+                          size={60}
+                          rounded
+                        />
+                      ) : (
+                        <Avatar
+                          source={require("../images/avatar/default-avatar-480.png")}
+                          size={60}
+                          rounded
+                        />
+                      )}
                     </TouchableOpacity>
                     <ListItem.Content>
                       <ListItem.Title>{l.username}</ListItem.Title>

@@ -18,7 +18,7 @@ export default function AdminMainScreen() {
     return (
         <Tab.Navigator initialRouteName="Feed" labeled={false}
             activeColor="#ff3300"
-            barStyle={{ backgroundColor: "#000000" }}
+            barStyle={{ backgroundColor: "#fff" }}
         >
             <Tab.Screen name="Feed" component={AdminScreen}
                 options={{

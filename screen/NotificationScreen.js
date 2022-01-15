@@ -10,27 +10,56 @@ import { theme } from '../components/core/theme';
 export default function NotificationScreen({ navigation }) {
 
     const data = [
+        
         {
             id: 1,
-            name: 'Hoàng Huy Quân',
-            avatar: require('../images/Store_local_image/anhquan.jpg'),
+            name: 'Bùi Mạnh Tuấn',
+            avatar: require('../images/Store_local_image/anhtuan.jpg'),
             action: "đã bình luận về bài viết của bạn",
-            datetime: "35 phút trước"
+            datetime: "25 phút trước"
         },
         {
             id: 2,
             name: 'Hoàng Huy Quân',
             avatar: require('../images/Store_local_image/anhquan.jpg'),
             action: "đã thích bài viết của bạn",
-            datetime: "36 phút trước"
+            datetime: "47 phút trước"
         },
         {
             id: 3,
             name: 'Vũ Tuấn Trường',
             avatar: require('../images/Store_local_image/AnhTruong.jpg'),
             action: "đã thêm một bài viết mới",
-            datetime: "12h35 06/01/2022"
-        }
+            datetime: "12h35 14/01/2022"
+        },
+        {
+            id: 4,
+            name: 'Vũ Hoàng Trung',
+            avatar: require('../images/Store_local_image/anhtrung.jpg'),
+            action: "đã bình luận về bài viết của bạn",
+            datetime: "8h20 11/01/2022"
+        },
+        {
+            id: 5,
+            name: 'Hoàng Huy Quân',
+            avatar: require('../images/Store_local_image/anhquan.jpg'),
+            action: "đã bình luận về bài viết của bạn",
+            datetime: "4h14 11/01/2022"
+        },
+        {
+            id: 6,
+            name: 'Vũ Minh Thanh',
+            avatar: require('../images/Store_local_image/anhthanh.jpg'),
+            action: "đã thêm một video mới",
+            datetime: "19h46 10/01/2022"
+        },
+        {
+            id: 7,
+            name: 'Nguyễn Bá Đức',
+            avatar: require('../images/Store_local_image/anhduc.png'),
+            action: "đã thêm 3 ảnh mới",
+            datetime: "17h20 10/01/2022"
+        },
     ];
 
     const onpress = () => {

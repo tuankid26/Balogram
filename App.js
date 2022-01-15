@@ -5,9 +5,9 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { theme } from './components/core/theme';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import store from './redux/store';
-// import { LogBox } from 'react-native';
-// LogBox.ignoreLogs(['Warning: ...']); // Ignore log notification by message
-// LogBox.ignoreAllLogs();//Ignore all log notifications
+import { LogBox } from 'react-native';
+LogBox.ignoreLogs(['Warning: ...']); // Ignore log notification by message
+LogBox.ignoreAllLogs();//Ignore all log notifications
 
 import {
     LoginScreen,
@@ -31,7 +31,9 @@ import {
     CoverImagePicker,
     ShowPostScreen,
     AdminScreen,
-    AdminMainScreen
+    AdminMainScreen,
+    NewChat,
+    VideoPicker
 } from './screen'
 import NewPostScreen from './screen/NewPostScreen';
 
@@ -80,6 +82,8 @@ const App = () => {
                     <Stack.Screen name="ShowPostScreen" options={{ headerShown: false }} component={ShowPostScreen} />
                     <Stack.Screen name="AdminScreen" options={{ headerShown: false }} component={AdminScreen} />
                     <Stack.Screen name="AdminMainScreen" options={{ headerShown: false }} component={AdminMainScreen} />
+                    <Stack.Screen name="NewChat" options={{ headerShown: false }} component={NewChat} />
+                    <Stack.Screen name="VideoPicker" options={{ headerShown: false }} component={VideoPicker} />
                 </Stack.Navigator>
             </NavigationContainer>
         </SafeAreaProvider>

@@ -20,13 +20,14 @@ export default function LoginScreen({ navigation }) {
     const data = {
       // phonenumber: phonenumber,
       // password: password
-      phonenumber: "03565184741",
+      phonenumber: "000001",
       password: "123123123"
     }
 
     auth.login(data)
       .then(res => {
         const token = res.data.token;
+        const id = res.data.data._id
         const info = {
           gender: res.data.data.gender,
           birthday: res.data.data.birthday,
@@ -39,26 +40,27 @@ export default function LoginScreen({ navigation }) {
         }
         // call dispatch to store token
         dispatch({ type: 'STORE_TOKEN', payload: token })
+        dispatch({ type: 'STORE_ID', payload: id })
         dispatch({ type: 'STORE_INFO', payload: info })
         Toast.show({
           type: 'success',
           text1: 'Đăng nhập thành công'
         });
-        if (res.data.data.username == "Admin"){
+        if (res.data.data.username == "Admin") {
           navigation.reset({
             index: 0,
             routes: [{ name: 'AdminMainScreen' }],
           })
         }
-        else{
-        navigation.reset({
-          index: 0,
-          routes: [{ name: 'MainScreen' }],
-        })
+        else {
+          navigation.reset({
+            index: 0,
+            routes: [{ name: 'MainScreen' }],
+          })
         }
       })
       .catch(error => {
-        
+
         Toast.show({
           type: 'error',
           text1: 'Tài khoản hoặc mật khẩu không chính xác'

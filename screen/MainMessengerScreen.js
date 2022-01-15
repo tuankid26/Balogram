@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   StyleSheet,
   Dimensions,
+  RefreshControl
 } from "react-native";
 import { Ionicons } from "react-native-vector-icons";
 import Item_Messenger from "../components/Item_Messenger";
@@ -13,59 +14,52 @@ import { LinePartition } from "../components";
 import { theme } from "../components/core/theme";
 import { useSelector } from 'react-redux';
 import { chat } from "../handle_api";
-import { SOCKET_URL } from '../handle_api';
+import { SOCKET_URL } from '../handle_api/api';
 import {io} from 'socket.io-client';
 
 export default function MainMessengerScreen({ navigation }) {
   const [chats, setChats] = useState([]);
   const socket = useRef();
   const token = useSelector(state => state.authReducer.token);
+
+  const [isRefreshing, setRefreshing] = useState(false);
+  const initialize = async () => {
+
+    const newChats = await fetchChats();
+    if(newChats) {
+    setChats(
+      newChats
+        .map((msg) => ({
+          receivedId: msg[1]._id,
+          sendId: msg[0].member.filter((item) => {
+            return item !== msg[1]._id
+          }),
+          name: msg[1].username,
+          avatar: msg[1].avatar,
+          text: msg[2].content,
+          _id: msg[0]._id
+        }))
+        .reverse()
+    );}};
   useEffect(() => {
-    const initialize = async () => {
-      const newChats = await fetchChats();
-      setChats(
-        newChats
-          .map((msg) => ({
-            receivedId: msg[1]._id,
-            sendId: msg[0].member.filter((item) => {
-              return item !== msg[1]._id
-            }),
-            name: msg[1].username,
-            avatar: msg[1].avatar,
-            text: msg[2].content,
-            _id: msg[0]._id
-          }))
-          .reverse()
-      );
-      socket.current = io(SOCKET_URL);
-    };
     initialize();
-    console.log(chats);
   }, []);
 
   const fetchChats = async () => {
     try {
       const res = await chat.listChat(token);
+      setRefreshing(false);
       return res.data.data;
     } catch (err) {
       console.log(err);
     }
   };
+
   useEffect(() => {
-    socket.current?.on('refreshLatestMessage', (data) =>{
-      // console.log(data)
-      setChats(chats.map(chat => {
-        if(chat.id !== data.chatId){
-          return chat;
-        }
-        return{
-          ...chat,
-          text: data.content,
-        }
-      }))
-    })
-    
-  }, [socket])
+    if (isRefreshing) {
+      initialize();
+    }
+  }, [isRefreshing]);
 
   const renderItem = (item) => {
     // console.log(item)
@@ -97,6 +91,12 @@ export default function MainMessengerScreen({ navigation }) {
         data={chats}
         renderItem={({ item }) => renderItem(item)}
         keyExtractor={(item) => item._id.toString()}
+        refreshControl={
+          <RefreshControl
+            refreshing={isRefreshing}
+            onRefresh={() => setRefreshing(true)}
+          />
+        }
       />
     </View>
   );

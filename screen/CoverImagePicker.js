@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
-import { FlatList, StyleSheet, TouchableOpacity, View, Dimensions } from 'react-native';
+import { FlatList, StyleSheet, TouchableOpacity, View, Dimensions, Alert } from 'react-native';
 import { Button, Text, Image, Icon } from 'react-native-elements';
 import { ImageHelper } from '../helpers';
 import { Picker } from '@react-native-picker/picker';
@@ -8,7 +8,7 @@ import { StatusBar } from 'react-native';
 const { width } = Dimensions.get('window')
 import * as FileSystem from 'expo-file-system';
 import { useSelector, useDispatch } from 'react-redux';
-import {profile} from '../handle_api';
+import { profile } from '../handle_api';
 const Header = props => {
 
   const Item = Picker.Item;
@@ -42,12 +42,12 @@ const Header = props => {
       </View>
 
       <Icon
-            type='antdesign'
-            name='camera'
-            size={28}
-            iconStyle={{ marginRight: 20 }}
-            onPress={props.handleLaunchCamera}
-          />
+        type='antdesign'
+        name='camera'
+        size={28}
+        iconStyle={{ marginRight: 20 }}
+        onPress={props.handleLaunchCamera}
+      />
     </View>
   );
 };
@@ -130,7 +130,7 @@ const CoverImagePicker = ({ navigation }) => {
   const handleAlbumSelected = (album) => setSelectedAlbum(album);
 
   const handleItemSelected = async (item) => {
-    const result = await ImageHelper.resizeImage(item, 480);
+    const result = await ImageHelper.resizeImage(item, 720);
     item.uri = result.uri;
     item.mediaType = "photo";
     const items = [item];
@@ -147,8 +147,8 @@ const CoverImagePicker = ({ navigation }) => {
       const errMsg = err.response ? err.response.message : "Error occured!";
     }
     navigation.navigate("MainScreen");
-    
-    
+    Alert.alert("Thông báo", "Cập nhật ảnh bìa thành công!")
+
   };
 
   const handleSend = () => {

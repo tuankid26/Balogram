@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback, useRef } from "react";
 import {
   StyleSheet,
   View,
@@ -22,7 +22,8 @@ const { width, height } = Dimensions.get("screen");
 import { theme } from "../components/core/theme";
 import { useSelector } from "react-redux";
 import { post, profile } from "../handle_api";
-
+import { Video } from 'expo-av';
+import VideoPlayer from '../components/VideoPlayer';
 import { format, formatDistance, subDays } from "date-fns";
 import { ipServer } from "../handle_api/ipAddressServer";
 import DefaultAvatar from "../images/avatar/default-avatar-480.png";
@@ -37,6 +38,7 @@ export default function Profile({ navigation }) {
   const description = useSelector((state) => state.infoReducer.description);
   const [isModalVisible, setModalVisible] = useState(false);
   const [toggleItem, setToggleItem] = useState("");
+  const video = useRef(null);
   const wait = (timeout) => {
     return new Promise((resolve) => setTimeout(resolve, timeout));
   };
@@ -144,7 +146,7 @@ export default function Profile({ navigation }) {
   const fetchPosts = async () => {
     try {
       const dataFeed = await post.getListPost(token, userId);
-      setDatapost(dataFeed.data.data.reverse());
+      setDatapost(dataFeed.data.data);
     } catch (err) {
       console.log(err);
     }
@@ -231,10 +233,11 @@ export default function Profile({ navigation }) {
   };
   const renderItem = (item) => {
     const date_time = splitDateTime(item.updatedAt.toString());
-
+    
     const num_like = item.like.length;
     const text_like = num_like + " lượt thích";
     const itemIsLike = item.isLike;
+    let item_video = item.videos[0];
     return (
       <View style={styles.containerPost}>
         <View style={styles.containerPostHeader}>
@@ -268,7 +271,28 @@ export default function Profile({ navigation }) {
             <Text style={styles.described}>{item.described}</Text>
           )}
           <View style={styles.containerImage}>
-            <Slider item={item.images} index={0} />
+            {item_video 
+              ?
+                // <Video
+                //   style={styles.video}
+                //   ref={video}
+                //   source={{
+                //     uri: `${ipServer}${item_video.fileName}`,
+                //   }}
+                //   useNativeControls={true}
+                //   resizeMode="cover"
+                //   shouldPlay={false}
+                  
+                //   isLooping={true}
+                //   // onPlaybackStatusUpdate={status => setStatus(() => status)}
+                // />
+                <VideoPlayer
+                  videoUri={`${ipServer}${item_video.fileName}`}
+                  item={item}
+                  />
+              :
+                <Slider item={item.images} index={0} />
+              }
           </View>
 
           <View style={styles.containerReact}>
@@ -540,7 +564,15 @@ const styles = StyleSheet.create({
     fontSize: 30,
     margin: 10,
   },
-
+  video: {
+    alignSelf: 'center',
+    // alignItems: 'center',
+    // alignContent: 'center',
+    marginLeft: 5,
+    width: width - 10,
+    height: 200,
+    resizeMode: "contain",
+  },
   headerBar: {
     height: 40,
     flexDirection: "row",

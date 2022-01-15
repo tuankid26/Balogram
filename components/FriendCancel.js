@@ -1,39 +1,40 @@
 import React, { Component } from "react";
 import { View, Text, TouchableOpacity } from "react-native";
-import { StyleSheet, Dimensions } from "react-native";
+import { StyleSheet, Dimensions, Modal } from "react-native";
 import { Avatar, Divider } from "react-native-paper";
 import { MaterialCommunityIcons } from "react-native-vector-icons";
 import { ipServer } from "../handle_api/ipAddressServer";
 import { useSelector, useDispatch } from "react-redux";
-
+import FriendProfile from "../screen/FriendProfileScreen";
 const { width } = Dimensions.get("window");
-export default function FriendActive({ item, onPressUser }) {
-// console.log(item)
+export default function FriendCancel() {
+//   const item = route.params.item;
+const [show, setshow] = useState('false');
+  
   const onPressFriend = () => {
     onPressUser(item)
-  } 
+  }
+  
   return (
-    <TouchableOpacity 
-    onPress={onPressFriend}
-    >
+    <TouchableOpacity onPress={onPressFriend}>
       <View style={styles.container}>
         <View style={styles.bgAvatar}>
           <Avatar.Image
-                onPress={onPressFriend}
+                // onPress={onPressUser(item)}
               size={45}
               source={{
-                uri: `${ipServer}${item.avatar.fileName}`,
+                uri: `${ipServer}${'../images/placeholder.png'}`,
               }}
             />
         </View>
         <View style={styles.info}>
           <Text style={styles.name}>{item.username}</Text>
         </View>
-         <View >
+        <View>
           <MaterialCommunityIcons name="message-outline" style={styles.icon} />
         </View>
       </View>
-      <Divider style={{ marginTop: 10, marginLeft: 65 }} />
+      <Divider style={{ margintop: 10, marginLeft: 65 }} />
     </TouchableOpacity>
   );
 }
@@ -48,7 +49,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     paddingVertical: 5,
     marginTop: 8,
-    backgroundColor :'white'
   },
   bgAvatar: {
     flex: 2,
