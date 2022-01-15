@@ -85,20 +85,20 @@ export default function ChatMessengerScreen({ route, navigation }) {
   }, []);
 
   useEffect(() => {
-    socket.current?.on("chatmessage", (data) => {
-      console.log(data)
-      if (senderId === data.receivedId) {
+    // console.log(messages)
+    socket.current?.on("getMessage", (data) => {
+      
+      if (senderId === data.receivedId ) {
         const newMsg = {
           _id: data._id,
           text: data.content,
           createdAt: data.createdAt,
-          user: {
-            _id: data.senderId,
-          },
+          user : {
+          _id: data.senderId,
+          }
         };
-
         setMessages((previousMessages) =>
-          GiftedChat.append(previousMessages, [newMsg])
+          GiftedChat.append(previousMessages, newMsg)
         );
       }
     });
