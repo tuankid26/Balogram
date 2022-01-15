@@ -13,18 +13,14 @@ import { io } from "socket.io-client";
 import { chat, message, friend } from "../handle_api";
 import { useSelector, useDispatch } from "react-redux";
 import { ipServer } from "../handle_api/ipAddressServer";
-import DefaultAvatar from "../images/avatar/default-avatar-480.png";
 
-// const SOCKET_URL = "http://192.168.1.153:3000";
 import { SOCKET_URL } from "../handle_api/api";
 
-export default function ChatMessengerScreen({ route, navigation }) {
+export default function ChatMessengerScreen({ route, navigation, ...props }) {
   const socket = useRef();
   const { item } = route.params;
-  const [show, setShow] = useState(false);
   const [isBlock, setIsBlock] = useState(false);
   const [messages, setMessages] = useState([]);
-  const [arrivalMessage, setArrivalMessage] = useState(null);
   const chatId = item._id;
   let avatar = item.avatar;
   if (avatar) {
@@ -33,6 +29,7 @@ export default function ChatMessengerScreen({ route, navigation }) {
   const token = useSelector((state) => state.authReducer.token);
   const receiverId = item.receivedId;
   const senderId = useSelector((state) => state.authReducer.id);
+  socket.current = io(SOCKET_URL);
   const onBack = () => {
     navigation.navigate("MainScreen");
   };
@@ -61,8 +58,10 @@ export default function ChatMessengerScreen({ route, navigation }) {
     });
   }, [navigation]);
 
+
+
   useEffect(() => {
-    fetchBlock();
+    // fetchBlock();
     const initialize = async () => {
       const newMessages = await fetchMessages();
       setMessages(
@@ -80,8 +79,17 @@ export default function ChatMessengerScreen({ route, navigation }) {
           .reverse()
       );
     };
+
+    const onFocusHandler = navigation.addListener('focus', () => {
+      fetchBlock()
+    });
+
     initialize();
     socket.current = io(SOCKET_URL);
+
+    return () => {
+      navigation.removeListener('focus');
+    }
   }, []);
 
   useEffect(() => {
@@ -93,8 +101,10 @@ export default function ChatMessengerScreen({ route, navigation }) {
           createdAt: data.createdAt,
           user: {
             _id: data.senderId,
+            avatar: `${ipServer}${avatar}`,
           }
         };
+
         setMessages((previousMessages) =>
           GiftedChat.append(previousMessages, newMsg)
         );
@@ -202,9 +212,9 @@ export default function ChatMessengerScreen({ route, navigation }) {
     // <View>
 
     <SafeAreaView style={{ flex: 1 }}>
-      {isBlock && isBlock == true ? (
+      {isBlock ? (
         <Pressable style={{ alignItems: 'center', marginTop: 100 }} onPress={() => UnBlockChat()}>
-          <Text style={styles.btext}>Hủy block</Text>
+          <Text style={styles.btext}>Hủy block </Text>
         </Pressable>
       ) : (
         <GiftedChat

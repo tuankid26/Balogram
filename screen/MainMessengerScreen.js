@@ -45,13 +45,25 @@ export default function MainMessengerScreen({ navigation }) {
       );
     }
   };
-  useEffect(() => {
-    initialize();
+
+  const getBlockChat = () => {
     friend.getBlockChat(token)
       .then(res => {
         setBlocks(res.data.data.blocked_inbox)
       })
       .catch(error => { })
+  }
+
+  useEffect(() => {
+    initialize();
+    const onFocusHandler = navigation.addListener('focus', () => {
+      getBlockChat()
+    });
+
+    return () => {
+      navigation.removeListener('focus');
+    }
+
   }, []);
 
   const fetchChats = async () => {
@@ -72,7 +84,6 @@ export default function MainMessengerScreen({ navigation }) {
 
   const renderItem = (item, blocks) => {
     const isBlock = blocks.includes(item._id)
-    console.log(isBlock)
     return (
       <View>
         <TouchableOpacity

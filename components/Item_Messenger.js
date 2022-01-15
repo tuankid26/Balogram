@@ -12,7 +12,6 @@ class Item_Messenger extends Component {
         const { item } = this.props
         const { isBlock } = this.props
         const avatar = item.avatar;
-
         return (
             <View style={styles.container}>
                 <View style={styles.bgAvatar}>
