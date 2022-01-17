@@ -14,7 +14,7 @@ const {
 const uploadFile = {};
 
 uploadFile.matchesFileBase64 = (fileBase64) => {
-    const matches = fileBase64.match(/^data:([A-Za-z-+/]+);base64,(.+)$/);
+    const matches = fileBase64.match(/^data:([A-Za-z0-9-+/]+);base64,(.+)$/);
     if (!Array.isArray(matches) || matches.length !== 3) {
         return false;
     }
@@ -22,12 +22,11 @@ uploadFile.matchesFileBase64 = (fileBase64) => {
 }
 
 uploadFile.uploadFile = (fileBase64) => {
-    const matches = fileBase64.match(/^data:([A-Za-z-+/]+);base64,(.+)$/), response = {};
+    const matches = fileBase64.match(/^data:([A-Za-z0-9-+/]+);base64,(.+)$/), response = {};
 
     if (!Array.isArray(matches) || matches.length !== 3) {
         return false;
     }
-
     response.type = matches[1];
     response.data = new Buffer(matches[2], 'base64');
     let decodedImg = response;

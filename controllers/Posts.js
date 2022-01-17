@@ -25,7 +25,10 @@ postsController.create = async (req, res, next) => {
         let dataImages = [];
         if (Array.isArray(images)) {
             for (const image of images) {
+                // console.log(image)
                 if (uploadFile.matchesFileBase64(image) !== false) {
+                    // console.log("dsdadas");
+                    // console.log(image);
                     const imageResult = uploadFile.uploadFile(image);
                     if (imageResult !== false) {
                         let imageDocument = new DocumentModel({
@@ -241,23 +244,24 @@ postsController.list = async (req, res, next) => {
         let blocked = user.blocked_diary || [];
 
         if (req.query.userId) {
-        	if (!blocked.includes(req.query.userId)){
-            // get Post of one user
-            posts = await PostModel.find({
-                author: req.query.userId
-            }).populate('images', ['fileName']).populate('videos', ['fileName']).populate({
-                path: 'author',
-                select: '_id username phonenumber avatar',
-                model: 'Users',
-                populate: {
-                    path: 'avatar',
-                    select: '_id fileName',
-                    model: 'Documents',
-                },
-            });
-        };
+            if (!blocked.includes(req.query.userId)) {
+                // get Post of one user
+                posts = await PostModel.find({
+                    author: req.query.userId
+                }).populate('images', ['fileName']).populate('videos', ['fileName']).populate({
+                    path: 'author',
+                    select: '_id username phonenumber avatar',
+                    model: 'Users',
+                    populate: {
+                        path: 'avatar',
+                        select: '_id fileName',
+                        model: 'Documents',
+                    },
+                });
+            };
         } else {
             // get list friend of 1 user
+            // console.log("load your friendddd");
             let friends = await FriendModel.find({
 
                 status: "1",
@@ -273,8 +277,8 @@ postsController.list = async (req, res, next) => {
             ])
             let listIdFriends = [];
             for (let i = 0; i < friends.length; i++) {
-                if(blocked.findIndex(u => u == friends[i].sender) != -1) continue;
-                if(blocked.findIndex(u => u == friends[i].receiver) != -1) continue;
+                if (blocked.findIndex(u => u == friends[i].sender) != -1) continue;
+                if (blocked.findIndex(u => u == friends[i].receiver) != -1) continue;
                 if (friends[i].sender.toString() === userId.toString()) {
                     listIdFriends.push(friends[i].receiver);
                 } else {
@@ -302,7 +306,7 @@ postsController.list = async (req, res, next) => {
             let postItem = posts[i].toObject();
             let postItemLike = [];
 
-            for (let indexIdLike = 0; indexIdLike < postItem.like.length; indexIdLike++){
+            for (let indexIdLike = 0; indexIdLike < postItem.like.length; indexIdLike++) {
                 const userLikeId = String(postItem.like[indexIdLike]);
                 postItemLike.push(userLikeId);
             }
@@ -317,7 +321,7 @@ postsController.list = async (req, res, next) => {
                 }
 
             }
-            if (postItem.author.avatar){
+            if (postItem.author.avatar) {
                 const fileNameAvatar = postItem.author.avatar.fileName;
                 const base64 = uploadFile.loadFile(fileNameAvatar);
                 postItem.author.avatar.base64 = base64;
@@ -381,23 +385,23 @@ postsController.loadPage = async (req, res, next) => {
             posts = await PostModel.find({
                 "author": listIdFriends
             }).skip(offset)
-            .limit(limit).sort({ createdAt: "desc" }).populate('images', ['fileName']).populate('videos', ['fileName']).populate({
-                path: 'author',
-                select: '_id username phonenumber avatar',
-                model: 'Users',
-                populate: {
-                    path: 'avatar',
-                    select: '_id fileName',
-                    model: 'Documents',
-                },
-            });
+                .limit(limit).sort({ createdAt: "desc" }).populate('images', ['fileName']).populate('videos', ['fileName']).populate({
+                    path: 'author',
+                    select: '_id username phonenumber avatar',
+                    model: 'Users',
+                    populate: {
+                        path: 'avatar',
+                        select: '_id fileName',
+                        model: 'Documents',
+                    },
+                });
         }
         let postWithIsLike = [];
         for (let i = 0; i < posts.length; i++) {
             let postItem = posts[i].toObject();
             let postItemLike = [];
 
-            for (let indexIdLike = 0; indexIdLike < postItem.like.length; indexIdLike++){
+            for (let indexIdLike = 0; indexIdLike < postItem.like.length; indexIdLike++) {
                 const userLikeId = String(postItem.like[indexIdLike]);
                 postItemLike.push(userLikeId);
             }
@@ -412,7 +416,7 @@ postsController.loadPage = async (req, res, next) => {
                 }
 
             }
-            if (postItem.author.avatar){
+            if (postItem.author.avatar) {
                 const fileNameAvatar = postItem.author.avatar.fileName;
                 const base64 = uploadFile.loadFile(fileNameAvatar);
                 postItem.author.avatar.base64 = base64;
