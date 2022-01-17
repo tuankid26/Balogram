@@ -344,19 +344,24 @@ postsController.loadPage = async (req, res, next) => {
     try {
         let posts = [];
         let userId = req.userId;
+        let user = await UserModel.findById(req.userId);
+        let blocked = user.blocked_diary || [];
+
         if (req.query.userId) {
-            posts = await PostModel.find({
-                author: req.query.userId
-            }).populate('images', ['fileName']).populate('videos', ['fileName']).populate({
-                path: 'author',
-                select: '_id username phonenumber avatar',
-                model: 'Users',
-                populate: {
-                    path: 'avatar',
-                    select: '_id fileName',
-                    model: 'Documents',
-                },
-            });
+            if (!blocked.includes(req.query.userId)) {
+                posts = await PostModel.find({
+                    author: req.query.userId
+                }).populate('images', ['fileName']).populate('videos', ['fileName']).populate({
+                    path: 'author',
+                    select: '_id username phonenumber avatar',
+                    model: 'Users',
+                    populate: {
+                        path: 'avatar',
+                        select: '_id fileName',
+                        model: 'Documents',
+                    },
+                });
+            }
         } else {
             // get list friend of 1 user
             let friends = await FriendModel.find({
@@ -372,6 +377,8 @@ postsController.loadPage = async (req, res, next) => {
             let listIdFriends = [];
             // console.log(friends)
             for (let i = 0; i < friends.length; i++) {
+                if (blocked.findIndex(u => u == friends[i].sender) != -1) continue;
+                if (blocked.findIndex(u => u == friends[i].receiver) != -1) continue;
                 if (friends[i].sender.toString() === userId.toString()) {
                     listIdFriends.push(friends[i].receiver);
                 } else {
