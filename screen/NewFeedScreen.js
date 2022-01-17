@@ -8,13 +8,14 @@ import {
   Dimensions,
   Pressable,
   RefreshControl,
-  ActivityIndicator
+  ActivityIndicator,
+  Alert
 } from "react-native";
 
 import DefaultAvatar from '../images/avatar/default-avatar-480.png';
 import { format, formatDistance, subDays } from "date-fns";
 import { Avatar } from "react-native-elements";
-import { MaterialCommunityIcons,EvilIcons } from "react-native-vector-icons";
+import { MaterialCommunityIcons, EvilIcons } from "react-native-vector-icons";
 import { theme } from "../components/core/theme";
 import { post } from "../handle_api";
 import { useSelector, useDispatch } from "react-redux";
@@ -81,7 +82,7 @@ export default function NewFeedScreen({ navigation }) {
     };
     post
       .actionLikePost(data)
-      .then((res) => {})
+      .then((res) => { })
       .catch((error) => {
         console.log("Failed");
         console.log(error.response.data);
@@ -91,11 +92,11 @@ export default function NewFeedScreen({ navigation }) {
   const [isModalReportVisible, setModalReportVisible] = useState(false);
   const [isOtherPostVisible, setOtherPostVisible] = useState(false);
   const toggleModal = (item) => {
-    if (item.author._id === userId ){
-    setModalVisible(!isModalVisible);
-    setToggleItem(item);
+    if (item.author._id === userId) {
+      setModalVisible(!isModalVisible);
+      setToggleItem(item);
     }
-    else{
+    else {
       // setModalReportVisible(!isModalReportVisible);
       setOtherPostVisible(!isOtherPostVisible);
       setToggleItem(item);
@@ -116,11 +117,12 @@ export default function NewFeedScreen({ navigation }) {
     try {
       const res = await post.deletePost(data);
       fetchPosts();
+      Alert.alert("Thông báo", "Xóa bài viết thành công!")
     } catch (err) {
       console.log(err);
     }
   };
-  const toggleReportModal = async() => {
+  const toggleReportModal = async () => {
     const data = {
       postId: toggleItem._id,
       token: token,
@@ -128,6 +130,7 @@ export default function NewFeedScreen({ navigation }) {
     try {
       const res = await post.reportPost(data);
       fetchPosts();
+      Alert.alert("Thông báo", "Báo cáo thành công!")
     } catch (err) {
       console.log(err);
     }
@@ -158,7 +161,7 @@ export default function NewFeedScreen({ navigation }) {
   };
 
   const fetchNextPage = () => {
-    post.getPagePost(token, null,curPage + 1)
+    post.getPagePost(token, null, curPage + 1)
       .then((nextPage) => {
         const newPosts = nextPage.data.data;
         if (newPosts.length > 0) {
@@ -230,15 +233,15 @@ export default function NewFeedScreen({ navigation }) {
     const now = Date.now();
     const DOUBLE_PRESS_DELAY = 300;
     if (doubleTouch && now - doubleTouch < DOUBLE_PRESS_DELAY) {
-       mm,
-      console.log("Hey");
+      mm,
+        console.log("Hey");
     } else {
       setDoubleTouch(now);
     }
   };
   const renderFooter = () => {
     return isFetchingNextPage ? (
-      <View style={{alignItems: 'center'}}>
+      <View style={{ alignItems: 'center' }}>
         <ActivityIndicator size="large" color="rgba(0,0,0,0.3)" />
       </View>
     ) : null;
@@ -251,24 +254,24 @@ export default function NewFeedScreen({ navigation }) {
     const itemIsLike = item.isLike;
     let avatar = item.author.avatar;
     let item_video = item.videos[0];
-    
+
     return (
       <View style={styles.containerPost}>
         <View style={styles.containerPostHeader}>
           <View style={styles.containerUser}>
-          { avatar
-            ? <Avatar
+            {avatar
+              ? <Avatar
                 size={40}
                 rounded
-                source={{uri: `data:image/jpeg;base64,${avatar.base64}`}}
+                source={{ uri: `data:image/jpeg;base64,${avatar.base64}` }}
                 containerStyle={{ marginLeft: 5, marginTop: 5 }}
-                />
-            : <Avatar
+              />
+              : <Avatar
                 size={40}
                 rounded
                 source={DefaultAvatar}
                 containerStyle={{ marginLeft: 5, marginTop: 5 }}
-                />
+              />
             }
             <View style={styles.containerInfo}>
 
@@ -294,26 +297,26 @@ export default function NewFeedScreen({ navigation }) {
             <Text style={styles.described}>{item.described}</Text>
           )}
           <View style={styles.containerImage}>
-            {item_video 
-            ?
+            {item_video
+              ?
               // <Video
               //   style={styles.video}
-                
+
               //   source={{
               //     uri: `${ipServer}${item_video.fileName}`,
               //   }}
               //   useNativeControls={true}
               //   resizeMode="cover"
               //   shouldPlay={false}
-                
+
               //   isLooping={true}
               //   // onPlaybackStatusUpdate={status => setStatus(() => status)}
               // />
               <VideoPlayer
-              videoUri={`${ipServer}${item_video.fileName}`}
-              item={item}
+                videoUri={`${ipServer}${item_video.fileName}`}
+                item={item}
               />
-            :
+              :
               <Slider item={item.images} index={0} />
             }
           </View>
@@ -354,7 +357,7 @@ export default function NewFeedScreen({ navigation }) {
     <View style={{ flex: 1 }}>
       <StatusBar backgroundColor={theme.colors.white} barStyle="dark-content" />
       <HeaderMain onAddPost={onAddPost} onSearchPress={onSearchPress} />
-      
+
       <View style={{ flex: 1 }}>
         <ModalFeed
           isModalVisible={isModalVisible}

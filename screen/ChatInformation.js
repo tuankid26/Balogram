@@ -35,7 +35,7 @@ export default function ChatInformation({ route, navigation }) {
         }
         friend.blockChat(dataBlock)
             .then(res => {
-                Alert.alert("Thông báo", "Chặn trò cuyện thành công!")
+                Alert.alert("Thông báo", "Chặn cuộc trò chuyện thành công!")
             })
             .catch(error => {
                 console.log("Failed");
