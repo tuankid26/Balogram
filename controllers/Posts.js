@@ -240,7 +240,8 @@ postsController.list = async (req, res, next) => {
         let user = await UserModel.findById(req.userId);
         let blocked = user.blocked_diary || [];
 
-        if (req.body.userId && !(blocked.includes(req.body.userId))) {
+        if (req.query.userId) {
+        	if (!blocked.includes(req.query.userId)){
             // get Post of one user
             posts = await PostModel.find({
                 author: req.query.userId
@@ -254,6 +255,7 @@ postsController.list = async (req, res, next) => {
                     model: 'Documents',
                 },
             });
+        };
         } else {
             // get list friend of 1 user
             let friends = await FriendModel.find({
