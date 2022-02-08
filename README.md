@@ -22,6 +22,6 @@ $ npm install
 $ npm start
 ```
 
-## Apk application for android
+## Apk file for android application
 Download apk file:
 https://drive.google.com/file/d/1WCS5dz-r7w4n4xhLoH5VFhNvDq0BDDZx/view?usp=sharing
